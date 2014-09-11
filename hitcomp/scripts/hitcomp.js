@@ -139,7 +139,7 @@ $(document).ready(function () {
         
         $("button#content-filter-reset", filterContent).click(function (event) {
             $("div.content-filter-group select option", filterContent).each(function (filterSelOptIndex, filterSelOpt) {
-                $(filterSelOpt).parent().multiselect("deselect", $(filterSelOpt).val());
+                $(filterSelOpt).parent().multiselect("deselect", $(filterSelOpt).val(), true);
             });
         });
         
@@ -154,7 +154,7 @@ $(document).ready(function () {
                 "buttonContainer": '<div class="btn-group btn-group-sm"/>',
                 "enableCaseInsensitiveFiltering": true,
                 "filterBehavior": "text",
-                "onChange": function (filterSelOpt, filterSelOptStatus) {
+                "onChange": function () {
                     var compRows = $("tr", compTableBody);
                     compRows.show();
                     
@@ -215,13 +215,13 @@ $(document).ready(function () {
             
             filterSelGroup.append(CompetencyFilter.buildButton("All", "btn-default", "glyphicon-asterisk").click(function (event) {
                 $("option", filterSel).each(function (filterSelOptIndex, filterSelOpt) {
-                    filterSel.multiselect("select", $(filterSelOpt).val());
+                    filterSel.multiselect("select", $(filterSelOpt).val(), true);
                 });
             }));
             
             filterSelGroup.append(CompetencyFilter.buildButton("None", "btn-default", "glyphicon-ban-circle").click(function (event) {
                 $("option", filterSel).each(function (filterSelOptIndex, filterSelOpt) {
-                    filterSel.multiselect("deselect", $(filterSelOpt).val());
+                    filterSel.multiselect("deselect", $(filterSelOpt).val(), true);
                 });
             }));
         });

@@ -129,8 +129,20 @@ table.table thead tr th {
     cursor: pointer;
 }
 
+table#comp-table thead tr th div div {
+    min-width: 200px;
+}
+
+table#comp-table thead tr th:first-of-type div div {
+    min-width: 100px;
+}
+
 table#comp-table thead tr th div div i.fa {
-    float: right;
+    right: 0;
+}
+
+table#comp-table thead tr th div div i:not(.fa) {
+    position: relative;
 }
 
 table#comp-table tbody tr td {
