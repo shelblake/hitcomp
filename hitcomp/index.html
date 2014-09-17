@@ -17,6 +17,10 @@
         <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/js/bootstrap-multiselect.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.3.5/src/tabletop.js"></script>
+        <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v0.2.6/enum-0.2.6.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/alexei/sprintf.js/v0.7/src/sprintf.js"></script>
+        <script type="text/javascript" src="scripts/hitcomp-lib.js"></script>
         <script type="text/javascript" src="scripts/hitcomp.js"></script>
         <title>HITCOMP - Health IT Competencies</title>
     </head>
@@ -30,129 +34,309 @@
                             <strong>HITCOMP - Health IT Competencies</strong>
                         </a>
                     </div>
-                    <div class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href="/">
-                                    <i class="glyphicon glyphicon-home"></i>
-                                    <strong>Home</strong>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav navbar-nav pull-right">
-                            <li class="dropdown">
-                                <a data-toggle="dropdown" href="#">
-                                    <i class="glyphicon glyphicon-sign"></i>
-                                    <strong>About</strong>
-                                    <span class="caret"></span>
-                                </a>
-                                <ul role="menu" class="dropdown-menu">
-                                    <li role="presentation" class="dropdown-header">Google Code</li>
-                                    <li role="presentation">
-                                        <a role="menuitem" tabindex="-1" target="_blank" href="https://code.google.com/p/hitcomp/">
-                                            <i class="glyphicon glyphicon-wrench"></i>
-                                            Project Site
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a data-toggle="dropdown" href="#">
+                                <i class="fa fa-cogs"></i>
+                                <strong>About</strong>
+                                <span class="caret"></span>
+                            </a>
+                            <ul role="menu" class="dropdown-menu">
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" target="_blank" href="https://code.google.com/p/hitcomp/">
+                                        <i class="glyphicon glyphicon-wrench"></i>
+                                        Google Code Project
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
             </div>
             <div id="content" class="container">
-                <h1>
-                    <i class="glyphicon glyphicon-filter glyphicon-type-info"></i>
-                    Filter
-                </h1>
-                <div id="content-filter-loading">
-                    <i class="fa fa-spinner fa-spin"></i>
-                    Loading ...
-                </div>
-                <div id="content-filter">
-                    <form name="content-filter-form">
-                        <div class="input-group-sm">
-                            <span class="btn-group btn-group-sm">
-                                <button id="content-filter-reset" class="btn btn-default" type="button">
-                                    <i class="glyphicon glyphicon-refresh"></i>
-                                    Reset
-                                </button>
-                            </span>
+                <div id="content-tabs">
+                    <ul>
+                        <li>
+                            <h1>
+                                <a href="#content-tab-home">
+                                    <i class="glyphicon glyphicon-home"></i>
+                                    Home
+                                </a>
+                            </h1>
+                        </li>
+                        <li>
+                            <h1>
+                                <a href="#content-comps-tab">
+                                    <i class="fa fa-tasks"></i>
+                                    Competencies
+                                </a>
+                            </h1>
+                        </li>
+                        <li>
+                            <h1>
+                                <a href="#content-roles-tab">
+                                    <i class="fa fa-user-md"></i>
+                                    Roles
+                                </a>
+                            </h1>
+                        </li>
+                    </ul>
+                    <div id="content-tab-home">
+                        <h2>
+                            <i class="glyphicon glyphicon-info-sign"></i>
+                            Introduction
+                        </h2>
+                        <p>
+                            <!-- TODO: add intro content -->
+                            <i>&lt;placeholder: introduction text&gt;</i>
+                        </p>
+                    </div>
+                    <div id="content-comps-tab" class="content-tab">
+                        <h2>
+                            <i class="glyphicon glyphicon-filter"></i>
+                            Filter
+                        </h2>
+                        <div class="content-loading">
+                            <i class="fa fa-spinner fa-spin"></i>
+                            Loading ...
                         </div>
-                        <div class="input-group-sm content-filter-group">
-                            <label for="content-filter-select-level">
-                                <i class="glyphicon glyphicon-signal"></i>
-                                Level
-                            </label>
-                            <div class="btn-group btn-group-sm">
-                                <select id="content-filter-select-level" class="multiselect" multiple="multiple"></select>
-                            </div>
+                        <div class="content-filter">
+                            <form name="content-comps-filter-form">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-default" type="button">
+                                            <i class="glyphicon glyphicon-refresh"></i>
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-comps-filter-select-domain">
+                                        <i class="fa fa-cube"></i>
+                                        Domain
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-domain" datafld="domain" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-comps-filter-select-subdomain">
+                                        <i class="fa fa-cubes"></i>
+                                        Subdomain
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-subdomain" datafld="subdomain" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-comps-filter-select-level">
+                                        <i class="glyphicon glyphicon-signal"></i>
+                                        Level
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-level" datafld="level" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-comps-filter-select-quadrant">
+                                        <i class="glyphicon glyphicon-th-large"></i>
+                                        Quadrant
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-quadrant" datafld="quadrant" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-comps-filter-select-category">
+                                        <i class="glyphicon glyphicon-tag"></i>
+                                        Category
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-category" datafld="category" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-comps-filter-select-origin">
+                                        <i class="glyphicon glyphicon-globe"></i>
+                                        Silo/Origin
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-origin" datafld="origin" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="input-group-sm content-filter-group">
-                            <label for="content-filter-select-quadrant">
-                                <i class="glyphicon glyphicon-th-large"></i>
-                                Quadrant
-                            </label>
-                            <div class="btn-group btn-group-sm">
-                                <select id="content-filter-select-quadrant" class="multiselect" multiple="multiple"></select>
-                            </div>
+                        <h2>
+                            <i class="glyphicon glyphicon-th"></i>
+                            Data
+                        </h2>
+                        <div class="content-loading">
+                            <i class="fa fa-spinner fa-spin"></i>
+                            Loading ...
                         </div>
-                        <div class="input-group-sm content-filter-group">
-                            <label for="content-filter-select-area">
-                                <i class="glyphicon glyphicon-tag"></i>
-                                Area
-                            </label>
-                            <div class="btn-group btn-group-sm">
-                                <select id="content-filter-select-area" class="multiselect" multiple="multiple"></select>
-                            </div>
+                        <div class="content-data">
+                            <table>
+                                <colgroup>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="header">
+                                            <i class="fa fa-cube"></i>
+                                            Domain
+                                        </th>
+                                        <th class="header">
+                                            <i class="fa fa-cubes"></i>
+                                            Subdomain
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-signal"></i>
+                                            Level
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-th-large"></i>
+                                            Quadrant
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-tag"></i>
+                                            Category
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-globe"></i>
+                                            Silo/Origin
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-comment"></i>
+                                            Description
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
                         </div>
-                        <div class="input-group-sm content-filter-group">
-                            <label for="content-filter-select-origin">
-                                <i class="glyphicon glyphicon-globe"></i>
-                                Silo/Origin
-                            </label>
-                            <div class="btn-group btn-group-sm">
-                                <select id="content-filter-select-origin" class="multiselect" multiple="multiple"></select>
-                            </div>
+                    </div>
+                    <div id="content-roles-tab" class="content-tab">
+                        <h2>
+                            <i class="glyphicon glyphicon-filter"></i>
+                            Filter
+                        </h2>
+                        <div class="content-loading">
+                            <i class="fa fa-spinner fa-spin"></i>
+                            Loading ...
                         </div>
-                    </form>
-                </div>
-                <h1>
-                    <i class="glyphicon glyphicon-th glyphicon-type-info"></i>
-                    Data
-                </h1>
-                <div id="content-data-loading">
-                    <i class="fa fa-spinner fa-spin"></i>
-                    Loading ...
-                </div>
-                <div id="content-data">
-                    <table id="comp-table">
-                        <thead>
-                            <tr>
-                                <th class="header">
-                                    <i class="glyphicon glyphicon-signal"></i>
-                                    Level
-                                </th>
-                                <th class="header">
-                                    <i class="glyphicon glyphicon-th-large"></i>
-                                    Quadrant
-                                </th>
-                                <th class="header">
-                                    <i class="glyphicon glyphicon-tag"></i>
-                                    Area
-                                </th>
-                                <th class="header">
-                                    <i class="glyphicon glyphicon-globe"></i>
-                                    Silo/Origin
-                                </th>
-                                <th class="header">
-                                    <i class="glyphicon glyphicon-comment"></i>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                        <div class="content-filter">
+                            <form name="content-roles-filter-form">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-default" type="button">
+                                            <i class="glyphicon glyphicon-refresh"></i>
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-roles-filter-select-clinical">
+                                        <i class="fa fa-stethoscope"></i>
+                                        Clinical
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-clinical" datafld="clinical" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-roles-filter-select-type">
+                                        <i class="glyphicon glyphicon-tag"></i>
+                                        Type
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-type" datafld="type" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-roles-filter-select-level">
+                                        <i class="glyphicon glyphicon-signal"></i>
+                                        Level
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-level" datafld="level" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-roles-filter-select-roles-us">
+                                        <i class="flag flag-us"></i>
+                                        Roles (US)
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-roles-us" datafld="rolesUs" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="input-group-sm">
+                                    <label for="content-roles-filter-select-roles-eu">
+                                        <i class="flag flag-eu"></i>
+                                        Roles (EU)
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-roles-eu" datafld="rolesEu" class="multiselect" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <h2>
+                            <i class="glyphicon glyphicon-th"></i>
+                            Data
+                        </h2>
+                        <div class="content-loading">
+                            <i class="fa fa-spinner fa-spin"></i>
+                            Loading ...
+                        </div>
+                        <div class="content-data">
+                            <table>
+                                <colgroup>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                    <col/>
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="header">
+                                            <i class="fa fa-stethoscope"></i>
+                                            Clinical
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-tag"></i>
+                                            Type
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-signal"></i>
+                                            Level
+                                        </th>
+                                        <th class="header">
+                                            <i class="flag flag-us"></i>
+                                            Roles (US)
+                                        </th>
+                                        <th class="header">
+                                            <i class="flag flag-eu"></i>
+                                            Roles (EU)
+                                        </th>
+                                        <th class="header">
+                                            <i class="glyphicon glyphicon-comment"></i>
+                                            Description
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

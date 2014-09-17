@@ -1,250 +1,93 @@
 $(document).ready(function () {
-    function CompetencyLevel(order, name, displayName) {
-        this.order = order;
-        this.name = name;
-        this.displayName = displayName;
-    }
+    var contentTabsElem = $("div#content-tabs");
+    contentTabsElem.tabs();
     
-    $.extend(CompetencyLevel.prototype, {
-        "order": undefined,
-        "name": undefined,
-        "displayName": undefined
+    $.extend($.tablesorter.themes.bootstrap, {
+        "sortAsc": "fa fa-sort-up",
+        "sortDesc": "fa fa-sort-down",
+        "sortNone": "fa fa-sort",
+        "table": "table table-bordered table-condensed table-hover"
     });
     
-    $.extend(CompetencyLevel, {
-        "UNKNOWN": new CompetencyLevel(-1, "unknown", "Unknown"),
-        "BASELINE": new CompetencyLevel(0, "baseline", "Baseline"),
-        "BASIC": new CompetencyLevel(1, "basic", "Basic"),
-        "INTERMEDIATE": new CompetencyLevel(2, "intermediate", "Intermediate"),
-        "ADVANCED": new CompetencyLevel(3, "advanced", "Advanced"),
-        "EXPERT": new CompetencyLevel(4, "expert", "Expert"),
+    var compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined"), 
+        compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
+        compsDataElem = $("div.content-data", compsTabElem), compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), 
+        comps = [], compsFilters = [];
+    
+    compsDataSet.onLoad = function (compsDataSet, compsData) {
+        var comp;
         
-        "valueOf": function (level) {
-            switch (level.toLowerCase()) {
-                case CompetencyLevel.BASELINE.name:
-                    return CompetencyLevel.BASELINE;
-                
-                case CompetencyLevel.BASIC.name:
-                    return CompetencyLevel.BASIC;
-                
-                case CompetencyLevel.INTERMEDIATE.name:
-                    return CompetencyLevel.INTERMEDIATE;
-                
-                case CompetencyLevel.ADVANCED.name:
-                    return CompetencyLevel.ADVANCED;
-                
-                case CompetencyLevel.EXPERT.name:
-                    return CompetencyLevel.EXPERT;
-                
-                default:
-                    return CompetencyLevel.UNKNOWN;
-            }
-        }
-    });
-    
-    function Competency(obj) {
-        this.area = obj["areaofcompetency"];
-        this.code = obj["code"];
-        this.desc = obj["competency"];
-        this.id = obj["rowNumber"];
-        this.level = CompetencyLevel.valueOf(obj["level"]);
-        this.origin = obj["siloorigin"];
-        this.quadrant = obj["competencyquadrant"];
-    }
-    
-    $.extend(Competency.prototype, {
-        "area": undefined,
-        "code": undefined,
-        "desc": undefined,
-        "id": undefined,
-        "level": CompetencyLevel.UNKNOWN,
-        "origin": undefined,
-        "quadrant": undefined
-    });
-    
-    var CompetencyFilter = {};
-    
-    $.extend(CompetencyFilter, {
-        "buildButton": function (content, classes, iconClasses) {
-            return $("<button/>", {
-                "class": "btn " + classes,
-                "type": "button"
-            }).append($("<i/>", {
-                "class": "glyphicon " + iconClasses
-            })).append(content);
-        }
-    });
-    
-    var DATA_LOCAL_STORAGE_KEY = "hitcomp.data";
-    var DATA_LOCAL_STORAGE_VALUE_DELIM = "|";
-    var DATA_LOCAL_STORAGE_EVICT_MS = (60 * 60 * 1000);
-    var DATA_FEED_KEY = "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c";
-    var DATA_SHEET_ALL_LEVELS_NAME = "All Levels Combined";
-    
-    var comps = [];
-    
-    function buildInterface(data) {
-        var dataSheet = data[DATA_SHEET_ALL_LEVELS_NAME];
-        
-        // TODO: handle missing sheet
-        
-        var content = $("div#content"), filterContent = $("div#content-filter", content), dataContent = $("div#content-data", content), 
-            compTable = $("table#comp-table", dataContent), compTableBody = $("tbody", compTable), comp, compRow;
-        
-        $.each(dataSheet["elements"], function (compIndex, compElem) {
-            comps.push((comp = new Competency(compElem)));
+        $.each(compsData, function (compDataObjIndex, compDataObj) {
+            comps.push((comp = new $.hitcomp.Competency(compDataObj)));
             
-            compRow = $("<tr/>");
-            compRow.append($("<td/>", { "class": "comp-data-level" }).text(comp.level.displayName));
-            compRow.append($("<td/>", { "class": "comp-data-quadrant" }).text(comp.quadrant));
-            compRow.append($("<td/>", { "class": "comp-data-area" }).text(comp.area));
-            compRow.append($("<td/>", { "class": "comp-data-origin" }).text(comp.origin));
-            compRow.append($("<td/>", { "class": "comp-data-desc" }).text(comp.desc));
-            compTableBody.append(compRow);
+            compsTableBodyElem.append(comp.buildRowElement());
         });
         
-        $.extend($.tablesorter.themes.bootstrap, {
-            "sortAsc": "fa fa-sort-up",
-            "sortDesc": "fa fa-sort-down",
-            "sortNone": "fa fa-sort",
-            "table": "table table-bordered table-condensed table-hover"
+        compsTableElem.tablesorter($.hitcomp.Competency.buildTableSorter(compsTableElem));
+        
+        var compFilterType, compFilter;
+        
+        $("select", compsFilterElem).each(function (compFilterSelectIndex, compFilterSelectElem) {
+            compsFilters.push((compFilter = new $.hitcomp.CompetencyFilter((compFilterType = (compFilterSelectElem = $(compFilterSelectElem)).attr("datafld")), 
+                compsTableElem, compFilterSelectElem)));
+            
+            compFilterSelectElem.multiselect(compFilter.buildSelect());
+            compFilterSelectElem.multiselect("dataprovider", compFilter.buildSelectDataProvider($.map($.map(comps, function (comp) {
+                return comp[compFilterType];
+            }).sort(function (compItemValue1, compItemValue2) {
+                return (compItemValue1.value ? compItemValue1.value.compareTo(compItemValue2.value) : compItemValue1.localeCompare(compItemValue2));
+            }), function (compItemValue) {
+                return (compItemValue.value ? compItemValue.value.displayName : compItemValue);
+            }).unique()));
+            
+            compFilterSelectElem.parent().append(compFilter.buildSelectControlElements());
         });
         
-        compTable.tablesorter({
-            "headerTemplate": "{content}{icon}",
-            "initialized": function (table) {
-                $("div#content-data-loading", content).hide();
-                dataContent.show();
-            },
-            "sortList": [
-                [ 0, 0 ]
-            ],
-            "textSorter": function (col1, col2, dir, colIndex, table) {
-                if (colIndex != 0) {
-                    return col1.localeCompare(col2);
-                } else {
-                    var compLevel1 = CompetencyLevel.valueOf(col1), compLevel2 = CompetencyLevel.valueOf(col2);
-                    
-                    return ((compLevel1.order > compLevel2.order) ? 1 : ((compLevel1.order < compLevel2.order) ? -1 : 0));
-                }
-            },
-            "theme": "bootstrap",
-            "widgetOptions": {
-                "uitheme": "bootstrap"
-            },
-            "widgets": [
-                "uitheme"
-            ]
-        });
+        compsFilterElem.prev("div.content-loading").hide();
         
-        $("button#content-filter-reset", filterContent).click(function (event) {
-            $("div.content-filter-group select option", filterContent).each(function (filterSelOptIndex, filterSelOpt) {
-                $(filterSelOpt).parent().multiselect("deselect", $(filterSelOpt).val(), true);
-            });
-        });
-        
-        $("div.content-filter-group", filterContent).each(function (filterGroupIndex, filterGroup) {
-            filterGroup = $(filterGroup);
-            
-            var filterSel = $("select.multiselect", filterGroup), filterSelGroup = filterSel.parent(), 
-                filterSelType = filterSel.attr("id").replace(/^content\-filter\-select\-([^$]+)$/, "$1");
-            
-            filterSel.multiselect({
-                "buttonClass": "btn btn-default",
-                "buttonContainer": '<div class="btn-group btn-group-sm"/>',
-                "enableCaseInsensitiveFiltering": true,
-                "filterBehavior": "text",
-                "onChange": function () {
-                    var compRows = $("tr", compTableBody);
-                    compRows.show();
-                    
-                    $("select", filterContent).each(function (filterSelIndex, filterSel) {
-                        var filterSelOptsActive = [];
-
-                        $("option", (filterSel = $(filterSel))).each(function (filterSelOptIndex, filterSelOpt) {
-                            if ((filterSelOpt = $(filterSelOpt)).prop("selected")) {
-                                filterSelOptsActive.push(filterSelOpt.val());
-                            }
-                        });
-
-                        if (filterSelOptsActive.length > 0) {
-                            $(("tr td.comp-data-" + filterSel.attr("id").replace(/^content\-filter\-select\-([^$]+)$/, "$1")), compTableBody)
-                                .each(function (compDataIndex, compData) {
-                                if (filterSelOptsActive.indexOf((compData = $(compData)).text().replace(/^\s*([^$]+)\s*$/, "$1")) == -1) {
-                                    compData.parent().hide();
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-            
-            var filterSelDataMap = {};
-            
-            $.each(comps, function (compIndex, comp) {
-                var compAttrValue = comp[filterSelType];
-                
-                if (filterSelType == "level") {
-                    filterSelDataMap[compAttrValue.displayName] = compAttrValue.displayName;
-                } else {
-                    filterSelDataMap[compAttrValue] = compAttrValue;
-                }
-            });
-            
-            var filterSelData = [];
-            
-            for (var filterSelDataMapPropName in filterSelDataMap) {
-                if (filterSelDataMap.hasOwnProperty(filterSelDataMapPropName)) {
-                    filterSelData.push({
-                        "label": filterSelDataMapPropName,
-                        "value": filterSelDataMap[filterSelDataMapPropName]
-                    });
-                }
-            }
-            
-            filterSel.multiselect("dataprovider", filterSelData.sort(function (filterSelDataObj1, filterSelDataObj2) {
-                var filterSelDataValue1 = filterSelDataObj1.value, filterSelDataValue2 = filterSelDataObj2.value;
-                
-                if (filterSelType == "level") {
-                    filterSelDataValue1 = CompetencyLevel.valueOf(filterSelDataValue1).order.toString();
-                    filterSelDataValue2 = CompetencyLevel.valueOf(filterSelDataValue2).order.toString();
-                }
-                
-                return filterSelDataValue1.localeCompare(filterSelDataValue2);
-            }));
-            
-            filterSelGroup.append(CompetencyFilter.buildButton("All", "btn-default", "glyphicon-asterisk").click(function (event) {
-                $("option", filterSel).each(function (filterSelOptIndex, filterSelOpt) {
-                    filterSel.multiselect("select", $(filterSelOpt).val(), true);
-                });
-            }));
-            
-            filterSelGroup.append(CompetencyFilter.buildButton("None", "btn-default", "glyphicon-ban-circle").click(function (event) {
-                $("option", filterSel).each(function (filterSelOptIndex, filterSelOpt) {
-                    filterSel.multiselect("deselect", $(filterSelOpt).val(), true);
-                });
-            }));
-        });
-        
-        $("div#content-filter-loading", content).hide();
-        filterContent.show();
-    }
+        compsFilterElem.show();
+    };
     
-    var data, dataParts;
+    compsDataSet.load();
     
-    if (localStorage && (data = localStorage.getItem(DATA_LOCAL_STORAGE_KEY)) && (dataParts = data.split(DATA_LOCAL_STORAGE_VALUE_DELIM, 2)) && 
-        (new Date(((Number (dataParts[0])) + DATA_LOCAL_STORAGE_EVICT_MS)) > new Date().getTime())) {
-        buildInterface((data = JSON.parse(dataParts[1])));
-    } else {
-        Tabletop.init({
-            "callback": function (data) {
-                buildInterface(data);
-                
-                if (localStorage) {
-                    localStorage.setItem(DATA_LOCAL_STORAGE_KEY, (new Date().getTime() + DATA_LOCAL_STORAGE_VALUE_DELIM + JSON.stringify(data)));
-                }
-            },
-            "key": DATA_FEED_KEY
+    var rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles"), 
+        rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
+        rolesDataElem = $("div.content-data", rolesTabElem), rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), 
+        roles = [], rolesFilters = [];
+    
+    rolesDataSet.onLoad = function (rolesDataSet, rolesData) {
+        var role;
+        
+        $.each(rolesData, function (roleDataObjIndex, roleDataObj) {
+            roles.push((role = new $.hitcomp.Role(roleDataObj)));
+            
+            rolesTableBodyElem.append(role.buildRowElement());
         });
-    }
+        
+        rolesTableElem.tablesorter($.hitcomp.Role.buildTableSorter(rolesTableElem));
+        
+        var roleFilterType, roleFilter;
+        
+        $("select", rolesFilterElem).each(function (roleFilterSelectIndex, roleFilterSelectElem) {
+            rolesFilters.push((roleFilter = new $.hitcomp.RoleFilter((roleFilterType = (roleFilterSelectElem = $(roleFilterSelectElem)).attr("datafld")), 
+                rolesTableElem, roleFilterSelectElem)));
+            
+            roleFilterSelectElem.multiselect(roleFilter.buildSelect());
+            roleFilterSelectElem.multiselect("dataprovider", roleFilter.buildSelectDataProvider($.map($.map(roles, function (role) {
+                return role[roleFilterType];
+            }).sort(function (roleItemValue1, roleItemValue2) {
+                return (roleItemValue1.value ? roleItemValue1.value.compareTo(roleItemValue2.value) : roleItemValue1.localeCompare(roleItemValue2));
+            }), function (roleItemValue) {
+                return (roleItemValue.value ? roleItemValue.value.displayName : roleItemValue);
+            }).unique()));
+            
+            roleFilterSelectElem.parent().append(roleFilter.buildSelectControlElements());
+        });
+        
+        rolesFilterElem.prev("div.content-loading").hide();
+        
+        rolesFilterElem.show();
+    };
+    
+    rolesDataSet.load();
 });
