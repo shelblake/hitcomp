@@ -6,7 +6,7 @@
         "Role": function (dataObj) {
             $.hitcomp.DataItem.call(this, dataObj);
             
-            this.clinical = dataObj["clinicalnon-clinical"];
+            this.division = dataObj["clinicalnon-clinical"];
             this.type = dataObj["roletype"];
             this.desc = dataObj["definition"];
             this.rolesUs = dataObj["usroles"];
@@ -38,14 +38,13 @@
     });
     
     $.extend($.hitcomp.Role.prototype, $.hitcomp.DataItem.prototype, {
-        "clinical": undefined,
         "type": undefined,
         "rolesUs": undefined,
         "rolesEu": undefined,
         
         "buildRowElement": function () {
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
-                "clinical": this.clinical,
+                "division": this.division,
                 "type": this.type,
                 "level": this.level.value.displayName,
                 "rolesUs": this.rolesUs,
@@ -53,6 +52,21 @@
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
             }, this)));
+        },
+        
+        "buildDataElement": function (dataType, dataValue) {
+            var dataElem = $.hitcomp.DataItem.prototype.buildDataElement.call(this, dataType, dataValue);
+            
+            if (dataType == "level") {
+                $("button", dataElem).tooltip({
+                    "container": "body",
+                    "title": function () {
+                        return "Apply to Competencies";
+                    }
+                });
+            }
+            
+            return dataElem;
         }
     });
     

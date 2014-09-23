@@ -2,6 +2,18 @@ $(document).ready(function () {
     var contentTabsElem = $("div#content-tabs");
     contentTabsElem.tabs();
     
+    $("div.content-data table thead tr th", contentTabsElem).each(function (dataHeaderIndex, dataHeaderElem) {
+        if ((dataHeaderElem = $(dataHeaderElem)).attr("data-toggle") == "tooltip") {
+            dataHeaderElem.tooltip({
+                "container": "body",
+                "html": true,
+                "title": function () {
+                    return $.trim($("div.tooltip-content", this).html());
+                }
+            });
+        }
+    });
+    
     contentTabsElem.prev("div.content-loading").hide();
     contentTabsElem.show();
     
@@ -28,13 +40,16 @@ $(document).ready(function () {
                 compsTableElem, compFilterSelectElem)));
             
             compFilterSelectElem.multiselect(compFilter.buildSelect());
-            compFilterSelectElem.multiselect("dataprovider", compFilter.buildSelectDataProvider($.map($.map(comps, function (comp) {
-                return comp[compFilterType];
-            }).sort(function (compItemValue1, compItemValue2) {
-                return (compItemValue1.value ? compItemValue1.value.compareTo(compItemValue2.value) : compItemValue1.localeCompare(compItemValue2));
-            }), function (compItemValue) {
-                return (compItemValue.value ? compItemValue.value.displayName : compItemValue);
-            }).unique()));
+            compFilterSelectElem.multiselect("dataprovider", compFilter.buildSelectDataProvider($.map(((compFilterType == "level") ? 
+                $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
+                    return (compLevel.value.order >= 0);
+                }) : $.map(comps, function (comp) {
+                    return comp[compFilterType];
+                })).sort(function (compItemValue1, compItemValue2) {
+                    return ((compFilterType == "level") ? compItemValue1.value.compareTo(compItemValue2.value) : compItemValue1.localeCompare(compItemValue2));
+                }), function (compItemValue) {
+                    return ((compFilterType == "level") ? compItemValue.value.displayName : compItemValue);
+                }).unique()));
             
             compFilterSelectElem.parent().append(compFilter.buildSelectControlElements());
         });
@@ -76,22 +91,25 @@ $(document).ready(function () {
                 rolesTableElem, roleFilterSelectElem)));
             
             roleFilterSelectElem.multiselect(roleFilter.buildSelect());
-            roleFilterSelectElem.multiselect("dataprovider", roleFilter.buildSelectDataProvider($.map($.map(roles, function (role) {
-                return role[roleFilterType];
-            }).sort(function (roleItemValue1, roleItemValue2) {
-                if (roleFilterType == "level") {
-                    return roleItemValue1.value.compareTo(roleItemValue2.value);
-                } else if (roleFilterType == "rolesEu") {
-                    var rolesLocalizeSelectValue = rolesLocalizeSelectElem.val();
+            roleFilterSelectElem.multiselect("dataprovider", roleFilter.buildSelectDataProvider($.map(((roleFilterType == "level") ? 
+                $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
+                    return (compLevel.value.order >= 0);
+                }) : $.map(roles, function (role) {
+                    return role[roleFilterType];
+                })).sort(function (roleItemValue1, roleItemValue2) {
+                    if (roleFilterType == "level") {
+                        return roleItemValue1.value.compareTo(roleItemValue2.value);
+                    } else if (roleFilterType == "rolesEu") {
+                        var rolesLocalizeSelectValue = rolesLocalizeSelectElem.val();
+                        
+                        roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
+                        roleItemValue2 = roleItemValue2[rolesLocalizeSelectValue];
+                    }
                     
-                    roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
-                    roleItemValue2 = roleItemValue2[rolesLocalizeSelectValue];
-                }
-                
-                return roleItemValue1.localeCompare(roleItemValue2);
-            }), function (roleItemValue) {
-                return (roleItemValue.value ? roleItemValue.value.displayName : roleItemValue);
-            }).unique()));
+                    return roleItemValue1.localeCompare(roleItemValue2);
+                }), function (roleItemValue) {
+                    return ((roleFilterType == "level") ? roleItemValue.value.displayName : roleItemValue);
+                }).unique()));
             
             roleFilterSelectElem.parent().append(roleFilter.buildSelectControlElements());
         });
@@ -107,6 +125,34 @@ $(document).ready(function () {
         
         rolesLocalizeSelectElem.bind("change", { "rolesLocalize": rolesLocalize }, function (event) {
             event.data.rolesLocalize.localize.call(event.data.rolesLocalize, rolesLocalizeSelectElem.val());
+        });
+        
+        $("tr td:nth-of-type(3) button", compsTableBodyElem).bind("click", {
+            "contentTabsElem": contentTabsElem,
+            "rolesFilterElem": rolesFilterElem
+        }, function (event) {
+            var roleLevelFilterSelectElem = $($("select", event.data.rolesFilterElem)[2]), 
+                roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY);
+            
+            roleLevelFilter.deselectAll.call(roleLevelFilter);
+            
+            roleLevelFilterSelectElem.multiselect("select", $(event.target).parent().data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
+            
+            event.data.contentTabsElem.tabs("option", "active", 2);
+        });
+        
+        $("tr td:nth-of-type(3) button", rolesTableBodyElem).bind("click", {
+            "contentTabsElem": contentTabsElem,
+            "compsFilterElem": compsFilterElem
+        }, function (event) {
+            var compLevelFilterSelectElem = $($("select", event.data.compsFilterElem)[2]), 
+                compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY);
+            
+            compLevelFilter.deselectAll.call(compLevelFilter);
+            
+            compLevelFilterSelectElem.multiselect("select", $(event.target).parent().data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
+            
+            event.data.contentTabsElem.tabs("option", "active", 1);
         });
         
         rolesFilterElem.prev("div.content-loading").hide();

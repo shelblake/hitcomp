@@ -164,6 +164,8 @@
     });
     
     $.extend($.hitcomp.DataItem, {
+        "DATA_VALUE_KEY": "hitcomp.data.value",
+        
         "buildTableSorter": function (dataTableElem) {
             return {
                 "headerTemplate": "{content}{icon}",
@@ -173,6 +175,9 @@
                     dataElem.prev("div.content-loading").hide();
                     
                     dataElem.show();
+                },
+                "textExtraction": function (dataElem, dataTableElem, dataElemIndex) {
+                    return $(dataElem).data($.hitcomp.DataItem.DATA_VALUE_KEY);
                 },
                 "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
                     return dataValue1.localeCompare(dataValue2);
@@ -191,6 +196,7 @@
     $.extend($.hitcomp.DataItem.prototype, {
         "id": undefined,
         "level": undefined,
+        "division": undefined,
         "desc": undefined,
         
         "buildRowElement": function () {
@@ -198,7 +204,17 @@
         },
         
         "buildDataElement": function (dataType, dataValue) {
-            return $("<td/>", { "datafld": dataType }).text(dataValue);
+            var dataElem = $("<td/>", { "datafld": dataType }).text(dataValue).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue);
+            
+            if (dataType == "level") {
+                dataElem.append($("<button/>", {
+                    "class": "btn btn-default form-control"
+                }).append($("<i/>", {
+                    "class": "glyphicon glyphicon-new-window"
+                })));
+            }
+            
+            return dataElem;
         }
     });
     

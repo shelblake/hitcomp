@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-comps-filter-select-domain">
-                                        <i class="fa fa-cube"></i>
+                                        <i class="fa fa-cubes"></i>
                                         Domain
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -159,12 +159,12 @@
                                     </div>
                                 </div>
                                 <div class="input-group-sm">
-                                    <label for="content-comps-filter-select-subdomain">
-                                        <i class="fa fa-cubes"></i>
-                                        Subdomain
+                                    <label for="content-comps-filter-select-division">
+                                        <i class="fa fa-stethoscope"></i>
+                                        Division
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-subdomain" datafld="subdomain" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-division" datafld="division" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
                                 <div class="input-group-sm">
@@ -226,29 +226,80 @@
                                 </colgroup>
                                 <thead>
                                     <tr>
-                                        <th class="header">
-                                            <i class="fa fa-cube"></i>
-                                            Domain
-                                        </th>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-cubes"></i>
-                                            Subdomain
+                                            Domain
+                                            <div class="tooltip-content">
+                                                One of five areas of health information technology focus areas, including Direct Patient Care, 
+                                                Administration/Finance/Law/ Management, Engineering/Information Systems, Informatics and Research/Biomedical.
+                                            </div>
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                            <i class="fa fa-stethoscope"></i>
+                                            Division
+                                            <div class="tooltip-content">
+                                                A subset of one of the five domains, including clinical, non-clinical and others.
+                                            </div>
+                                        </th>
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="glyphicon glyphicon-signal"></i>
                                             Level
+                                            <div class="tooltip-content">
+                                                One of five grades of experience and skill for HIT competence and competencies, including:
+                                                <ul>
+                                                    <li>
+                                                        <strong>Baseline</strong>:
+                                                        A foundation level upon which all other skills and competencies are based.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Basic</strong>:
+                                                        An entry-level or beginning skill or competency level, equating to "understanding" and "knowing" in 
+                                                        Bloom’s Taxonomy.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Intermediate</strong>:
+                                                        A mid-level incumbent skill or competency level, equating to "applying" and "analyzing" in Bloom’s 
+                                                        Taxonomy.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Advanced</strong>:
+                                                        A high-level incumbent skill or competency level.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Expert</strong>:
+                                                        The highest level of skill or competency level), both equating to "evaluating" and "synthesizing" in 
+                                                        Bloom’s Taxonomy.
+                                                    </li>
+                                                </ul>
+                                                <i class="glyphicon glyphicon-info-sign"></i>
+                                                Note/Disclaimer: These levels do not correspond one-to-one to job progression or role levels and can vary by 
+                                                role, organization and location.
+                                            </div>
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="glyphicon glyphicon-th-large"></i>
                                             Quadrant
+                                            <div class="tooltip-content">
+                                                A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
+                                                data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
+                                            </div>
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="glyphicon glyphicon-tag"></i>
                                             Category
+                                            <div class="tooltip-content">
+                                                One of 20 specialized areas of competency, from access, to care coordination, to documentation, to privacy and 
+                                                security, to quality and safety, and others.
+                                            </div>
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-sitemap"></i>
                                             Silo/Origin
+                                            <div class="tooltip-content">
+                                                <i class="glyphicon glyphicon-info-sign"></i>
+                                                Note/Disclaimer: Our final competencies have their basis in the silo/origin, but in many cases do not reflect 
+                                                the actual or original language due to our community development and consensus process.
+                                            </div>
                                         </th>
                                         <th class="header">
                                             <i class="glyphicon glyphicon-comment"></i>
@@ -307,12 +358,12 @@
                                     </div>
                                 </div>
                                 <div class="input-group-sm">
-                                    <label for="content-roles-filter-select-clinical">
+                                    <label for="content-roles-filter-select-division">
                                         <i class="fa fa-stethoscope"></i>
-                                        Clinical
+                                        Division
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-clinical" datafld="clinical" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-roles-filter-select-division" datafld="division" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
                                 <div class="input-group-sm">
@@ -373,17 +424,51 @@
                                 </colgroup>
                                 <thead>
                                     <tr>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-stethoscope"></i>
-                                            Clinical
+                                            Division
+                                            <div class="tooltip-content">
+                                                A subset of one of the five domains, including clinical, non-clinical and others.
+                                            </div>
                                         </th>
                                         <th class="header">
                                             <i class="glyphicon glyphicon-tag"></i>
                                             Type
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="glyphicon glyphicon-signal"></i>
                                             Level
+                                            <div class="tooltip-content">
+                                                One of five grades of experience and skill for HIT competence and competencies, including:
+                                                <ul>
+                                                    <li>
+                                                        <strong>Baseline</strong>:
+                                                        A foundation level upon which all other skills and competencies are based.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Basic</strong>:
+                                                        An entry-level or beginning skill or competency level, equating to "understanding" and "knowing" in 
+                                                        Bloom’s Taxonomy.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Intermediate</strong>:
+                                                        A mid-level incumbent skill or competency level, equating to "applying" and "analyzing" in Bloom’s 
+                                                        Taxonomy.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Advanced</strong>:
+                                                        A high-level incumbent skill or competency level.
+                                                    </li>
+                                                    <li>
+                                                        <strong>Expert</strong>:
+                                                        The highest level of skill or competency level), both equating to "evaluating" and "synthesizing" in 
+                                                        Bloom’s Taxonomy.
+                                                    </li>
+                                                </ul>
+                                                <i class="glyphicon glyphicon-info-sign"></i>
+                                                Note/Disclaimer: These levels do not correspond one-to-one to job progression or role levels and can vary by 
+                                                role, organization and location.
+                                            </div>
                                         </th>
                                         <th class="header">
                                             <i class="flag flag-us"></i>

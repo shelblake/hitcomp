@@ -42,7 +42,7 @@
             $.hitcomp.DataItem.call(this, dataObj);
             
             this.domain = dataObj["domain"];
-            this.subdomain = dataObj["subdomain"];
+            this.division = dataObj["subdomain"];
             this.desc = dataObj["competency"];
             this.category = dataObj["area"];
             this.quadrant = dataObj["competencyquadrant"];
@@ -70,7 +70,6 @@
     
     $.extend($.hitcomp.Competency.prototype, $.hitcomp.DataItem.prototype, {
         "domain": undefined,
-        "subdomain": undefined,
         "quadrant": undefined,
         "category": undefined,
         "origin": undefined,
@@ -79,7 +78,7 @@
         "buildRowElement": function () {
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
                 "domain": this.domain,
-                "subdomain": this.subdomain,
+                "division": this.division,
                 "level": this.level.value.displayName,
                 "quadrant": this.quadrant,
                 "category": this.category,
@@ -87,6 +86,21 @@
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
             }, this)));
+        },
+        
+        "buildDataElement": function (dataType, dataValue) {
+            var dataElem = $.hitcomp.DataItem.prototype.buildDataElement.call(this, dataType, dataValue);
+            
+            if (dataType == "level") {
+                $("button", dataElem).tooltip({
+                    "container": "body",
+                    "title": function () {
+                        return "Apply to Roles";
+                    }
+                });
+            }
+            
+            return dataElem;
         }
     });
     

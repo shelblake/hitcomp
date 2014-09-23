@@ -2,6 +2,7 @@ body,
 *.ui-widget,
 *.dropdown-menu,
 *.input-group-addon,
+div.tooltip-inner,
 input.form-control {
     font-family: "Tahoma", sans-serif;
     font-size: 11px;
@@ -27,7 +28,7 @@ th.tablesorter-header i.fa,
 th.tablesorter-header i.flag,
 th.tablesorter-header i.glyphicon {
     margin-right: 2px;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 i.flag,
@@ -124,10 +125,16 @@ h3 {
     font-size: 14px;
 }
 
+div.tooltip-inner {
+    max-width: 300px;
+    text-align: left;
+}
+
 div.content-loading {
     font-style: italic;
 }
 
+div.tooltip-content,
 div#content-tabs,
 div#content-tabs div.content-tab div.content-localize,
 div#content-tabs div.content-tab div.content-filter,
@@ -191,7 +198,8 @@ div#content-tabs div.content-tab div.content-data table.table thead tr th div di
     right: 0;
 }
 
-div#content-tabs div.content-tab div.content-data table.table thead tr th div div i:not(:last-of-type) {
+div#content-tabs div.content-tab div.content-data table.table thead tr th div div i:not(:last-of-type),
+div#content-tabs div.content-tab div.content-data table.table thead tr th div div a i {
     position: relative;
 }
 
@@ -201,4 +209,14 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td {
 
 div#content-tabs div.content-tab div.content-data table.table tbody tr td:last-of-type {
     text-align: left;
+}
+
+div#content-tabs div.content-tab div.content-data table.table tbody tr td button {
+    margin-left: 5px;
+    padding: 1px 3px;
+}
+
+div#content-tabs div.content-tab div.content-data table.table tbody tr td button i {
+    margin-right: 0;
+    font-size: 11px;
 }
