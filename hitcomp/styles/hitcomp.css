@@ -128,17 +128,33 @@ div.content-tab div.content-loading {
     font-style: italic;
 }
 
+div.content-tab div.content-localize,
 div.content-tab div.content-filter,
 div.content-tab div.content-data {
     display: none;
 }
 
-div.content-tab div.content-filter > div.input-group-sm {
+div.content-tab div.content-localize div.input-group-sm,
+div.content-tab div.content-filter div.input-group-sm {
+    margin-bottom: 5px;
+}
+
+div.content-tab div.content-localize div.input-group-sm:last-child,
+div.content-tab div.content-filter div.input-group-sm:last-child {
+    margin-bottom: auto;
+}
+
+div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
+    margin-left: 165px;
     margin-bottom: 10px;
 }
 
-div.content-tab div.content-filter > div.input-group-sm:last-child {
-    margin-bottom: auto;
+div.content-tab div.content-localize div.input-group-sm > label,
+div.content-tab div.content-filter div.input-group-sm > label {
+    width: 150px;
+    margin-right: 10px;
+    text-align: right;
+    font-size: 13px;
 }
 
 input.form-control {
@@ -152,22 +168,6 @@ ul.dropdown-menu {
 label.checkbox {
     margin-top: 2px;
     margin-bottom: 2px;
-}
-
-div.content-tab div.content-filter div.input-group-sm {
-    margin-bottom: 5px;
-}
-
-div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
-    margin-left: 165px;
-    margin-bottom: 10px;
-}
-
-div.content-tab div.content-filter div.input-group-sm > label {
-    width: 150px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 13px;
 }
 
 div.content-tab div.content-data table.table colgroup col {

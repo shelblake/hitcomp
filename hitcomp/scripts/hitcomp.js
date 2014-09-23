@@ -43,6 +43,13 @@ $(document).ready(function () {
             compFilterSelectElem.parent().append(compFilter.buildSelectControlElements());
         });
         
+        $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", compsFilterElem).bind("click", { "dataFilters": compsFilters }, 
+            function (event) {
+            $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
+                dataFilter.deselectAll.call(dataFilter);
+            });
+        });
+        
         compsFilterElem.prev("div.content-loading").hide();
         
         compsFilterElem.show();
@@ -51,9 +58,10 @@ $(document).ready(function () {
     compsDataSet.load();
     
     var rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles"), 
-        rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
+        rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
+        rolesLocalizeSelectElem = $("select", rolesLocalizeElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
         rolesDataElem = $("div.content-data", rolesTabElem), rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), 
-        roles = [], rolesFilters = [];
+        roles = [], rolesFilters = [], rolesLocalize;
     
     rolesDataSet.onLoad = function (rolesDataSet, rolesData) {
         var role;
@@ -76,7 +84,16 @@ $(document).ready(function () {
             roleFilterSelectElem.multiselect("dataprovider", roleFilter.buildSelectDataProvider($.map($.map(roles, function (role) {
                 return role[roleFilterType];
             }).sort(function (roleItemValue1, roleItemValue2) {
-                return (roleItemValue1.value ? roleItemValue1.value.compareTo(roleItemValue2.value) : roleItemValue1.localeCompare(roleItemValue2));
+                if (roleFilterType == "level") {
+                    return roleItemValue1.value.compareTo(roleItemValue2.value);
+                } else if (roleFilterType == "rolesEu") {
+                    var rolesLocalizeSelectValue = rolesLocalizeSelectElem.val();
+                    
+                    roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
+                    roleItemValue2 = roleItemValue2[rolesLocalizeSelectValue];
+                }
+                
+                return roleItemValue1.localeCompare(roleItemValue2);
             }), function (roleItemValue) {
                 return (roleItemValue.value ? roleItemValue.value.displayName : roleItemValue);
             }).unique()));
@@ -84,9 +101,26 @@ $(document).ready(function () {
             roleFilterSelectElem.parent().append(roleFilter.buildSelectControlElements());
         });
         
+        $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", rolesFilterElem).bind("click", { "dataFilters": rolesFilters }, 
+            function (event) {
+            $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
+                dataFilter.deselectAll.call(dataFilter);
+            });
+        });
+        
+        (rolesLocalize = new $.hitcomp.RoleLocalization(roles, rolesTableElem, rolesLocalizeSelectElem)).determineDefault();
+        
+        rolesLocalizeSelectElem.bind("change", { "rolesLocalize": rolesLocalize }, function (event) {
+            event.data.rolesLocalize.localize.call(event.data.rolesLocalize, rolesLocalizeSelectElem.val());
+        });
+        
         rolesFilterElem.prev("div.content-loading").hide();
         
         rolesFilterElem.show();
+        
+        rolesLocalizeElem.prev("div.content-loading").hide();
+        
+        rolesLocalizeElem.show();
     };
     
     rolesDataSet.load();
