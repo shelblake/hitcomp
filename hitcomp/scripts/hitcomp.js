@@ -132,13 +132,16 @@ $(document).ready(function () {
             "rolesFilterElem": rolesFilterElem
         }, function (event) {
             var roleLevelFilterSelectElem = $($("select", event.data.rolesFilterElem)[2]), 
-                roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY);
+                roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), compDataElem;
             
             roleLevelFilter.deselectAll.call(roleLevelFilter);
             
-            roleLevelFilterSelectElem.multiselect("select", $(event.target).parent().data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
+            roleLevelFilterSelectElem.multiselect("select", ((compDataElem = $(event.target).parent()).is("td") ? compDataElem : compDataElem.parent())
+                .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
             
             event.data.contentTabsElem.tabs("option", "active", 2);
+            
+            $(document).scrollTop(0);
         });
         
         $("tr td:nth-of-type(3) button", rolesTableBodyElem).bind("click", {
@@ -146,13 +149,16 @@ $(document).ready(function () {
             "compsFilterElem": compsFilterElem
         }, function (event) {
             var compLevelFilterSelectElem = $($("select", event.data.compsFilterElem)[2]), 
-                compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY);
+                compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), roleDataElem;
             
             compLevelFilter.deselectAll.call(compLevelFilter);
             
-            compLevelFilterSelectElem.multiselect("select", $(event.target).parent().data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
+            compLevelFilterSelectElem.multiselect("select", ((roleDataElem = $(event.target).parent()).is("td") ? roleDataElem : roleDataElem.parent())
+                .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
             
             event.data.contentTabsElem.tabs("option", "active", 1);
+            
+            $(document).scrollTop(0);
         });
         
         rolesFilterElem.prev("div.content-loading").hide();
