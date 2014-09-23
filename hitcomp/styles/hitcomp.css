@@ -124,40 +124,43 @@ h3 {
     font-size: 14px;
 }
 
-div.content-tab div.content-loading {
+div.content-loading {
     font-style: italic;
 }
 
-div.content-tab div.content-localize,
-div.content-tab div.content-filter,
-div.content-tab div.content-data {
+div#content-tabs,
+div#content-tabs div.content-tab div.content-localize,
+div#content-tabs div.content-tab div.content-filter,
+div#content-tabs div.content-tab div.content-data {
     display: none;
 }
 
-div.content-tab div.content-localize div.input-group-sm,
-div.content-tab div.content-filter div.input-group-sm {
+div#content-tabs div.content-tab div.content-localize div.input-group-sm,
+div#content-tabs div.content-tab div.content-filter div.input-group-sm {
     margin-bottom: 5px;
 }
 
-div.content-tab div.content-localize div.input-group-sm:last-child,
-div.content-tab div.content-filter div.input-group-sm:last-child {
+div#content-tabs div.content-tab div.content-localize div.input-group-sm:last-child,
+div#content-tabs div.content-tab div.content-filter div.input-group-sm:last-child {
     margin-bottom: auto;
 }
 
-div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
+div#content-tabs div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
     margin-left: 165px;
     margin-bottom: 10px;
 }
 
-div.content-tab div.content-localize div.input-group-sm > label,
-div.content-tab div.content-filter div.input-group-sm > label {
+div#content-tabs div.content-tab div.content-localize div.input-group-sm > label,
+div#content-tabs div.content-tab div.content-filter div.input-group-sm > label {
     width: 150px;
     margin-right: 10px;
     text-align: right;
     font-size: 13px;
 }
 
+button.form-control,
 input.form-control {
+    width: inherit;
     height: auto;
 }
 
@@ -170,32 +173,32 @@ label.checkbox {
     margin-bottom: 2px;
 }
 
-div.content-tab div.content-data table.table colgroup col {
+div#content-tabs div.content-tab div.content-data table.table colgroup col {
     width: auto;
     min-width: 135px;
 }
 
-div.content-tab div.content-data table.table thead tr th,
-div.content-tab div.content-data table.table tbody tr td {
+div#content-tabs div.content-tab div.content-data table.table thead tr th,
+div#content-tabs div.content-tab div.content-data table.table tbody tr td {
     vertical-align: middle;
 }
 
-div.content-tab div.content-data table.table thead tr th {
+div#content-tabs div.content-tab div.content-data table.table thead tr th {
     cursor: pointer;
 }
 
-div.content-tab div.content-data table.table thead tr th div div i:last-of-type.fa {
+div#content-tabs div.content-tab div.content-data table.table thead tr th div div i:last-of-type.fa {
     right: 0;
 }
 
-div.content-tab div.content-data table.table thead tr th div div i:not(:last-of-type) {
+div#content-tabs div.content-tab div.content-data table.table thead tr th div div i:not(:last-of-type) {
     position: relative;
 }
 
-div.content-tab div.content-data table.table tbody tr td {
+div#content-tabs div.content-tab div.content-data table.table tbody tr td {
     text-align: center;
 }
 
-div.content-tab div.content-data table.table tbody tr td:last-of-type {
+div#content-tabs div.content-tab div.content-data table.table tbody tr td:last-of-type {
     text-align: left;
 }

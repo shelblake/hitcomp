@@ -2,12 +2,8 @@ $(document).ready(function () {
     var contentTabsElem = $("div#content-tabs");
     contentTabsElem.tabs();
     
-    $.extend($.tablesorter.themes.bootstrap, {
-        "sortAsc": "fa fa-sort-up",
-        "sortDesc": "fa fa-sort-down",
-        "sortNone": "fa fa-sort",
-        "table": "table table-bordered table-condensed table-hover"
-    });
+    contentTabsElem.prev("div.content-loading").hide();
+    contentTabsElem.show();
     
     var compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined"), 
         compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
@@ -51,7 +47,6 @@ $(document).ready(function () {
         });
         
         compsFilterElem.prev("div.content-loading").hide();
-        
         compsFilterElem.show();
     };
     
@@ -115,11 +110,9 @@ $(document).ready(function () {
         });
         
         rolesFilterElem.prev("div.content-loading").hide();
-        
         rolesFilterElem.show();
         
         rolesLocalizeElem.prev("div.content-loading").hide();
-        
         rolesLocalizeElem.show();
     };
     
