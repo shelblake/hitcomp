@@ -14,6 +14,18 @@ $(document).ready(function () {
         }
     });
     
+    if (localStorage) {
+        var contentTabActive;
+        
+        if ((contentTabActive = localStorage.getItem($.hitcomp.ACTIVE_TAB_KEY))) {
+            contentTabsElem.tabs("option", "active", (contentTabActive = (Number(contentTabActive))));
+        }
+        
+        contentTabsElem.tabs("option", "activate", function (event, ui) {
+            localStorage.setItem($.hitcomp.ACTIVE_TAB_KEY, contentTabsElem.tabs("option", "active"));
+        });
+    }
+    
     contentTabsElem.prev("div.content-loading").hide();
     contentTabsElem.show();
     
@@ -59,6 +71,12 @@ $(document).ready(function () {
             $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
                 dataFilter.deselectAll.call(dataFilter);
             });
+        }).tooltip({
+            "container": "body",
+            "html": true,
+            "title": function () {
+                return $.trim($("div.tooltip-content", this).html());
+            }
         });
         
         compsFilterElem.prev("div.content-loading").hide();
@@ -119,6 +137,12 @@ $(document).ready(function () {
             $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
                 dataFilter.deselectAll.call(dataFilter);
             });
+        }).tooltip({
+            "container": "body",
+            "html": true,
+            "title": function () {
+                return $.trim($("div.tooltip-content", this).html());
+            }
         });
         
         (rolesLocalize = new $.hitcomp.RoleLocalization(roles, rolesTableElem, rolesLocalizeSelectElem)).determineDefault();

@@ -70,22 +70,31 @@ div#nav ul.navbar-nav.navbar-right:last-child {
 }
 
 div#nav ul.navbar-nav li a {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0 5px;
     line-height: inherit;
-    font-size: 13px;
+    font-size: 12px;
 }
 
-div#nav ul.dropdown-menu,
-div#nav ul.dropdown-menu li.dropdown-header {
+div#nav ul.navbar-nav li.dropdown a i.fa,
+div#nav ul.navbar-nav li.dropdown a i.glyphicon {
+    font-size: 16px;
+}
+
+div#nav ul.navbar-nav li.dropdown ul.dropdown-menu,
+div#nav ul.navbar-nav li.dropdown ul.dropdown-menu li.dropdown-header {
     font-size: 11px;
 }
 
-div#nav ul.dropdown-menu span.caret {
+div#nav ul.navbar-nav li.dropdown ul.dropdown-menu li a i.fa,
+div#nav ul.navbar-nav li.dropdown ul.dropdown-menu li a i.glyphicon {
+    font-size: 14px;
+}
+
+div#nav ul.navbar-nav li.dropdown ul.dropdown-menu span.caret {
     margin-left: 5px;
 }
 
-div#nav ul.list-unstyled {
+div#nav ul.navbar-nav li.dropdown ul.list-unstyled {
     text-indent: 10px;
 }
 
@@ -107,7 +116,9 @@ h1, h2, h3 {
     font-weight: bold;
 }
 
-h1 {
+h1,
+h1 i.fa,
+h1 i.glyphicon {
     font-size: 18px;
 }
 
@@ -117,12 +128,20 @@ li > h1 {
     margin-bottom: 0;
 }
 
-h2 {
+h2,
+h2 i.fa,
+h2 i.glyphicon {
     font-size: 16px;
 }
 
-h3 {
+h3,
+h3 i.fa,
+h3 i.glyphicon {
     font-size: 14px;
+}
+
+a:focus {
+    outline-style: none;
 }
 
 div.tooltip-inner {
@@ -134,10 +153,18 @@ div.content-loading {
     font-style: italic;
 }
 
+span.input-group-addon {
+    padding: 3px 6px;
+}
+
 button.form-control,
 input.form-control {
     width: inherit;
     height: inherit;
+}
+
+input.form-control {
+    padding: 5px 10px;
 }
 
 ul.dropdown-menu {
@@ -157,6 +184,10 @@ div#content-tabs div.content-tab div.content-data {
     display: none;
 }
 
+div#content-tabs div.content-tab hr {
+    margin: 10px 50px;
+}
+
 div#content-tabs div.content-tab div.content-localize div.input-group-sm,
 div#content-tabs div.content-tab div.content-filter div.input-group-sm {
     margin-bottom: 5px;
@@ -169,11 +200,15 @@ div#content-tabs div.content-tab div.content-filter div.input-group-sm:last-chil
 
 div#content-tabs div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
     margin-left: 165px;
-    margin-bottom: 10px;
 }
 
-div#content-tabs div.content-tab div.content-filter div.input-group-sm div.btn-group button.form-control {
+div#content-tabs div.content-tab div.content-filter div.input-group-sm div.btn-group button.btn.form-control {
     height: 30px;
+    font-size: 12px;
+}
+
+div#content-tabs div.content-tab div.content-filter div.input-group-sm div.btn-group ul.dropdown-menu {
+    padding: 10px 5px;
 }
 
 div#content-tabs div.content-tab div.content-localize div.input-group-sm > label,
@@ -190,7 +225,7 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td {
     vertical-align: middle;
 }
 
-div#content-tabs div.content-tab div.content-data table.table thead tr th {
+div#content-tabs div.content-tab div.content-data table.table thead tr th:not(:last-of-type) {
     cursor: pointer;
 }
 
@@ -218,5 +253,5 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td button
 
 div#content-tabs div.content-tab div.content-data table.table tbody tr td button i {
     margin-right: 0;
-    font-size: 11px;
+    padding: 2px;
 }
