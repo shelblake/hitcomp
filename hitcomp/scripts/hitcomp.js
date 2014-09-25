@@ -36,7 +36,7 @@
             });
             
             $("div.input-group-sm div.btn-group button.btn", compsDataElem).tooltip({
-                "title": "Export Competencies"
+                "title": "Export Data"
             });
             
             $("div.input-group-sm div.btn-group div.dropdown.content-data-dropdown-export ul.dropdown-menu li a", compsDataElem).bind("click", {
@@ -68,7 +68,7 @@
                 
                 compsDataExportTable.tableExport({
                     "escape": false.toString(),
-                    "ignoreColumn": [ 7 ],
+                    "ignoreColumn": [ $("thead tr th", compsDataExportTable).length ],
                     "pdfFontSize": 10,
                     "pdfLeftMargin": 5,
                     "tableName": "HITCOMP - Competencies",

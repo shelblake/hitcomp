@@ -76,7 +76,7 @@
         "DATA_VALUE_KEY": "hitcomp.data.value",
         
         "buildTableSorter": function (dataTableElem) {
-            return {
+            return $.extend({}, $.tablesorter.defaults, {
                 "initialized": function () {
                     var dataElem = dataTableElem.parent();
                     
@@ -97,6 +97,9 @@
                             $($("> td", ui.placeholder)[0]).append($("<i/>", {
                                 "class": "fa fa-fw fa-chevron-right"
                             }));
+                        },
+                        "stop": function (event, ui) {
+                            $("> td", ui.item.parent()).removeAttr("style");
                         }
                     });
                     
@@ -108,7 +111,7 @@
                 "textExtraction": function (dataElem, dataTableElem, dataElemIndex) {
                     return $(dataElem).data($.hitcomp.DataItem.DATA_VALUE_KEY);
                 }
-            };
+            });
         }
     });
     
@@ -128,7 +131,11 @@
             }).append($("<i/>", {
                 "class": "fa fa-fw fa-eye"
             })).tooltip({
-                "title": "Toggle Export"
+                "title": function () {
+                    var dataToggleButtonIconElem = $("i.fa", this);
+                    
+                    return ((dataToggleButtonIconElem.hasClass("fa-eye") ? "Collapse" : "Expand") + " Row");
+                }
             }).click(function (event) {
                 var dataToggleButtonElem = $(event.target), dataToggleButtonIconElem = $("i", 
                     (dataToggleButtonElem = (dataToggleButtonElem.is("button") ? dataToggleButtonElem : dataToggleButtonElem.parent()))), 
