@@ -21,6 +21,23 @@
     });
     
     //====================================================================================================
+    // EXTENSIONS: STRING
+    //====================================================================================================
+    $.extend(String, {
+        "EMPTY": ""
+    });
+    
+    $.extend(String.prototype, {
+        "normalize": function () {
+            return this.replace(/\s+/g, " ");
+        },
+        
+        "printable": function () {
+            return this.replace(/[^\s\w\-\.\(\)\[\]\\\/"';:,]/g, String.EMPTY);
+        }
+    });
+    
+    //====================================================================================================
     // EXTENSIONS: ARRAY
     //====================================================================================================
     $.extend(Array.prototype, {
@@ -76,12 +93,50 @@
     });
     
     //====================================================================================================
+    // EXTENSIONS: BOOTSTRAP TOOLTIP
+    //====================================================================================================
+    $.extend($.fn.tooltip.Constructor.DEFAULTS, {
+        "container": "body",
+        "html": true,
+        "title": function () {
+            return $.trim($("div.tooltip-content", this).html());
+        }
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: BOOTSTRAP MULTISELECT
+    //====================================================================================================
+    $.extend($.fn.multiselect.Constructor.prototype.defaults, {
+        "buttonClass": "btn btn-default form-control",
+        "buttonContainer": '<div class="btn-group btn-group-sm"/>',
+        "enableCaseInsensitiveFiltering": true,
+        "filterBehavior": "text"
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: TABLESORTER
+    //====================================================================================================
+    $.extend($.tablesorter.defaults, {
+        "headerTemplate": "{content}{icon}",
+        "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
+            return dataValue1.localeCompare(dataValue2);
+        },
+        "theme": "bootstrap",
+        "widgetOptions": {
+            "uitheme": "bootstrap"
+        },
+        "widgets": [
+            "uitheme"
+        ]
+    });
+    
+    //====================================================================================================
     // EXTENSIONS: TABLESORTER THEME
     //====================================================================================================
     $.extend($.tablesorter.themes.bootstrap, {
-        "sortAsc": "fa fa-sort-up",
-        "sortDesc": "fa fa-sort-down",
-        "sortNone": "fa fa-sort",
+        "sortAsc": "fa fa-fw fa-sort-up",
+        "sortDesc": "fa fa-fw fa-sort-down",
+        "sortNone": "fa fa-fw fa-sort",
         "table": "table table-bordered table-condensed table-hover"
     });
     
@@ -166,13 +221,21 @@
     });
     
     $.extend($.hitcomp.DataItem, {
+        "DATA_EXPORT_KEY": "hitcomp.data.export",
+        "DATA_OBJ_KEY": "hitcomp.data.obj",
         "DATA_VALUE_KEY": "hitcomp.data.value",
         
         "buildTableSorter": function (dataTableElem) {
             return {
-                "headerTemplate": "{content}{icon}",
                 "initialized": function () {
                     var dataElem = dataTableElem.parent();
+                    
+                    dataTableElem.sortable({
+                        "containerSelector": "> tbody",
+                        "itemPath": "> tbody",
+                        "itemSelector": "tr",
+                        "placeholder": '<i class="fa fa-fw fa-chevron-right placeholder"></i>'
+                    });
                     
                     dataElem.prev("div.content-loading").hide();
                     
@@ -181,17 +244,7 @@
                 "selectorHeaders": "> thead th:not(:last-of-type)",
                 "textExtraction": function (dataElem, dataTableElem, dataElemIndex) {
                     return $(dataElem).data($.hitcomp.DataItem.DATA_VALUE_KEY);
-                },
-                "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
-                    return dataValue1.localeCompare(dataValue2);
-                },
-                "theme": "bootstrap",
-                "widgetOptions": {
-                    "uitheme": "bootstrap"
-                },
-                "widgets": [
-                    "uitheme"
-                ]
+                }
             };
         }
     });
@@ -203,17 +256,46 @@
         "desc": undefined,
         
         "buildRowElement": function () {
-            return $("<tr/>").append(this.buildDataElement("desc", this.desc));
+            return $("<tr/>").data($.hitcomp.DataItem.DATA_OBJ_KEY, this).data($.hitcomp.DataItem.DATA_EXPORT_KEY, true)
+                .append(this.buildDataElement("desc", this.desc)).append($("<td/>").append($("<button/>", {
+                "class": "btn btn-default form-control",
+                "data-placement": "top",
+                "data-toggle": "tooltip",
+                "type": "button"
+            }).append($("<i/>", {
+                "class": "fa fa-fw fa-eye"
+            })).tooltip({
+                "title": "Toggle Export"
+            }).click(function (event) {
+                var dataToggleButtonElem = $(event.target), dataToggleButtonIconElem = $("i", 
+                    (dataToggleButtonElem = (dataToggleButtonElem.is("button") ? dataToggleButtonElem : dataToggleButtonElem.parent()))), 
+                    dataControlsElem = dataToggleButtonElem.parent(), dataRowElem = dataControlsElem.parent(), 
+                    dataExport = dataRowElem.data($.hitcomp.DataItem.DATA_EXPORT_KEY);
+                
+                if (dataExport) {
+                    $("td[datafld]", dataRowElem).append($("<i/>", {
+                        "class": "fa fa-fw fa-ellipsis-h data-disabled-ellipsis"
+                    }));
+                    
+                    dataToggleButtonIconElem.removeClass("fa-eye").addClass("fa-eye-slash");
+                } else {
+                    $("td[datafld] i.fa.data-disabled-ellipsis", dataRowElem).remove();
+                    
+                    dataToggleButtonIconElem.removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+                
+                dataRowElem.data($.hitcomp.DataItem.DATA_EXPORT_KEY, !dataExport).toggleClass("disabled");
+            })));
         },
         
         "buildDataElement": function (dataType, dataValue) {
-            var dataElem = $("<td/>", { "datafld": dataType }).text(dataValue).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue);
+            var dataElem = $("<td/>", { "datafld": dataType }).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue).append($("<span/>").text(dataValue));
             
             if (dataType == "level") {
                 dataElem.append($("<button/>", {
                     "class": "btn btn-default form-control"
                 }).append($("<i/>", {
-                    "class": "fa fa-external-link"
+                    "class": "fa fa-fw fa-external-link"
                 })));
             }
             
@@ -268,10 +350,6 @@
         
         "buildSelect": function () {
             return {
-                "buttonClass": "btn btn-default form-control",
-                "buttonContainer": '<div class="btn-group btn-group-sm"/>',
-                "enableCaseInsensitiveFiltering": true,
-                "filterBehavior": "text",
                 "onChange": $.proxy(function () {
                     $("tbody tr", this.dataTableElem).show();
                     
@@ -302,23 +380,17 @@
         
         "buildSelectControlElements": function () {
             return [
-                this.buildButtonElement("All", "btn btn-default form-control", "fa fa-check-square-o").bind("click", { "dataFilter": this }, 
+                this.buildButtonElement("All", "btn btn-default form-control", "fa fa-fw fa-check-square-o").bind("click", { "dataFilter": this }, 
                     function (event) {
                         event.data.dataFilter.selectAll.call(event.data.dataFilter);
                     }).tooltip({
-                        "container": "body",
-                        "title": function () {
-                            return "Select All";
-                        }
+                        "title": "Select All"
                     }),
-                this.buildButtonElement("None", "btn btn-default form-control", "fa fa-minus-square-o").bind("click", { "dataFilter": this }, 
+                this.buildButtonElement("None", "btn btn-default form-control", "fa fa-fw fa-minus-square-o").bind("click", { "dataFilter": this }, 
                     function (event) {
                         event.data.dataFilter.deselectAll.call(event.data.dataFilter);
                     }).tooltip({
-                        "container": "body",
-                        "title": function () {
-                            return "Select None";
-                        }
+                        "title": "Select None"
                     })
             ];
         },

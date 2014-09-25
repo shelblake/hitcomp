@@ -93,10 +93,7 @@
             
             if (dataType == "level") {
                 $("button", dataElem).tooltip({
-                    "container": "body",
-                    "title": function () {
-                        return "Apply to Roles";
-                    }
+                    "title": "Apply to Roles"
                 });
             }
             

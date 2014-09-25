@@ -59,10 +59,7 @@
             
             if (dataType == "level") {
                 $("button", dataElem).tooltip({
-                    "container": "body",
-                    "title": function () {
-                        return "Apply to Competencies";
-                    }
+                    "title": "Apply to Competencies"
                 });
             }
             
@@ -146,8 +143,9 @@
                 this.dataLocalizeSelectElem.val(dataLocalizeLangValue);
             }
             
-            $("tbody tr td:nth-of-type(5)", this.dataTableElem).each($.proxy(function (dataLocalizeLangDataIndex, dataLocalizeLangDataElem) {
-                (dataLocalizeLangDataElem = $(dataLocalizeLangDataElem)).text(this.rolesMap[dataLocalizeLangDataElem.prev().text()][dataLocalizeLangValue]);
+            $("tbody tr td[datafld=\"rolesEu\"]", this.dataTableElem).each($.proxy(function (dataLocalizeLangDataIndex, dataLocalizeLangDataElem) {
+                $("span", (dataLocalizeLangDataElem = $(dataLocalizeLangDataElem)))
+                    .text(this.rolesMap[dataLocalizeLangDataElem.prev().text()][dataLocalizeLangValue]);
             }, this));
         }
     });

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link type="image/png" rel="icon" href="images/hitcomp-logo-16x16.png"/>
         <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
         <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
@@ -12,13 +13,13 @@
         <link type="text/css" rel="stylesheet" href="styles/hitcomp.css"/>
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/johnny/jquery-sortable/0.9.12/source/js/jquery-sortable-min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.7/js/jquery.tablesorter.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.7/js/jquery.tablesorter.widgets.min.js"></script>
-        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/js/bootstrap-multiselect.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.3.5/src/tabletop.js"></script>
         <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/rxaviers/cldrjs/0.3.8/dist/cldr.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/globalize.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.de.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.en-GB.js"></script>
@@ -28,11 +29,15 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.it.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v0.2.6/enum-0.2.6.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/alexei/sprintf.js/v0.7/src/sprintf.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/niklasvh/html2canvas/0.4.1/build/html2canvas.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/MrRio/jsPDF/v1.0.178/dist/jspdf.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/kayalshri/tableExport.jquery.plugin/master/tableExport.js"></script>
         <script type="text/javascript" src="scripts/ga.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-lib.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-lib-comps.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-lib-roles.js"></script>
-        <script type="text/javascript" src="scripts/hitcomp.js"></script>
+        <script type="text/javascript" src="scripts/hitcomp.js" defer="defer"></script>
         <title>HITCOMP - Health IT Competencies</title>
     </head>
     <body>
@@ -47,12 +52,12 @@
                     </div>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a data-toggle="dropdown" href="#">
-                                <i class="fa fa-gears"></i>
+                            <a data-toggle="dropdown" href="javascript:void(0);">
+                                <i class="fa fa-fw fa-gears"></i>
                                 <strong>About</strong>
                                 <span class="caret"></span>
                             </a>
-                            <ul role="menu" class="dropdown-menu">
+                            <ul class="dropdown-menu" role="menu">
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1" target="_blank" href="https://code.google.com/p/hitcomp/">
                                         <i class="glyphicon glyphicon-wrench"></i>
@@ -66,8 +71,8 @@
             </div>
             <div id="content" class="container">
                 <div class="content-loading">
-                    <i class="fa fa-spinner fa-spin"></i>
-                    Loading ...
+                    <i class="fa fa-fw fa-spinner fa-spin"></i>
+                    <em>Loading ...</em>
                 </div>
                 <div id="content-tabs">
                     <ul>
@@ -82,7 +87,7 @@
                         <li>
                             <h1>
                                 <a href="#content-comps-tab">
-                                    <i class="fa fa-tasks"></i>
+                                    <i class="fa fa-fw fa-tasks"></i>
                                     Competencies
                                 </a>
                             </h1>
@@ -90,7 +95,7 @@
                         <li>
                             <h1>
                                 <a href="#content-roles-tab">
-                                    <i class="fa fa-user-md"></i>
+                                    <i class="fa fa-fw fa-user-md"></i>
                                     Roles
                                 </a>
                             </h1>
@@ -98,7 +103,7 @@
                     </ul>
                     <div id="content-tab-home">
                         <h2>
-                            <i class="fa fa-info-circle"></i>
+                            <i class="fa fa-fw fa-info-circle"></i>
                             Introduction
                         </h2>
                         <p>
@@ -132,19 +137,19 @@
                     </div>
                     <div id="content-comps-tab" class="content-tab">
                         <h2>
-                            <i class="fa fa-filter"></i>
+                            <i class="fa fa-fw fa-filter"></i>
                             Filter
                         </h2>
                         <div class="content-loading">
-                            <i class="fa fa-spinner fa-spin"></i>
-                            Loading ...
+                            <i class="fa fa-fw fa-spinner fa-spin"></i>
+                            <em>Loading ...</em>
                         </div>
                         <div class="content-filter">
                             <form name="content-comps-filter-form">
                                 <div class="input-group-sm">
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-refresh"></i>
+                                            <i class="fa fa-fw fa-refresh"></i>
                                             Reset
                                             <div class="tooltip-content">Reset Filters</div>
                                         </button>
@@ -153,7 +158,7 @@
                                 <hr/>
                                 <div class="input-group-sm">
                                     <label for="content-comps-filter-select-domain">
-                                        <i class="fa fa-cubes"></i>
+                                        <i class="fa fa-fw fa-cubes"></i>
                                         Domain
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -162,7 +167,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-comps-filter-select-division">
-                                        <i class="fa fa-stethoscope"></i>
+                                        <i class="fa fa-fw fa-stethoscope"></i>
                                         Division
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -171,7 +176,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-comps-filter-select-level">
-                                        <i class="fa fa-signal"></i>
+                                        <i class="fa fa-fw fa-signal"></i>
                                         Level
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -189,7 +194,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-comps-filter-select-category">
-                                        <i class="fa fa-tags"></i>
+                                        <i class="fa fa-fw fa-tags"></i>
                                         Category
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -198,7 +203,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-comps-filter-select-origin">
-                                        <i class="fa fa-sitemap"></i>
+                                        <i class="fa fa-fw fa-sitemap"></i>
                                         Silo/Origin
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -208,14 +213,77 @@
                             </form>
                         </div>
                         <h2>
-                            <i class="fa fa-table"></i>
+                            <i class="fa fa-fw fa-table"></i>
                             Data
                         </h2>
                         <div class="content-loading">
-                            <i class="fa fa-spinner fa-spin"></i>
-                            Loading ...
+                            <i class="fa fa-fw fa-spinner fa-spin"></i>
+                            <em>Loading ...</em>
                         </div>
                         <div class="content-data">
+                            <form name="content-comps-data-form">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <div class="dropdown content-data-dropdown-export">
+                                            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown">
+                                                <i class="fa fa-fw fa-download"></i>
+                                                Export
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-text-o"></i>
+                                                        Text
+                                                    </a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-code-o"></i>
+                                                        JSON
+                                                    </a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-code-o"></i>
+                                                        XML
+                                                    </a>
+                                                </li>
+                                                <li class="divider" role="presentation"></li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-fw fa-stack-2x fa-file-o"></i>
+                                                            <i class="fa fa-fw fa-stack-1x fa-stack-1x-inner fa-table"></i>
+                                                        </span>
+                                                        CSV
+                                                    </a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-excel-o"></i>
+                                                        Excel
+                                                    </a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-word-o"></i>
+                                                        Word
+                                                    </a>
+                                                </li>
+                                                <li class="divider" role="presentation"></li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-pdf-o"></i>
+                                                        PDF
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content-data-export-holder"></div>
+                            </form>
                             <table>
                                 <colgroup>
                                     <col/>
@@ -229,23 +297,23 @@
                                 <thead>
                                     <tr>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-cubes"></i>
-                                            Domain
+                                            <i class="fa fa-fw fa-cubes"></i>
+                                            <span>Domain</span>
                                             <div class="tooltip-content">
                                                 One of five areas of health information technology focus areas, including Direct Patient Care, 
                                                 Administration/Finance/Law/ Management, Engineering/Information Systems, Informatics and Research/Biomedical.
                                             </div>
                                         </th>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-stethoscope"></i>
-                                            Division
+                                            <i class="fa fa-fw fa-stethoscope"></i>
+                                            <span>Division</span>
                                             <div class="tooltip-content">
                                                 A subset of one of the five domains, including clinical, non-clinical and others.
                                             </div>
                                         </th>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-signal"></i>
-                                            Level
+                                            <i class="fa fa-fw fa-signal"></i>
+                                            <span>Level</span>
                                             <div class="tooltip-content">
                                                 One of five grades of experience and skill for HIT competence and competencies, including:
                                                 <ul>
@@ -273,7 +341,7 @@
                                                         Bloom’s Taxonomy.
                                                     </li>
                                                 </ul>
-                                                <i class="fa fa-info-circle"></i>
+                                                <i class="fa fa-fw fa-info-circle"></i>
                                                 <strong>Note/Disclaimer</strong>:
                                                 These levels do not correspond one-to-one to job progression or role levels and can vary by role, organization 
                                                 and location.
@@ -281,33 +349,33 @@
                                         </th>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
                                             <i class="glyphicon glyphicon-th-large"></i>
-                                            Quadrant
+                                            <span>Quadrant</span>
                                             <div class="tooltip-content">
                                                 A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
                                                 data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
                                             </div>
                                         </th>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-tags"></i>
-                                            Category
+                                            <i class="fa fa-fw fa-tags"></i>
+                                            <span>Category</span>
                                             <div class="tooltip-content">
                                                 One of 20 specialized areas of competency, from access, to care coordination, to documentation, to privacy and 
                                                 security, to quality and safety, and others.
                                             </div>
                                         </th>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-sitemap"></i>
-                                            Silo/Origin
+                                            <i class="fa fa-fw fa-sitemap"></i>
+                                            <span>Silo/Origin</span>
                                             <div class="tooltip-content">
-                                                <i class="fa fa-info-circle"></i>
+                                                <i class="fa fa-fw fa-info-circle"></i>
                                                 <strong>Note/Disclaimer</strong>:
                                                 Our final competencies have their basis in the silo/origin, but in many cases do not reflect the actual or 
                                                 original language due to our community development and consensus process.
                                             </div>
                                         </th>
-                                        <th class="header">
-                                            <i class="fa fa-comments"></i>
-                                            Description
+                                        <th class="header" colspan="2">
+                                            <i class="fa fa-fw fa-comments"></i>
+                                            <span>Description</span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -321,14 +389,14 @@
                             Localization
                         </h2>
                         <div class="content-loading">
-                            <i class="fa fa-spinner fa-spin"></i>
-                            Loading ...
+                            <i class="fa fa-fw fa-spinner fa-spin"></i>
+                            <em>Loading ...</em>
                         </div>
                         <div class="content-localize">
                             <form name="content-roles-localize-form">
                                 <div class="input-group-sm">
                                     <label for="content-roles-localize-dropdown-lang-eu">
-                                        <i class="fa fa-language"></i>
+                                        <i class="fa fa-fw fa-language"></i>
                                         Language (EU)
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -344,19 +412,19 @@
                             </form>
                         </div>
                         <h2>
-                            <i class="fa fa-filter"></i>
+                            <i class="fa fa-fw fa-filter"></i>
                             Filter
                         </h2>
                         <div class="content-loading">
-                            <i class="fa fa-spinner fa-spin"></i>
-                            Loading ...
+                            <i class="fa fa-fw fa-spinner fa-spin"></i>
+                            <em>Loading ...</em>
                         </div>
                         <div class="content-filter">
                             <form name="content-roles-filter-form">
                                 <div class="input-group-sm">
                                     <div class="btn-group btn-group-sm">
                                         <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-refresh"></i>
+                                            <i class="fa fa-fw fa-refresh"></i>
                                             Reset
                                             <div class="tooltip-content">Reset Filters</div>
                                         </button>
@@ -365,7 +433,7 @@
                                 <hr/>
                                 <div class="input-group-sm">
                                     <label for="content-roles-filter-select-division">
-                                        <i class="fa fa-stethoscope"></i>
+                                        <i class="fa fa-fw fa-stethoscope"></i>
                                         Division
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -374,7 +442,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-roles-filter-select-type">
-                                        <i class="fa fa-tags"></i>
+                                        <i class="fa fa-fw fa-tags"></i>
                                         Type
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -383,7 +451,7 @@
                                 </div>
                                 <div class="input-group-sm">
                                     <label for="content-roles-filter-select-level">
-                                        <i class="fa fa-signal"></i>
+                                        <i class="fa fa-fw fa-signal"></i>
                                         Level
                                     </label>
                                     <div class="btn-group btn-group-sm">
@@ -411,12 +479,12 @@
                             </form>
                         </div>
                         <h2>
-                            <i class="fa fa-table"></i>
+                            <i class="fa fa-fw fa-table"></i>
                             Data
                         </h2>
                         <div class="content-loading">
-                            <i class="fa fa-spinner fa-spin"></i>
-                            Loading ...
+                            <i class="fa fa-fw fa-spinner fa-spin"></i>
+                            <em>Loading ...</em>
                         </div>
                         <div class="content-data">
                             <table>
@@ -431,19 +499,19 @@
                                 <thead>
                                     <tr>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-stethoscope"></i>
-                                            Division
+                                            <i class="fa fa-fw fa-stethoscope"></i>
+                                            <span>Division</span>
                                             <div class="tooltip-content">
                                                 A subset of one of the five domains, including clinical, non-clinical and others.
                                             </div>
                                         </th>
                                         <th class="header">
-                                            <i class="fa fa-tags"></i>
-                                            Type
+                                            <i class="fa fa-fw fa-tags"></i>
+                                            <span>Type</span>
                                         </th>
                                         <th class="header" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-signal"></i>
-                                            Level
+                                            <i class="fa fa-fw fa-signal"></i>
+                                            <span>Level</span>
                                             <div class="tooltip-content">
                                                 One of five grades of experience and skill for HIT competence and competencies, including:
                                                 <ul>
@@ -471,7 +539,7 @@
                                                         Bloom’s Taxonomy.
                                                     </li>
                                                 </ul>
-                                                <i class="fa fa-info-circle"></i>
+                                                <i class="fa fa-fw fa-info-circle"></i>
                                                 <strong>Note/Disclaimer</strong>:
                                                 These levels do not correspond one-to-one to job progression or role levels and can vary by role, organization 
                                                 and location.
@@ -479,15 +547,15 @@
                                         </th>
                                         <th class="header">
                                             <i class="flag flag-us"></i>
-                                            Roles (US)
+                                            <span>Roles (US)</span>
                                         </th>
                                         <th class="header">
                                             <i class="flag flag-eu"></i>
-                                            Roles (EU)
+                                            <span>Roles (EU)</span>
                                         </th>
-                                        <th class="header">
-                                            <i class="fa fa-comments"></i>
-                                            Description
+                                        <th class="header" colspan="2">
+                                            <i class="fa fa-fw fa-comments"></i>
+                                            <span>Description</span>
                                         </th>
                                     </tr>
                                 </thead>

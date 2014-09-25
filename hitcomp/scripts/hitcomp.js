@@ -1,18 +1,7 @@
-$(document).ready(function () {
-    var contentTabsElem = $("div#content-tabs");
-    contentTabsElem.tabs();
+$(window).ready(function () {
+    var contentTabsElem = $("div#content-tabs").tabs();
     
-    $("div.content-data table thead tr th", contentTabsElem).each(function (dataHeaderIndex, dataHeaderElem) {
-        if ((dataHeaderElem = $(dataHeaderElem)).attr("data-toggle") == "tooltip") {
-            dataHeaderElem.tooltip({
-                "container": "body",
-                "html": true,
-                "title": function () {
-                    return $.trim($("div.tooltip-content", this).html());
-                }
-            });
-        }
-    });
+    $("div.content-data table thead tr th[data-toggle=\"tooltip\"]", contentTabsElem).tooltip();
     
     if (localStorage) {
         var contentTabActive;
@@ -43,6 +32,47 @@ $(document).ready(function () {
             compsTableBodyElem.append(comp.buildRowElement());
         });
         
+        $("div.input-group-sm div.btn-group button.btn", compsDataElem).tooltip({
+            "title": "Export Competencies"
+        });
+        
+        $("div.input-group-sm div.btn-group div.dropdown.content-data-dropdown-export ul.dropdown-menu li a", compsDataElem).bind("click", {
+            "compsTableElem": compsTableElem
+        }, function (event) {
+            var compsDataExportLinkElem = $(event.target), compsDataExportType;
+            
+            switch ((compsDataExportType = $.trim((compsDataExportLinkElem = (compsDataExportLinkElem.is("a") ? compsDataExportLinkElem : 
+                compsDataExportLinkElem.parent())).text()).toLowerCase())) {
+                case "text":
+                    compsDataExportType = "txt";
+                    break;
+                
+                case "word":
+                    compsDataExportType = "doc";
+                    break;
+            }
+            
+            var compsDataExportHolder = $("div.content-data-export-holder", event.data.compsTableElem.parent()), 
+                compsDataExportTable = event.data.compsTableElem.clone();
+            
+            $("tbody tr.disabled", compsDataExportTable).remove();
+            
+            $("thead tr th, tbody tr td[datafld]", compsDataExportTable).each(function (compsDataExportIndex, compsDataExportElem) {
+                (compsDataExportElem = $(compsDataExportElem)).text($.trim($("span", compsDataExportElem)[0].textContent.normalize().printable()));
+            });
+            
+            compsDataExportHolder.empty().append(compsDataExportTable);
+            
+            compsDataExportTable.tableExport({
+                "escape": false.toString(),
+                "ignoreColumn": [ 7 ],
+                "pdfFontSize": 10,
+                "pdfLeftMargin": 5,
+                "tableName": "HITCOMP - Competencies",
+                "type": compsDataExportType
+            });
+        });
+        
         compsTableElem.tablesorter($.hitcomp.Competency.buildTableSorter(compsTableElem));
         
         var compFilterType, compFilter;
@@ -71,13 +101,7 @@ $(document).ready(function () {
             $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
                 dataFilter.deselectAll.call(dataFilter);
             });
-        }).tooltip({
-            "container": "body",
-            "html": true,
-            "title": function () {
-                return $.trim($("div.tooltip-content", this).html());
-            }
-        });
+        }).tooltip();
         
         compsFilterElem.prev("div.content-loading").hide();
         compsFilterElem.show();
@@ -126,7 +150,16 @@ $(document).ready(function () {
                     
                     return roleItemValue1.localeCompare(roleItemValue2);
                 }), function (roleItemValue) {
-                    return ((roleFilterType == "level") ? roleItemValue.value.displayName : roleItemValue);
+                    switch (roleFilterType) {
+                        case "level":
+                            return roleItemValue.value.displayName;
+                        
+                        case "rolesEu":
+                            return roleItemValue[rolesLocalizeSelectElem.val()];
+                        
+                        default:
+                            return roleItemValue;
+                    }
                 }).unique()));
             
             roleFilterSelectElem.parent().append(roleFilter.buildSelectControlElements());
@@ -137,13 +170,7 @@ $(document).ready(function () {
             $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
                 dataFilter.deselectAll.call(dataFilter);
             });
-        }).tooltip({
-            "container": "body",
-            "html": true,
-            "title": function () {
-                return $.trim($("div.tooltip-content", this).html());
-            }
-        });
+        }).tooltip();
         
         (rolesLocalize = new $.hitcomp.RoleLocalization(roles, rolesTableElem, rolesLocalizeSelectElem)).determineDefault();
         
@@ -151,16 +178,16 @@ $(document).ready(function () {
             event.data.rolesLocalize.localize.call(event.data.rolesLocalize, rolesLocalizeSelectElem.val());
         });
         
-        $("tr td:nth-of-type(3) button", compsTableBodyElem).bind("click", {
+        $("tr td[datafld=\"level\"] button", compsTableBodyElem).bind("click", {
             "contentTabsElem": contentTabsElem,
             "rolesFilterElem": rolesFilterElem
         }, function (event) {
             var roleLevelFilterSelectElem = $($("select", event.data.rolesFilterElem)[2]), 
-                roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), compDataElem;
+                roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), compDataElem = $(event.target).parent();
             
             roleLevelFilter.deselectAll.call(roleLevelFilter);
             
-            roleLevelFilterSelectElem.multiselect("select", ((compDataElem = $(event.target).parent()).is("td") ? compDataElem : compDataElem.parent())
+            roleLevelFilterSelectElem.multiselect("select", (compDataElem.is("td") ? compDataElem : compDataElem.parent())
                 .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
             
             event.data.contentTabsElem.tabs("option", "active", 2);
@@ -168,16 +195,16 @@ $(document).ready(function () {
             $(document).scrollTop(0);
         });
         
-        $("tr td:nth-of-type(3) button", rolesTableBodyElem).bind("click", {
+        $("tr td[datafld=\"level\"] button", rolesTableBodyElem).bind("click", {
             "contentTabsElem": contentTabsElem,
             "compsFilterElem": compsFilterElem
         }, function (event) {
             var compLevelFilterSelectElem = $($("select", event.data.compsFilterElem)[2]), 
-                compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), roleDataElem;
+                compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), roleDataElem = $(event.target).parent();
             
             compLevelFilter.deselectAll.call(compLevelFilter);
             
-            compLevelFilterSelectElem.multiselect("select", ((roleDataElem = $(event.target).parent()).is("td") ? roleDataElem : roleDataElem.parent())
+            compLevelFilterSelectElem.multiselect("select", (roleDataElem.is("td") ? roleDataElem : roleDataElem.parent())
                 .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
             
             event.data.contentTabsElem.tabs("option", "active", 1);
