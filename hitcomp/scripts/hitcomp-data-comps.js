@@ -113,4 +113,4 @@
     $.extend($.hitcomp.CompetencyFilter, $.hitcomp.DataFilter);
     
     $.extend($.hitcomp.CompetencyFilter.prototype, $.hitcomp.DataFilter.prototype);
-})($);
+})(jQuery);

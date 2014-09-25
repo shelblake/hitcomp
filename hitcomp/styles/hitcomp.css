@@ -245,9 +245,9 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr:hover {
     cursor: move;
 }
 
-div#content-tabs div.content-tab div.content-data table.table i.fa.placeholder {
+div#content-tabs div.content-tab div.content-data table.table tbody tr.placeholder td i.fa {
     display: block;
-    margin-left: -18px;
+    margin-left: -20px;
 }
 
 div#content-tabs div.content-tab div.content-data table.table thead tr th,
@@ -297,6 +297,7 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr.disabled 
 }
 
 div#content-tabs div.content-tab div.content-data table.table tbody tr td button.btn.form-control {
+    width: auto;
     height: inherit;
     padding: 1px 3px;
 }
