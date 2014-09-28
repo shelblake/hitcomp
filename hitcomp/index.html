@@ -7,18 +7,17 @@
         <link type="image/png" rel="icon" href="images/hitcomp-logo-16x16.png"/>
         <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
         <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
-        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/css/bootstrap-multiselect.css"/>
-        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/css/theme.bootstrap.css"/>
         <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/css/theme.bootstrap.css"/>
+        <link type="text/css" rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/css/bootstrap-multiselect.css"/>
         <link type="text/css" rel="stylesheet" href="styles/hitcomp.css"/>
         <script type="text/javascript" src="http://www.google-analytics.com/analytics.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
         <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/js/jquery.tablesorter.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/js/jquery.tablesorter.widgets.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/js/bootstrap-multiselect.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.3.5/src/tabletop.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v0.2.6/enum-0.2.6.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/alexei/sprintf.js/v0.7/src/sprintf.js"></script>
         <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/globalize.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.de.js"></script>
@@ -27,11 +26,13 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.es.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.fr.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.it.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v0.2.6/enum-0.2.6.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/alexei/sprintf.js/v0.7/src/sprintf.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/js/jquery.tablesorter.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/js/jquery.tablesorter.widgets.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.3.5/src/tabletop.js"></script>
+        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/js/bootstrap-multiselect.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/niklasvh/html2canvas/0.4.1/build/html2canvas.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/MrRio/jsPDF/v1.0.178/dist/jspdf.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/kayalshri/tableExport.jquery.plugin/master/tableExport.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-core.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data.js"></script>
@@ -151,63 +152,62 @@
                                         <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-refresh"></i>
                                             Reset
-                                            <div class="tooltip-content">Reset Filters</div>
                                         </button>
                                     </div>
                                 </div>
                                 <hr/>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="domain">
                                     <label for="content-comps-filter-select-domain">
                                         <i class="fa fa-fw fa-cubes"></i>
                                         Domain
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-domain" datafld="domain" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-domain" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="division">
                                     <label for="content-comps-filter-select-division">
                                         <i class="fa fa-fw fa-stethoscope"></i>
                                         Division
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-division" datafld="division" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-division" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="level">
                                     <label for="content-comps-filter-select-level">
                                         <i class="fa fa-fw fa-signal"></i>
                                         Level
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-level" datafld="level" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-level" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="quadrant">
                                     <label for="content-comps-filter-select-quadrant">
                                         <i class="fa fa-th-large"></i>
                                         Quadrant
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-quadrant" datafld="quadrant" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-quadrant" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="category">
                                     <label for="content-comps-filter-select-category">
                                         <i class="fa fa-fw fa-tags"></i>
                                         Category
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-category" datafld="category" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-category" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="origin">
                                     <label for="content-comps-filter-select-origin">
                                         <i class="fa fa-fw fa-sitemap"></i>
                                         Silo/Origin
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-origin" datafld="origin" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-comps-filter-select-origin" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
                             </form>
@@ -271,13 +271,6 @@
                                                         Word
                                                     </a>
                                                 </li>
-                                                <li class="divider" role="presentation"></li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-pdf-o"></i>
-                                                        PDF
-                                                    </a>
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -285,35 +278,26 @@
                                 <div class="content-data-export-holder"></div>
                             </form>
                             <table>
-                                <colgroup>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                </colgroup>
                                 <thead>
                                     <tr>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="domain" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-cubes"></i>
-                                            <span>Domain</span>
+                                            <span class="header-content-text">Domain</span>
                                             <div class="tooltip-content">
                                                 One of five areas of health information technology focus areas, including Direct Patient Care, 
                                                 Administration/Finance/Law/ Management, Engineering/Information Systems, Informatics and Research/Biomedical.
                                             </div>
                                         </th>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="division" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-stethoscope"></i>
-                                            <span>Division</span>
+                                            <span class="header-content-text">Division</span>
                                             <div class="tooltip-content">
                                                 A subset of one of the five domains, including clinical, non-clinical and others.
                                             </div>
                                         </th>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="level" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-signal"></i>
-                                            <span>Level</span>
+                                            <span class="header-content-text">Level</span>
                                             <div class="tooltip-content">
                                                 One of five grades of experience and skill for HIT competence and competencies, including:
                                                 <ul>
@@ -347,25 +331,25 @@
                                                 and location.
                                             </div>
                                         </th>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="quadrant" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-th-large"></i>
-                                            <span>Quadrant</span>
+                                            <span class="header-content-text">Quadrant</span>
                                             <div class="tooltip-content">
                                                 A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
                                                 data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
                                             </div>
                                         </th>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="category" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-tags"></i>
-                                            <span>Category</span>
+                                            <span class="header-content-text">Category</span>
                                             <div class="tooltip-content">
                                                 One of 20 specialized areas of competency, from access, to care coordination, to documentation, to privacy and 
                                                 security, to quality and safety, and others.
                                             </div>
                                         </th>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="origin" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-sitemap"></i>
-                                            <span>Silo/Origin</span>
+                                            <span class="header-content-text">Silo/Origin</span>
                                             <div class="tooltip-content">
                                                 <i class="fa fa-fw fa-info-circle"></i>
                                                 <strong>Note/Disclaimer</strong>:
@@ -373,9 +357,9 @@
                                                 original language due to our community development and consensus process.
                                             </div>
                                         </th>
-                                        <th class="header" colspan="2">
+                                        <th class="header" colspan="2" data-field="desc">
                                             <i class="fa fa-fw fa-comments"></i>
-                                            <span>Description</span>
+                                            <span class="header-content-text">Description</span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -395,17 +379,18 @@
                         <div class="content-localize">
                             <form name="content-roles-localize-form">
                                 <div class="input-group-sm">
-                                    <label for="content-roles-localize-dropdown-lang-eu">
+                                    <label for="content-roles-localize-dropdown-lang">
                                         <i class="fa fa-fw fa-language"></i>
-                                        Language (EU)
+                                        Language
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-localize-dropdown-lang-eu" class="input-sm form-control" datafld="langEu">
-                                            <option value="en-GB">English (United Kingdom)</option>
-                                            <option value="fr">French</option>
-                                            <option value="de">German</option>
-                                            <option value="it">Italian</option>
-                                            <option value="es">Spanish</option>
+                                        <select id="content-roles-localize-dropdown-lang" class="selectpicker input-sm form-control" data-field="lang">
+                                            <option value="en-US" data-icon="flag flag-us">English (US)</option>
+                                            <option value="en-GB" data-icon="flag flag-gb">English (UK)</option>
+                                            <option value="fr" data-icon="flag flag-fr">French</option>
+                                            <option value="de" data-icon="flag flag-de">German</option>
+                                            <option value="it" data-icon="flag flag-it">Italian</option>
+                                            <option value="es" data-icon="flag flag-es">Spanish</option>
                                         </select>
                                     </div>
                                 </div>
@@ -426,54 +411,44 @@
                                         <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-refresh"></i>
                                             Reset
-                                            <div class="tooltip-content">Reset Filters</div>
                                         </button>
                                     </div>
                                 </div>
                                 <hr/>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="division">
                                     <label for="content-roles-filter-select-division">
                                         <i class="fa fa-fw fa-stethoscope"></i>
                                         Division
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-division" datafld="division" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-roles-filter-select-division" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="type">
                                     <label for="content-roles-filter-select-type">
                                         <i class="fa fa-fw fa-tags"></i>
                                         Type
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-type" datafld="type" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-roles-filter-select-type" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
+                                <div class="input-group-sm" data-field="level">
                                     <label for="content-roles-filter-select-level">
                                         <i class="fa fa-fw fa-signal"></i>
                                         Level
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-level" datafld="level" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-roles-filter-select-level" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
-                                <div class="input-group-sm">
-                                    <label for="content-roles-filter-select-roles-us">
+                                <div class="input-group-sm" data-field="roles">
+                                    <label for="content-roles-filter-select-roles">
                                         <i class="flag flag-us"></i>
-                                        Roles (US)
+                                        Roles
                                     </label>
                                     <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-roles-us" datafld="rolesUs" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm">
-                                    <label for="content-roles-filter-select-roles-eu">
-                                        <i class="flag flag-eu"></i>
-                                        Roles (EU)
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-roles-eu" datafld="rolesEu" class="multiselect" multiple="multiple"></select>
+                                        <select id="content-roles-filter-select-roles" class="multiselect" multiple="multiple"></select>
                                     </div>
                                 </div>
                             </form>
@@ -488,30 +463,22 @@
                         </div>
                         <div class="content-data">
                             <table>
-                                <colgroup>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                    <col/>
-                                </colgroup>
                                 <thead>
                                     <tr>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="division" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-stethoscope"></i>
-                                            <span>Division</span>
+                                            <span class="header-content-text">Division</span>
                                             <div class="tooltip-content">
                                                 A subset of one of the five domains, including clinical, non-clinical and others.
                                             </div>
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-field="type">
                                             <i class="fa fa-fw fa-tags"></i>
-                                            <span>Type</span>
+                                            <span class="header-content-text">Type</span>
                                         </th>
-                                        <th class="header" data-toggle="tooltip" data-placement="top">
+                                        <th class="header" data-field="level" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-signal"></i>
-                                            <span>Level</span>
+                                            <span class="header-content-text">Level</span>
                                             <div class="tooltip-content">
                                                 One of five grades of experience and skill for HIT competence and competencies, including:
                                                 <ul>
@@ -545,17 +512,13 @@
                                                 and location.
                                             </div>
                                         </th>
-                                        <th class="header">
+                                        <th class="header" data-field="roles">
                                             <i class="flag flag-us"></i>
-                                            <span>Roles (US)</span>
+                                            <span class="header-content-text">Roles</span>
                                         </th>
-                                        <th class="header">
-                                            <i class="flag flag-eu"></i>
-                                            <span>Roles (EU)</span>
-                                        </th>
-                                        <th class="header" colspan="2">
+                                        <th class="header" colspan="2" data-field="desc">
                                             <i class="fa fa-fw fa-comments"></i>
-                                            <span>Description</span>
+                                            <span class="header-content-text">Description</span>
                                         </th>
                                     </tr>
                                 </thead>

@@ -9,10 +9,10 @@
             this.division = dataObj["clinicalnon-clinical"];
             this.type = dataObj["roletype"];
             this.desc = dataObj["definition"];
-            this.rolesUs = dataObj["usroles"];
-            this.rolesEu = {
+            this.roles = {
                 "de": dataObj["eurolesdefin"],
                 "en-GB": dataObj["eurolesenglish"],
+                "en-US": dataObj["usroles"],
                 "es": dataObj["euroleses"],
                 "fr": dataObj["eurolesfr"],
                 "it": dataObj["eurolesit"]
@@ -39,16 +39,14 @@
     
     $.extend($.hitcomp.Role.prototype, $.hitcomp.DataItem.prototype, {
         "type": undefined,
-        "rolesUs": undefined,
-        "rolesEu": undefined,
+        "roles": undefined,
         
         "buildRowElement": function () {
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
                 "division": this.division,
                 "type": this.type,
                 "level": this.level.value.displayName,
-                "rolesUs": this.rolesUs,
-                "rolesEu": this.rolesEu["en-GB"]
+                "roles": this.roles["en-US"]
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
             }, this)));
@@ -84,15 +82,11 @@
     // CLASS: ROLE LOCALIZATION
     //====================================================================================================
     $.extend($.hitcomp, {
-        "RoleLocalization": function (roles, dataTableElem, dataLocalizeSelectElem) {
+        "RoleLocalization": function (roles, dataFilterSelectElem, dataTableElem, dataLocalizeSelectElem) {
+            this.roles = roles;
+            this.dataFilterSelectElem = dataFilterSelectElem;
             this.dataTableElem = dataTableElem;
             this.dataLocalizeSelectElem = dataLocalizeSelectElem;
-            
-            this.rolesMap = {};
-            
-            $.each(roles, $.proxy(function (roleIndex, role) {
-                this.rolesMap[role.rolesUs] = role.rolesEu;
-            }, this));
         }
     });
     
@@ -102,9 +96,10 @@
     });
     
     $.extend($.hitcomp.RoleLocalization.prototype, {
+        "roles": undefined,
+        "dataFilterSelectElem": undefined,
         "dataTableElem": undefined,
         "dataLocalizeSelectElem": undefined,
-        "rolesMap": undefined,
         "culture": undefined,
         
         "determineDefault": function () {
@@ -143,10 +138,31 @@
                 this.dataLocalizeSelectElem.val(dataLocalizeLangValue);
             }
             
-            $("tbody tr td[datafld=\"rolesEu\"]", this.dataTableElem).each($.proxy(function (dataLocalizeLangDataIndex, dataLocalizeLangDataElem) {
-                $("span", (dataLocalizeLangDataElem = $(dataLocalizeLangDataElem)))
-                    .text(this.rolesMap[dataLocalizeLangDataElem.prev().text()][dataLocalizeLangValue]);
+            var dataFilter = this.dataFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY);
+            
+            dataFilter.deselectAll.call(dataFilter);
+            
+            this.dataFilterSelectElem.multiselect("dataprovider", dataFilter.buildSelectDataProvider($.map(this.roles, $.proxy(function (role) {
+                return role.roles[dataLocalizeLangValue];
+            }, this)).sort(function (rolesValue1, rolesValue2) {
+                return rolesValue1.localeCompare(rolesValue2);
+            }).unique()));
+            
+            $("tbody tr td[data-field=\"roles\"] span.data-content-text", this.dataTableElem).each($.proxy(
+                function (dataLocalizeLangDataIndex, dataLocalizeLangTextElem) {
+                $(dataLocalizeLangTextElem).text(this.roles[dataLocalizeLangDataIndex].roles[dataLocalizeLangValue]);
             }, this));
+            
+            var dataLocalizeLabelElems = $(
+                "div.content-filter div.input-group-sm[data-field=\"roles\"] label i.flag, div.content-data table thead tr th[data-field=\"roles\"] i.flag", 
+                this.dataTableElem.parent().parent());
+            
+            dataLocalizeLabelElems.removeClass(dataLocalizeLabelElems.getClass());
+            
+            dataLocalizeLabelElems.addClass([
+                "flag",
+                ("flag-" + dataLocalizeLangValue.split("-", 2).last().toLowerCase())
+            ]);
         }
     });
 })(jQuery);

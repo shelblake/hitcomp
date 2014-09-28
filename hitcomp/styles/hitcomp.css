@@ -45,8 +45,24 @@ th.tablesorter-header i.flag {
     background-repeat: no-repeat;
 }
 
-i.flag.flag-eu {
-    background-position: -48px -44px;
+i.flag.flag-de {
+    background-position: -80px -33px;
+}
+
+i.flag.flag-es {
+    background-position: -16px -44px;
+}
+
+i.flag.flag-fr {
+    background-position: -144px -44px;
+}
+
+i.flag.flag-gb {
+    background-position: -176px -44px;
+}
+
+i.flag.flag-it {
+    background-position: -208px -66px;
 }
 
 i.flag.flag-us {

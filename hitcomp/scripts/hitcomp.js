@@ -60,7 +60,7 @@
                 
                 $("tbody tr.disabled", compsDataExportTable).remove();
                 
-                $("thead tr th, tbody tr td[datafld]", compsDataExportTable).each(function (compsDataExportIndex, compsDataExportElem) {
+                $("thead tr th, tbody tr td[data-field]", compsDataExportTable).each(function (compsDataExportIndex, compsDataExportElem) {
                     (compsDataExportElem = $(compsDataExportElem)).text($.trim($("span", compsDataExportElem)[0].textContent.normalize().printable()));
                 });
                 
@@ -82,7 +82,8 @@
             
             $("select", compsFilterElem).each(function (compFilterSelectIndex, compFilterSelectElem) {
                 compsFilters.push((compFilter = new $.hitcomp.CompetencyFilter(
-                    (compFilterType = (compFilterSelectElem = $(compFilterSelectElem)).attr("datafld")), compsTableElem, compFilterSelectElem)));
+                    (compFilterType = (compFilterSelectElem = $(compFilterSelectElem)).parent().parent().attr("data-field")), compsTableElem, 
+                    compFilterSelectElem)));
                 
                 compFilterSelectElem.multiselect(compFilter.buildSelect());
                 compFilterSelectElem.multiselect("dataprovider", compFilter.buildSelectDataProvider($.map(((compFilterType == "level") ? 
@@ -105,7 +106,9 @@
                 $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
                     dataFilter.deselectAll.call(dataFilter);
                 });
-            }).tooltip();
+            }).tooltip({
+                "title": "Reset Filters"
+            });
             
             compsFilterElem.prev("div.content-loading").hide();
             compsFilterElem.show();
@@ -133,8 +136,9 @@
             var roleFilterType, roleFilter;
             
             $("select", rolesFilterElem).each(function (roleFilterSelectIndex, roleFilterSelectElem) {
-                rolesFilters.push((roleFilter = new $.hitcomp.RoleFilter((roleFilterType = (roleFilterSelectElem = $(roleFilterSelectElem)).attr("datafld")), 
-                    rolesTableElem, roleFilterSelectElem)));
+                rolesFilters.push((roleFilter = new $.hitcomp.RoleFilter(
+                    (roleFilterType = (roleFilterSelectElem = $(roleFilterSelectElem)).parent().parent().attr("data-field")), rolesTableElem, 
+                    roleFilterSelectElem)));
                 
                 roleFilterSelectElem.multiselect(roleFilter.buildSelect());
                 roleFilterSelectElem.multiselect("dataprovider", roleFilter.buildSelectDataProvider($.map(((roleFilterType == "level") ? 
@@ -145,7 +149,7 @@
                     })).sort(function (roleItemValue1, roleItemValue2) {
                         if (roleFilterType == "level") {
                             return roleItemValue1.value.compareTo(roleItemValue2.value);
-                        } else if (roleFilterType == "rolesEu") {
+                        } else if (roleFilterType == "roles") {
                             var rolesLocalizeSelectValue = rolesLocalizeSelectElem.val();
                             
                             roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
@@ -158,7 +162,7 @@
                             case "level":
                                 return roleItemValue.value.displayName;
                             
-                            case "rolesEu":
+                            case "roles":
                                 return roleItemValue[rolesLocalizeSelectElem.val()];
                             
                             default:
@@ -174,15 +178,20 @@
                 $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
                     dataFilter.deselectAll.call(dataFilter);
                 });
-            }).tooltip();
+            }).tooltip({
+                "title": "Reset Filters"
+            });
             
-            (rolesLocalize = new $.hitcomp.RoleLocalization(roles, rolesTableElem, rolesLocalizeSelectElem)).determineDefault();
+            (rolesLocalize = new $.hitcomp.RoleLocalization(roles, $("div.input-group-sm[data-field=\"roles\"] select", rolesFilterElem), rolesTableElem, 
+                rolesLocalizeSelectElem)).determineDefault();
+            
+            rolesLocalizeSelectElem.selectpicker();
             
             rolesLocalizeSelectElem.bind("change", { "rolesLocalize": rolesLocalize }, function (event) {
                 event.data.rolesLocalize.localize.call(event.data.rolesLocalize, rolesLocalizeSelectElem.val());
             });
             
-            $("tr td[datafld=\"level\"] button", compsTableBodyElem).bind("click", {
+            $("tr td[data-field=\"level\"] button", compsTableBodyElem).bind("click", {
                 "contentTabsElem": contentTabsElem,
                 "rolesFilterElem": rolesFilterElem
             }, function (event) {
@@ -199,7 +208,7 @@
                 $(document).scrollTop(0);
             });
             
-            $("tr td[datafld=\"level\"] button", rolesTableBodyElem).bind("click", {
+            $("tr td[data-field=\"level\"] button", rolesTableBodyElem).bind("click", {
                 "contentTabsElem": contentTabsElem,
                 "compsFilterElem": compsFilterElem
             }, function (event) {

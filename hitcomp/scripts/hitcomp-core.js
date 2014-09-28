@@ -1,26 +1,5 @@
 (function ($) {
     //====================================================================================================
-    // EXTENSIONS: JQUERY
-    //====================================================================================================
-    $.extend($, {
-        "isString": function (obj) {
-            return ($.type(obj) == "string");
-        },
-        
-        "keys": function (obj) {
-            return $.map(obj, function (objPropValue, objPropName) {
-                return objPropName;
-            });
-        },
-        
-        "values": function (obj) {
-            return $.map(obj, function (objPropValue) {
-                return objPropValue;
-            });
-        }
-    });
-    
-    //====================================================================================================
     // EXTENSIONS: STRING
     //====================================================================================================
     $.extend(String, {
@@ -57,6 +36,95 @@
             });
             
             return $.keys(map);
+        }
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: JQUERY
+    //====================================================================================================
+    $.extend($, {
+        "isString": function (obj) {
+            return ($.type(obj) == "string");
+        },
+        
+        "keys": function (obj) {
+            return $.map(obj, function (objPropValue, objPropName) {
+                return objPropName;
+            });
+        },
+        
+        "values": function (obj) {
+            return $.map(obj, function (objPropValue) {
+                return objPropValue;
+            });
+        }
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: JQUERY FUNCTIONS
+    //====================================================================================================
+    $.extend($.fn, {
+        "_addClass": $.fn.addClass,
+        "_hasClass": $.fn.hasClass,
+        "_removeClass": $.fn.removeClass,
+        "_toggleClass": $.fn.toggleClass
+    });
+    
+    $.extend($.fn, {
+        "addClass": function (classes) {
+            if ($.isArray(classes)) {
+                $.each(classes, $.proxy(function (classIndex, clazz) {
+                    this._addClass(clazz);
+                }, this));
+                
+                return this;
+            } else {
+                return this._addClass(classes);
+            }
+        },
+        
+        "getClass": function () {
+            var classes = this.attr("class");
+            
+            return (classes ? classes.split(/\s+/) : []);
+        },
+        
+        "hasClass": function (classes) {
+            if ($.isArray(classes)) {
+                var hasClasses = true;
+                
+                $.each(classes, $.proxy(function (classIndex, clazz) {
+                    return (hasClasses = this._hasClass(clazz));
+                }, this));
+                
+                return hasClasses;
+            } else {
+                return this._hasClass(classes);
+            }
+        },
+        
+        "removeClass": function (classes) {
+            if ($.isArray(classes)) {
+                $.each(classes, $.proxy(function (classIndex, clazz) {
+                    this._removeClass(clazz);
+                }, this));
+                
+                return this;
+            } else {
+                return this._removeClass(classes);
+            }
+        },
+        
+        "toggleClass": function (classes) {
+            if ($.isArray(classes)) {
+                $.each(classes, $.proxy(function (classIndex, clazz) {
+                    this._toggleClass(clazz);
+                }, this));
+                
+                return this;
+            } else {
+                return this._toggleClass(classes);
+            }
         }
     });
     
@@ -101,6 +169,13 @@
         "title": function () {
             return $.trim($("div.tooltip-content", this).html());
         }
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: BOOTSTRAP SELECT
+    //====================================================================================================
+    $.extend($.fn.selectpicker.Constructor.DEFAULTS, {
+        "iconBase": String.EMPTY
     });
     
     //====================================================================================================

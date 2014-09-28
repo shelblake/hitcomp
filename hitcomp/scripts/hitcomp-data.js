@@ -65,7 +65,7 @@
     //====================================================================================================
     $.extend($.hitcomp, {
         "DataItem": function (dataObj) {
-            this.id = dataObj["rowNumber"];
+            this.id = (dataObj["rowNumber"] - 1);
             this.level = $.hitcomp.CompetencyLevel.valueOf({ "displayName": dataObj["level"] });
         }
     });
@@ -143,13 +143,13 @@
                     dataExport = dataRowElem.data($.hitcomp.DataItem.DATA_EXPORT_KEY);
                 
                 if (dataExport) {
-                    $("td[datafld]", dataRowElem).append($("<i/>", {
+                    $("td[data-field]", dataRowElem).append($("<i/>", {
                         "class": "fa fa-fw fa-ellipsis-h data-disabled-ellipsis"
                     }));
                     
                     dataToggleButtonIconElem.removeClass("fa-eye").addClass("fa-eye-slash");
                 } else {
-                    $("td[datafld] i.fa.data-disabled-ellipsis", dataRowElem).remove();
+                    $("td[data-field] i.fa.data-disabled-ellipsis", dataRowElem).remove();
                     
                     dataToggleButtonIconElem.removeClass("fa-eye-slash").addClass("fa-eye");
                 }
@@ -159,7 +159,9 @@
         },
         
         "buildDataElement": function (dataType, dataValue) {
-            var dataElem = $("<td/>", { "datafld": dataType }).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue).append($("<span/>").text(dataValue));
+            var dataElem = $("<td/>", { "data-field": dataType }).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue).append($("<span/>", {
+                "class": "data-content-text"
+            }).text(dataValue));
             
             if (dataType == "level") {
                 dataElem.append($("<button/>", {
@@ -182,12 +184,12 @@
             this.dataTableElem = dataTableElem;
             this.dataFilterSelectElem = dataFilterSelectElem;
             
-            this.dataFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY, this);
+            this.dataFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY, this);
         }
     });
     
     $.extend($.hitcomp.DataFilter, {
-        "DATA_KEY": "hitcomp.data.filter"
+        "DATA_OBJ_KEY": "hitcomp.data.filter"
     });
     
     $.extend($.hitcomp.DataFilter.prototype, {
@@ -224,7 +226,7 @@
                     $("tbody tr", this.dataTableElem).show();
                     
                     $("select", this.dataFilterSelectElem.parent().parent().parent()).each($.proxy(function (dataFilterSelectIndex, dataFilterSelectElem) {
-                        var dataFilter = (dataFilterSelectElem = $(dataFilterSelectElem)).data($.hitcomp.DataFilter.DATA_KEY), dataFilterSelectedOpts = {};
+                        var dataFilter = (dataFilterSelectElem = $(dataFilterSelectElem)).data($.hitcomp.DataFilter.DATA_OBJ_KEY), dataFilterSelectedOpts = {};
                         
                         $("option", dataFilterSelectElem).each(function (dataFilterSelectOptIndex, dataFilterSelectOptElem) {
                             if ((dataFilterSelectOptElem = $(dataFilterSelectOptElem)).prop("selected")) {
@@ -237,7 +239,7 @@
                         }
                         
                         $.each($.grep($("tbody tr td", this.dataTableElem), function (dataElem) {
-                            return ($(dataElem).attr("datafld") == dataFilter.type);
+                            return ($(dataElem).attr("data-field") == dataFilter.type);
                         }), function (dataElemIndex, dataElem) {
                             if (!dataFilterSelectedOpts[$.trim((dataElem = $(dataElem)).text())]) {
                                 dataElem.parent().hide();
