@@ -107,7 +107,7 @@
                     
                     dataElem.show();
                 },
-                "selectorHeaders": "> thead th:not(:last-of-type)",
+                "selectorHeaders": "> thead tr th:not(:last-of-type)",
                 "textExtraction": function (dataElem, dataTableElem, dataElemIndex) {
                     return $(dataElem).data($.hitcomp.DataItem.DATA_VALUE_KEY);
                 }

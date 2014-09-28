@@ -288,7 +288,8 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td {
     text-align: center;
 }
 
-div#content-tabs div.content-tab div.content-data table.table tbody tr td:nth-last-of-type(2) {
+div#content-tabs div#content-home-tab.content-tab div.content-data table.table tbody tr td:last-of-type,
+div#content-tabs div.content-tab div.content-data table.table tbody tr td:nth-last-of-type(2):not(:first-of-type) {
     text-align: left;
 }
 

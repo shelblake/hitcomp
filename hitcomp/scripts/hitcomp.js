@@ -2,9 +2,34 @@
     $(window).load(function () {
         $.hitcomp.analytics.configureAnalytics();
         
-        var contentTabsElem = $("div#content-tabs").tabs();
+        var contentTabsElem = $("div#content-tabs").tabs(), homeTabElem = $("div#content-home-tab", contentTabsElem), 
+            homeDataElem = $("div.content-data", homeTabElem), glossaryTableElem = $("table", homeDataElem);
         
-        $("div.content-data table thead tr th[data-toggle=\"tooltip\"]", contentTabsElem).tooltip();
+        $("div.content-tab:not(#content-home-tab) div.content-data table thead tr th", contentTabsElem).each(
+            function (dataTableHeaderIndex, dataTableHeaderElem) {
+            var glossaryTableRowElem = $(sprintf("tbody tr[data-field=\"%s\"]", (dataTableHeaderElem = $(dataTableHeaderElem)).attr("data-field")), 
+                glossaryTableElem);
+            
+            if (glossaryTableRowElem.length > 0) {
+                dataTableHeaderElem.attr("data-placement", "top").attr("data-toggle", "tooltip").tooltip({
+                    "title": $.trim($("td:last span.content-text", glossaryTableRowElem).html())
+                });
+            }
+        });
+        
+        glossaryTableElem.tablesorter($.extend({}, $.tablesorter.defaults, {
+            "initialized": function () {
+                homeDataElem.prev("div.content-loading").hide();
+                homeDataElem.show();
+            },
+            "selectorHeaders": "> thead tr th:not(:last-of-type)",
+            "sortList": [
+                [ 0, 0 ]
+            ],
+            "textExtraction": function (glossaryDataElem) {
+                return $("span.content-text", glossaryDataElem).text();
+            }
+        }));
         
         if (localStorage) {
             var contentTabActive;
