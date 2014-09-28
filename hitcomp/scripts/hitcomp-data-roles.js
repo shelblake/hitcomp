@@ -8,7 +8,7 @@
             
             this.division = dataObj["clinicalnon-clinical"];
             this.type = dataObj["roletype"];
-            this.desc = dataObj["definition"];
+            this.serviceCategory = dataObj["servicecategory"];
             this.roles = {
                 "de": dataObj["eurolesdefin"],
                 "en-GB": dataObj["eurolesenglish"],
@@ -17,6 +17,7 @@
                 "fr": dataObj["eurolesfr"],
                 "it": dataObj["eurolesit"]
             };
+            this.desc = dataObj["definition"];
         }
     });
     
@@ -26,7 +27,7 @@
             
             return $.extend(dataTableSorter, {
                 "sortList": [
-                    [ 3, 0 ]
+                    [ 4, 0 ]
                 ],
                 "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
                     return ((dataColIndex == 2) ? $.hitcomp.CompetencyLevel.valueOf({ "name": dataValue1 }).value.compareTo(
@@ -39,6 +40,7 @@
     
     $.extend($.hitcomp.Role.prototype, $.hitcomp.DataItem.prototype, {
         "type": undefined,
+        "serviceCategory": undefined,
         "roles": undefined,
         
         "buildRowElement": function () {
@@ -46,6 +48,7 @@
                 "division": this.division,
                 "type": this.type,
                 "level": this.level.value.displayName,
+                "serviceCategory": this.serviceCategory,
                 "roles": this.roles["en-US"]
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
