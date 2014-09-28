@@ -26,7 +26,7 @@
             
             return $.extend(dataTableSorter, {
                 "sortList": [
-                    [ 2, 0 ]
+                    [ 3, 0 ]
                 ],
                 "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
                     return ((dataColIndex == 2) ? $.hitcomp.CompetencyLevel.valueOf({ "name": dataValue1 }).value.compareTo(
@@ -148,7 +148,7 @@
                 return rolesValue1.localeCompare(rolesValue2);
             }).unique()));
             
-            $("tbody tr td[data-field=\"roles\"] span.data-content-text", this.dataTableElem).each($.proxy(
+            $("tbody tr td[data-field=\"roles\"] span.content-text", this.dataTableElem).each($.proxy(
                 function (dataLocalizeLangDataIndex, dataLocalizeLangTextElem) {
                 $(dataLocalizeLangTextElem).text(this.roles[dataLocalizeLangDataIndex].roles[dataLocalizeLangValue]);
             }, this));

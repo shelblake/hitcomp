@@ -31,10 +31,11 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.3.5/src/tabletop.js"></script>
         <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/js/bootstrap-multiselect.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/carlo/jquery-base64/master/jquery.base64.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/niklasvh/html2canvas/0.4.1/build/html2canvas.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/kayalshri/tableExport.jquery.plugin/master/tableExport.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/zachofalltrades/jquery.format/0.1.2/jquery.format.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-core.js"></script>
+        <script type="text/javascript" src="scripts/hitcomp-analytics.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data-comps.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data-roles.js"></script>
@@ -232,26 +233,20 @@
                                             </button>
                                             <ul class="dropdown-menu" role="menu">
                                                 <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-text-o"></i>
-                                                        Text
-                                                    </a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                    <a role="menuitem" tabindex="-1" data-export-format="json" href="javascript:void(0);">
                                                         <i class="fa fa-fw fa-file-code-o"></i>
                                                         JSON
                                                     </a>
                                                 </li>
                                                 <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                    <a role="menuitem" tabindex="-1" data-export-format="xml" href="javascript:void(0);">
                                                         <i class="fa fa-fw fa-file-code-o"></i>
                                                         XML
                                                     </a>
                                                 </li>
                                                 <li class="divider" role="presentation"></li>
                                                 <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
+                                                    <a role="menuitem" tabindex="-1" data-export-format="csv" href="javascript:void(0);">
                                                         <span class="fa-stack">
                                                             <i class="fa fa-fw fa-stack-2x fa-file-o"></i>
                                                             <i class="fa fa-fw fa-stack-1x fa-stack-1x-inner fa-table"></i>
@@ -259,30 +254,17 @@
                                                         CSV
                                                     </a>
                                                 </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-excel-o"></i>
-                                                        Excel
-                                                    </a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-word-o"></i>
-                                                        Word
-                                                    </a>
-                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="content-data-export-holder"></div>
                             </form>
                             <table>
                                 <thead>
                                     <tr>
                                         <th class="header" data-field="domain" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-cubes"></i>
-                                            <span class="header-content-text">Domain</span>
+                                            <span class="content-text">Domain</span>
                                             <div class="tooltip-content">
                                                 One of five areas of health information technology focus areas, including Direct Patient Care, 
                                                 Administration/Finance/Law/ Management, Engineering/Information Systems, Informatics and Research/Biomedical.
@@ -290,14 +272,14 @@
                                         </th>
                                         <th class="header" data-field="division" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-stethoscope"></i>
-                                            <span class="header-content-text">Division</span>
+                                            <span class="content-text">Division</span>
                                             <div class="tooltip-content">
                                                 A subset of one of the five domains, including clinical, non-clinical and others.
                                             </div>
                                         </th>
                                         <th class="header" data-field="level" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-signal"></i>
-                                            <span class="header-content-text">Level</span>
+                                            <span class="content-text">Level</span>
                                             <div class="tooltip-content">
                                                 One of five grades of experience and skill for HIT competence and competencies, including:
                                                 <ul>
@@ -333,7 +315,7 @@
                                         </th>
                                         <th class="header" data-field="quadrant" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-th-large"></i>
-                                            <span class="header-content-text">Quadrant</span>
+                                            <span class="content-text">Quadrant</span>
                                             <div class="tooltip-content">
                                                 A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
                                                 data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
@@ -341,7 +323,7 @@
                                         </th>
                                         <th class="header" data-field="category" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-tags"></i>
-                                            <span class="header-content-text">Category</span>
+                                            <span class="content-text">Category</span>
                                             <div class="tooltip-content">
                                                 One of 20 specialized areas of competency, from access, to care coordination, to documentation, to privacy and 
                                                 security, to quality and safety, and others.
@@ -349,7 +331,7 @@
                                         </th>
                                         <th class="header" data-field="origin" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-sitemap"></i>
-                                            <span class="header-content-text">Silo/Origin</span>
+                                            <span class="content-text">Silo/Origin</span>
                                             <div class="tooltip-content">
                                                 <i class="fa fa-fw fa-info-circle"></i>
                                                 <strong>Note/Disclaimer</strong>:
@@ -359,7 +341,7 @@
                                         </th>
                                         <th class="header" colspan="2" data-field="desc">
                                             <i class="fa fa-fw fa-comments"></i>
-                                            <span class="header-content-text">Description</span>
+                                            <span class="content-text">Description</span>
                                         </th>
                                     </tr>
                                 </thead>
@@ -462,23 +444,60 @@
                             <em>Loading ...</em>
                         </div>
                         <div class="content-data">
+                            <form name="content-roles-data-form">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <div class="dropdown content-data-dropdown-export">
+                                            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown">
+                                                <i class="fa fa-fw fa-download"></i>
+                                                Export
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" data-export-format="json" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-code-o"></i>
+                                                        JSON
+                                                    </a>
+                                                </li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" data-export-format="xml" href="javascript:void(0);">
+                                                        <i class="fa fa-fw fa-file-code-o"></i>
+                                                        XML
+                                                    </a>
+                                                </li>
+                                                <li class="divider" role="presentation"></li>
+                                                <li role="presentation">
+                                                    <a role="menuitem" tabindex="-1" data-export-format="csv" href="javascript:void(0);">
+                                                        <span class="fa-stack">
+                                                            <i class="fa fa-fw fa-stack-2x fa-file-o"></i>
+                                                            <i class="fa fa-fw fa-stack-1x fa-stack-1x-inner fa-table"></i>
+                                                        </span>
+                                                        CSV
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                             <table>
                                 <thead>
                                     <tr>
                                         <th class="header" data-field="division" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-stethoscope"></i>
-                                            <span class="header-content-text">Division</span>
+                                            <span class="content-text">Division</span>
                                             <div class="tooltip-content">
                                                 A subset of one of the five domains, including clinical, non-clinical and others.
                                             </div>
                                         </th>
                                         <th class="header" data-field="type">
                                             <i class="fa fa-fw fa-tags"></i>
-                                            <span class="header-content-text">Type</span>
+                                            <span class="content-text">Type</span>
                                         </th>
                                         <th class="header" data-field="level" data-toggle="tooltip" data-placement="top">
                                             <i class="fa fa-fw fa-signal"></i>
-                                            <span class="header-content-text">Level</span>
+                                            <span class="content-text">Level</span>
                                             <div class="tooltip-content">
                                                 One of five grades of experience and skill for HIT competence and competencies, including:
                                                 <ul>
@@ -514,11 +533,11 @@
                                         </th>
                                         <th class="header" data-field="roles">
                                             <i class="flag flag-us"></i>
-                                            <span class="header-content-text">Roles</span>
+                                            <span class="content-text">Roles</span>
                                         </th>
                                         <th class="header" colspan="2" data-field="desc">
                                             <i class="fa fa-fw fa-comments"></i>
-                                            <span class="header-content-text">Description</span>
+                                            <span class="content-text">Description</span>
                                         </th>
                                     </tr>
                                 </thead>

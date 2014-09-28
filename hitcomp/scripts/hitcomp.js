@@ -24,7 +24,7 @@
         var compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined"), 
             compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
             compsDataElem = $("div.content-data", compsTabElem), compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), 
-            comps = [], compsFilters = [];
+            comps = [], compsExporter, compsFilters = [];
         
         compsDataSet.onLoad = function (compsDataSet, compsData) {
             var comp;
@@ -39,41 +39,12 @@
                 "title": "Export Data"
             });
             
-            $("div.input-group-sm div.btn-group div.dropdown.content-data-dropdown-export ul.dropdown-menu li a", compsDataElem).bind("click", {
-                "compsTableElem": compsTableElem
+            compsExporter = new $.hitcomp.DataExporter(compsTableElem);
+            
+            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", compsDataElem).bind("click", {
+                "compsExporter": compsExporter
             }, function (event) {
-                var compsDataExportLinkElem = $(event.target), compsDataExportType;
-                
-                switch ((compsDataExportType = $.trim((compsDataExportLinkElem = (compsDataExportLinkElem.is("a") ? compsDataExportLinkElem : 
-                    compsDataExportLinkElem.parent())).text()).toLowerCase())) {
-                    case "text":
-                        compsDataExportType = "txt";
-                        break;
-                    
-                    case "word":
-                        compsDataExportType = "doc";
-                        break;
-                }
-                
-                var compsDataExportHolder = $("div.content-data-export-holder", event.data.compsTableElem.parent()), 
-                    compsDataExportTable = event.data.compsTableElem.clone();
-                
-                $("tbody tr.disabled", compsDataExportTable).remove();
-                
-                $("thead tr th, tbody tr td[data-field]", compsDataExportTable).each(function (compsDataExportIndex, compsDataExportElem) {
-                    (compsDataExportElem = $(compsDataExportElem)).text($.trim($("span", compsDataExportElem)[0].textContent.normalize().printable()));
-                });
-                
-                compsDataExportHolder.empty().append(compsDataExportTable);
-                
-                compsDataExportTable.tableExport({
-                    "escape": false.toString(),
-                    "ignoreColumn": [ $("thead tr th", compsDataExportTable).length ],
-                    "pdfFontSize": 10,
-                    "pdfLeftMargin": 5,
-                    "tableName": "HITCOMP - Competencies",
-                    "type": compsDataExportType
-                });
+                event.data.compsExporter.export.call(event.data.compsExporter, $(event.target), "hitcomp-comps");
             });
             
             compsTableElem.tablesorter($.hitcomp.Competency.buildTableSorter(compsTableElem));
@@ -120,7 +91,7 @@
             rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
             rolesLocalizeSelectElem = $("select", rolesLocalizeElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
             rolesDataElem = $("div.content-data", rolesTabElem), rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), 
-            roles = [], rolesFilters = [], rolesLocalize;
+            roles = [], rolesExporter, rolesFilters = [], rolesLocalize;
         
         rolesDataSet.onLoad = function (rolesDataSet, rolesData) {
             var role;
@@ -129,6 +100,18 @@
                 roles.push((role = new $.hitcomp.Role(roleDataObj)));
                 
                 rolesTableBodyElem.append(role.buildRowElement());
+            });
+            
+            $("div.input-group-sm div.btn-group button.btn", rolesDataElem).tooltip({
+                "title": "Export Data"
+            });
+            
+            rolesExporter = new $.hitcomp.DataExporter(rolesTableElem);
+            
+            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", rolesDataElem).bind("click", {
+                "rolesExporter": rolesExporter
+            }, function (event) {
+                event.data.rolesExporter.export.call(event.data.rolesExporter, $(event.target), "hitcomp-roles");
             });
             
             rolesTableElem.tablesorter($.hitcomp.Role.buildTableSorter(rolesTableElem));
@@ -196,7 +179,7 @@
                 "rolesFilterElem": rolesFilterElem
             }, function (event) {
                 var roleLevelFilterSelectElem = $($("select", event.data.rolesFilterElem)[2]), 
-                    roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), compDataElem = $(event.target).parent();
+                    roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), compDataElem = $(event.target).parent();
                 
                 roleLevelFilter.deselectAll.call(roleLevelFilter);
                 
@@ -213,7 +196,7 @@
                 "compsFilterElem": compsFilterElem
             }, function (event) {
                 var compLevelFilterSelectElem = $($("select", event.data.compsFilterElem)[2]), 
-                    compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_KEY), roleDataElem = $(event.target).parent();
+                    compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), roleDataElem = $(event.target).parent();
                 
                 compLevelFilter.deselectAll.call(compLevelFilter);
                 

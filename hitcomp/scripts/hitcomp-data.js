@@ -160,7 +160,7 @@
         
         "buildDataElement": function (dataType, dataValue) {
             var dataElem = $("<td/>", { "data-field": dataType }).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue).append($("<span/>", {
-                "class": "data-content-text"
+                "class": "content-text"
             }).text(dataValue));
             
             if (dataType == "level") {
@@ -276,6 +276,121 @@
             }).append($("<i/>", {
                 "class": iconClasses
             })).append(content);
+        }
+    });
+    
+    //====================================================================================================
+    // CLASS: DATA EXPORT FORMAT ITEM
+    //====================================================================================================
+    $.extend($.hitcomp, {
+        "DataExportFormatItem": function (format, fileMimeType, fileNameExt) {
+            this.format = format;
+            this.fileMimeType = ((fileMimeType || ("application/" + this.format)) + ";charset=UTF-8");
+            this.fileNameExt = (fileNameExt || ("." + this.format));
+        }
+    });
+    
+    $.extend($.hitcomp.DataExportFormatItem.prototype, {
+        "format": undefined,
+        "fileMimeType": undefined,
+        "fileNameExt": undefined
+    });
+    
+    //====================================================================================================
+    // ENUM: DATA EXPORT FORMAT
+    //====================================================================================================
+    $.extend($.hitcomp, {
+        "DataExportFormat": new Enum({
+            "JSON": new $.hitcomp.DataExportFormatItem("json"),
+            "XML": new $.hitcomp.DataExportFormatItem("xml"),
+            "CSV": new $.hitcomp.DataExportFormatItem("csv")
+        })
+    });
+    
+    //====================================================================================================
+    // CLASS: DATA EXPORTER
+    //====================================================================================================
+    $.extend($.hitcomp, {
+        "DataExporter": function (dataTableElem) {
+            this.dataTableElem = dataTableElem;
+        }
+    });
+    
+    $.extend($.hitcomp.DataExporter, {
+        "buildDataExportContentItem": function (dataExportItemIndex, dataExportItemElem) {
+            this[(dataExportItemElem = $(dataExportItemElem)).attr("data-field")] = $.trim($("span.content-text", dataExportItemElem).text().normalize()
+                .printable());
+        }
+    });
+    
+    $.extend($.hitcomp.DataExporter.prototype, {
+        "dataTableElem": undefined,
+
+        "export": function (dataExportLinkElem, dataExportFileBaseName) {
+            var dataExportFormat = $.hitcomp.DataExportFormat.valueOf({
+                    "format": (dataExportLinkElem = (dataExportLinkElem.is("a") ? dataExportLinkElem : dataExportLinkElem.parent())).attr("data-export-format")
+                }), dataExportContent = this.buildDataExportContent(), dataExportStr, dataExportFileName;
+            
+            switch (dataExportFormat) {
+                case $.hitcomp.DataExportFormat.JSON:
+                    dataExportStr = JSON.stringify(dataExportContent, null, 4);
+                    break;
+                
+                case $.hitcomp.DataExportFormat.XML:
+                    dataExportStr = '<?xml version="1.0" encoding="UTF-8"?>\n' + $.format($("<container/>").append($("<data/>").append([
+                        $("<headings/>").append($.map(dataExportContent.headings, function (dataExportHeadingText, dataExportHeading) {
+                            return $(sprintf("<%s/>", dataExportHeading)).text(dataExportHeadingText);
+                        })),
+                        $("<items/>").append($.map(dataExportContent.items, function (dataExportContentItem) {
+                            return $("<item/>").append($.map(dataExportContentItem, function (dataExportContentItemText, dataExportContentItem) {
+                                return $(sprintf("<%s/>", dataExportContentItem)).text(dataExportContentItemText);
+                            }));
+                        }))
+                    ])).html(), { "method": "xml" });
+                    break;
+                
+                case $.hitcomp.DataExportFormat.CSV:
+                    dataExportStr = ($.map($.values(dataExportContent.headings), function (dataExportHeadingText) {
+                        return dataExportHeadingText.quote("\"\"");
+                    }).join(",") + "\n" + $.map(dataExportContent.items, function (dataExportContentItem) {
+                        return $.map($.values(dataExportContentItem), function (dataExportContentItemText) {
+                            return dataExportContentItemText.quote("\"\"");
+                        }).join(",");
+                    }).join("\n"));
+                    break;
+            }
+            
+            var dataExportBlob = new Blob([ dataExportStr ], { "type": dataExportFormat.value.fileMimeType }), dataExportBlobPrevSize = 0, 
+                dataExportInterval = setInterval(function () {
+                if (dataExportBlob.size && (dataExportBlobPrevSize == dataExportBlob.size)) {
+                    clearInterval(dataExportInterval);
+                    
+                    saveAs(dataExportBlob, (dataExportFileName = sprintf("%s_%s%s", dataExportFileBaseName, moment().formatTimestamp(true), 
+                        dataExportFormat.value.fileNameExt)));
+                    
+                    console.info(sprintf("Exported data file (name=%s, mimeType=%s, size=%d).", dataExportFileName, dataExportFormat.value.fileMimeType, 
+                        dataExportBlob.size));
+                } else {
+                    dataExportBlobPrevSize = dataExportBlob.size;
+                }
+            }, 500);
+        },
+        
+        "buildDataExportContent": function () {
+            var dataExportContent = {
+                "headings": {},
+                "items": []
+            }, dataExportContentItem;
+            
+            $("thead tr th[data-field]", this.dataTableElem).each($.proxy($.hitcomp.DataExporter.buildDataExportContentItem, dataExportContent.headings));
+            
+            $("tbody tr:not(.disabled)", this.dataTableElem).each(function (dataExportRowIndex, dataExportRowElem) {
+                $("td[data-field]", dataExportRowElem).each($.proxy($.hitcomp.DataExporter.buildDataExportContentItem, (dataExportContentItem = {})));
+                
+                dataExportContent.items.push(dataExportContentItem);
+            });
+            
+            return dataExportContent;
         }
     });
 })(jQuery);
