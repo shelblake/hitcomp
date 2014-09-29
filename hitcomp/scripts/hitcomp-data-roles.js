@@ -85,8 +85,7 @@
     // CLASS: ROLE LOCALIZATION
     //====================================================================================================
     $.extend($.hitcomp, {
-        "RoleLocalization": function (roles, dataFilterSelectElem, dataTableElem, dataLocalizeSelectElem) {
-            this.roles = roles;
+        "RoleLocalization": function (dataFilterSelectElem, dataTableElem, dataLocalizeSelectElem) {
             this.dataFilterSelectElem = dataFilterSelectElem;
             this.dataTableElem = dataTableElem;
             this.dataLocalizeSelectElem = dataLocalizeSelectElem;
@@ -99,7 +98,6 @@
     });
     
     $.extend($.hitcomp.RoleLocalization.prototype, {
-        "roles": undefined,
         "dataFilterSelectElem": undefined,
         "dataTableElem": undefined,
         "dataLocalizeSelectElem": undefined,
@@ -145,26 +143,33 @@
             
             dataFilter.deselectAll.call(dataFilter);
             
-            this.dataFilterSelectElem.multiselect("dataprovider", dataFilter.buildSelectDataProvider($.map(this.roles, $.proxy(function (role) {
-                return role.roles[dataLocalizeLangValue];
+            this.dataFilterSelectElem.multiselect("dataprovider", dataFilter.buildSelectDataProvider($.map($("tbody tr td[data-field=\"roles\"]", 
+                this.dataTableElem), $.proxy(function (dataElem) {
+                var dataValue = (dataElem = $(dataElem)).parent().data($.hitcomp.DataItem.DATA_OBJ_KEY).roles[dataLocalizeLangValue];
+                
+                dataElem.data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue);
+                
+                $("span.content-text", dataElem).text(dataValue);
+                
+                return dataValue;
             }, this)).sort(function (rolesValue1, rolesValue2) {
-                return rolesValue1.localeCompare(rolesValue2);
+                return $.tablesorter.replaceAccents(rolesValue1).localeCompare($.tablesorter.replaceAccents(rolesValue2));
             }).unique()));
             
-            $("tbody tr td[data-field=\"roles\"] span.content-text", this.dataTableElem).each($.proxy(
-                function (dataLocalizeLangDataIndex, dataLocalizeLangTextElem) {
-                $(dataLocalizeLangTextElem).text(this.roles[dataLocalizeLangDataIndex].roles[dataLocalizeLangValue]);
-            }, this));
-            
-            var dataLocalizeLabelElems = $(
-                "div.content-filter div.input-group-sm[data-field=\"roles\"] label i.flag, div.content-data table thead tr th[data-field=\"roles\"] i.flag", 
-                this.dataTableElem.parent().parent());
-            
-            dataLocalizeLabelElems.removeClass(dataLocalizeLabelElems.getClass());
-            
-            dataLocalizeLabelElems.addClass([
-                "flag",
-                ("flag-" + dataLocalizeLangValue.split("-", 2).last().toLowerCase())
+            this.dataTableElem.trigger("update", [
+                true,
+                $.proxy(function () {
+                    var dataLocalizeLabelElems = $(
+                        "div.content-filter div.input-group-sm[data-field=\"roles\"] label i.flag, div.content-data table thead tr th[data-field=\"roles\"] i.flag", 
+                        this.dataTableElem.parent().parent());
+                    
+                    dataLocalizeLabelElems.removeClass(dataLocalizeLabelElems.getClass());
+                    
+                    dataLocalizeLabelElems.addClass([
+                        "flag",
+                        ("flag-" + dataLocalizeLangValue.split("-", 2).last().toLowerCase())
+                    ]);
+                }, this)
             ]);
         }
     });

@@ -182,23 +182,6 @@
     });
     
     //====================================================================================================
-    // EXTENSIONS: BOOTSTRAP SELECT
-    //====================================================================================================
-    $.extend($.fn.selectpicker.Constructor.DEFAULTS, {
-        "iconBase": String.EMPTY
-    });
-    
-    //====================================================================================================
-    // EXTENSIONS: BOOTSTRAP MULTISELECT
-    //====================================================================================================
-    $.extend($.fn.multiselect.Constructor.prototype.defaults, {
-        "buttonClass": "btn btn-default form-control",
-        "buttonContainer": '<div class="btn-group btn-group-sm"/>',
-        "enableCaseInsensitiveFiltering": true,
-        "filterBehavior": "text"
-    });
-    
-    //====================================================================================================
     // EXTENSIONS: TABLESORTER
     //====================================================================================================
     $.extend($.tablesorter.defaults, {
@@ -223,6 +206,30 @@
         "sortDesc": "fa fa-fw fa-sort-down",
         "sortNone": "fa fa-fw fa-sort",
         "table": "table table-bordered table-condensed table-hover"
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: BOOTSTRAP SELECT
+    //====================================================================================================
+    $.extend($.fn.selectpicker.Constructor.DEFAULTS, {
+        "dropupAuto": false,
+        "iconBase": String.EMPTY
+    });
+    
+    //====================================================================================================
+    // EXTENSIONS: BOOTSTRAP MULTISELECT
+    //====================================================================================================
+    $.extend($.fn.multiselect.Constructor.prototype.defaults, {
+        "buttonClass": "btn btn-default form-control",
+        "buttonContainer": '<div class="btn-group btn-group-sm"/>',
+        "enableCaseInsensitiveFiltering": true,
+        "filterBehavior": "text",
+        "maxHeight": 400
+    });
+    
+    $.extend($.fn.multiselect.Constructor.prototype.defaults.templates, {
+        "filter": ('<div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span>' +
+            '<input class="form-control multiselect-search" type="text"/></div>')
     });
     
     //====================================================================================================

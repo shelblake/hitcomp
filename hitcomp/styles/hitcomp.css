@@ -216,7 +216,7 @@ div#content-tabs div.content-tab hr {
 div#content-tabs div.content-tab div.content-localize div.input-group-sm,
 div#content-tabs div.content-tab div.content-filter div.input-group-sm,
 div#content-tabs div.content-tab div.content-data div.input-group-sm {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 div#content-tabs div.content-tab div.content-localize div.input-group-sm:last-of-type,
@@ -226,7 +226,7 @@ div#content-tabs div.content-tab div.content-data div.input-group-sm:last-of-typ
 }
 
 div#content-tabs div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
-    margin-left: 165px;
+    margin-left: 190px;
 }
 
 div#content-tabs div.content-tab div.content-filter div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu,
@@ -239,9 +239,9 @@ div#content-tabs div.content-tab div.content-data div.input-group-sm div.btn-gro
     font-size: 16px;
 }
 
-div#content-tabs div.content-tab div.content-localize div.input-group-sm > label,
-div#content-tabs div.content-tab div.content-filter div.input-group-sm > label {
-    width: 150px;
+div#content-tabs div.content-tab div.content-localize div.input-group-sm label[for],
+div#content-tabs div.content-tab div.content-filter div.input-group-sm label[for] {
+    width: 175px;
     margin-right: 10px;
     text-align: right;
     font-size: 13px;
@@ -275,7 +275,11 @@ div#content-tabs div.content-tab div.content-data table.table thead tr th:not(:n
     cursor: pointer;
 }
 
-div#content-tabs div.content-tab div.content-data table.table thead tr th div div i:last-of-type.fa {
+div#content-tabs div#content-roles-tab.content-tab div.content-data table.table thead tr th:nth-of-type(4) {
+    min-width: 175px;
+}
+
+div#content-tabs div.content-tab div.content-data table.table thead tr th div div i.fa:last-of-type {
     right: 0;
 }
 

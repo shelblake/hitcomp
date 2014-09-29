@@ -164,7 +164,7 @@
                             roleItemValue2 = roleItemValue2[rolesLocalizeSelectValue];
                         }
                         
-                        return roleItemValue1.localeCompare(roleItemValue2);
+                        return $.tablesorter.replaceAccents(roleItemValue1).localeCompare($.tablesorter.replaceAccents(roleItemValue2));
                     }), function (roleItemValue) {
                         switch (roleFilterType) {
                             case "level":
@@ -190,7 +190,7 @@
                 "title": "Reset Filters"
             });
             
-            (rolesLocalize = new $.hitcomp.RoleLocalization(roles, $("div.input-group-sm[data-field=\"roles\"] select", rolesFilterElem), rolesTableElem, 
+            (rolesLocalize = new $.hitcomp.RoleLocalization($("div.input-group-sm[data-field=\"roles\"] select", rolesFilterElem), rolesTableElem, 
                 rolesLocalizeSelectElem)).determineDefault();
             
             rolesLocalizeSelectElem.selectpicker();
