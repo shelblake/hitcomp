@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link type="image/png" rel="icon" href="images/hitcomp-logo-16x16.png"/>
+        <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic&subset=latin,latin-ext"/>
         <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
         <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
         <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
@@ -35,6 +36,7 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-core.js"></script>
+        <script type="text/javascript" src="scripts/hitcomp-ui.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-analytics.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data-comps.js"></script>
@@ -43,566 +45,555 @@
         <title>HITCOMP - Health IT Competencies</title>
     </head>
     <body>
-        <div id="wrap">
-            <div id="nav" class="navbar navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <a href="/" class="navbar-brand">
-                            <img src="images/hitcomp-logo-32x32.png" alt="HITCOMP Logo"/>
-                            <strong>HITCOMP - Health IT Competencies</strong>
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="#" class="navbar-brand">
+                        <img src="images/hitcomp-logo-32x32.png" alt="HITCOMP Logo"/>
+                        <strong>HITCOMP - Health IT Competencies</strong>
+                    </a>
+                </div>
+                <ul class="nav navbar-nav nav-tabs" role="tablist">
+                    <li class="active">
+                        <a href="#content-home-tab" role="tab" data-toggle="tab">
+                            <i class="fa fa-home"></i>
+                            <strong>Home</strong>
                         </a>
-                    </div>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
-                            <a data-toggle="dropdown" href="javascript:void(0);">
-                                <i class="fa fa-fw fa-gears"></i>
-                                <strong>About</strong>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" target="_blank" href="https://code.google.com/p/hitcomp/">
-                                        <i class="fa fa-wrench"></i>
-                                        Google Code Project
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                    </li>
+                    <li>
+                        <a href="#content-comps-tab" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-tasks"></i>
+                            <strong>Competencies</strong>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#content-roles-tab" role="tab" data-toggle="tab">
+                            <i class="fa fa-fw fa-user-md"></i>
+                            <strong>Roles</strong>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="link" data-toggle="dropdown">
+                            <i class="fa fa-fw fa-gears"></i>
+                            <strong>About</strong>
+                            <span class="fa fa-fw fa-caret-down"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" target="_blank" href="https://code.google.com/p/hitcomp/">
+                                    <i class="icon icon-google-code-project"></i>
+                                    Google Code Project
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
-            <div id="content" class="container">
-                <div class="content-loading">
-                    <i class="fa fa-fw fa-spinner fa-spin"></i>
-                    <em>Loading ...</em>
+        </nav>
+        <div id="content" class="container-fluid">
+            <div class="text-muted well well-sm content-loading">
+                <i class="fa fa-fw fa-spinner fa-spin"></i>
+                <strong><em>Loading</em></strong>
+            </div>
+            <div id="content-tabs" class="tab-content">
+                <div id="content-home-tab" class="tab-pane fade in active content-tab">
+                    <div class="text-muted well well-sm content-loading">
+                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                        <strong><em>Loading</em></strong>
+                    </div>
+                    <div class="content-data">
+                        <h1>
+                            <i class="fa fa-fw fa-info-circle"></i>
+                            <strong>Introduction</strong>
+                        </h1>
+                        <p>
+                            <em>HITCOMP: An Interactive Tool for Discovering “Health IT eSkills” in the United States and European Union</em>
+                        </p>
+                        <p>
+                            Both the United States and the European Union are currently working to encourage more effective use of information technology 
+                            and communication (ICT), in delivery of health services, including disease prevention and health promotion. In order to 
+                            accomplish this, as part of the Standards and Interoperability Framework (S&amp;I Framework) of the Office of the National 
+                            Coordinator of Health Information Technology (ONC-HIT) (US), the US and EU have collaborated and formed a Workforce Development 
+                            Workgroup, consisting of a Transatlantic community of educators, public and private sector industry professionals, healthcare 
+                            information technology and informatics professionals, clinicians and subject matter experts in information technology and 
+                            communication.
+                        </p>
+                        <p>
+                            This community is working together to identify approaches to achieving common goals for achieving a robust supply of highly 
+                            proficient eHealth/health IT professionals and assuring health care, public health, and allied professional workforces have 
+                            the eSkills needed to make optimum use of their available eHealth/health information technology. Additionally, we are working 
+                            to identify and address any competency and knowledge deficiencies among all staff in healthcare delivery, management, 
+                            administration and support to ensure universal application of ICT solutions in health services.
+                        </p>
+                        <p>
+                            The EU-US Workforce Development Workgroup’s Health Comp e-mapping tool is a searchable database that workforce developers, 
+                            staffing experts and interested parties in healthcare and the healthcare information technology can use to compile information 
+                            on skills and competencies needed for a variety of healthcare roles, levels and areas of knowledge. We have begun our work in the 
+                            Acute Care setting, in the Direct Patient Care domain. Currently, you can sort over 250 competencies in the Direct Patient Care – 
+                            Clinical sector by level, quadrant (health data, clinical, communications or patient interactions), or 20 areas of competency. 
+                            You can also perform a search of Direct Patient Care job roles, including finding role definitions, sorting by job type and service 
+                            category, matching competency levels, and displaying the equivalent role in five European languages. Finally, you can export your 
+                            search results to a file for your own use.
+                        </p>
+                        <p>
+                            Stay tuned: More sectors, roles and searchable areas are coming soon!
+                        </p>
+                        <h1>
+                            <i class="fa fa-fw fa-book"></i>
+                            <strong>Glossary</strong>
+                        </h1>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="header">
+                                        <i class="fa fa-fw fa-asterisk"></i>
+                                        <span class="content-text">Term</span>
+                                    </th>
+                                    <th class="header">
+                                        <i class="fa fa-fw fa-comments"></i>
+                                        <span class="content-text">Definition &amp; Notes</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-field="category">
+                                    <td>
+                                        <span class="content-text">
+                                            <strong>Category</strong>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="content-text">
+                                            One of 20 specialized areas of competency, from access, to care coordination, to documentation, to privacy and 
+                                            security, to quality and safety, and others.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr data-field="division">
+                                    <td>
+                                        <span class="content-text">
+                                            <strong>Division</strong>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="content-text">
+                                            A subset of one of the five domains, including clinical, non-clinical and others.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr data-field="domain">
+                                    <td>
+                                        <span class="content-text">
+                                            <strong>Domain</strong>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="content-text">
+                                            One of five areas of health information technology focus areas, including Direct Patient Care, 
+                                            Administration/Finance/Law/ Management, Engineering/Information Systems, Informatics and Research/Biomedical.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr data-field="level">
+                                    <td>
+                                        <span class="content-text">
+                                            <strong>Level</strong>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="content-text">
+                                            One of five grades of experience and skill for HIT competence and competencies, including:
+                                            <ul>
+                                                <li>
+                                                    <strong>Baseline</strong>:
+                                                    A foundation level upon which all other skills and competencies are based.
+                                                </li>
+                                                <li>
+                                                    <strong>Basic</strong>:
+                                                    An entry-level or beginning skill or competency level, equating to "understanding" and "knowing" in 
+                                                    Bloom’s Taxonomy.
+                                                </li>
+                                                <li>
+                                                    <strong>Intermediate</strong>:
+                                                    A mid-level incumbent skill or competency level, equating to "applying" and "analyzing" in Bloom’s 
+                                                    Taxonomy.
+                                                </li>
+                                                <li>
+                                                    <strong>Advanced</strong>:
+                                                    A high-level incumbent skill or competency level.
+                                                </li>
+                                                <li>
+                                                    <strong>Expert</strong>:
+                                                    The highest level of skill or competency level), both equating to "evaluating" and "synthesizing" in 
+                                                    Bloom’s Taxonomy.
+                                                </li>
+                                            </ul>
+                                            <i class="fa fa-fw fa-info-circle"></i>
+                                            <strong>Note/Disclaimer</strong>:
+                                            These levels do not correspond one-to-one to job progression or role levels and can vary by role, organization 
+                                            and location.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr data-field="origin">
+                                    <td>
+                                        <span class="content-text">
+                                            <strong>Silo/Origin</strong>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="content-text">
+                                            <i class="fa fa-fw fa-info-circle"></i>
+                                            <strong>Note/Disclaimer</strong>:
+                                            Our final competencies have their basis in the silo/origin, but in many cases do not reflect the actual or 
+                                            original language due to our community development and consensus process.
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr data-field="quadrant">
+                                    <td>
+                                        <span class="content-text">
+                                            <strong>Quadrant</strong>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="content-text">
+                                            A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
+                                            data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div id="content-tabs">
-                    <ul>
-                        <li>
-                            <h1>
-                                <a href="#content-home-tab">
-                                    <i class="fa fa-home"></i>
-                                    Home
-                                </a>
-                            </h1>
-                        </li>
-                        <li>
-                            <h1>
-                                <a href="#content-comps-tab">
-                                    <i class="fa fa-fw fa-tasks"></i>
-                                    Competencies
-                                </a>
-                            </h1>
-                        </li>
-                        <li>
-                            <h1>
-                                <a href="#content-roles-tab">
-                                    <i class="fa fa-fw fa-user-md"></i>
-                                    Roles
-                                </a>
-                            </h1>
-                        </li>
-                    </ul>
-                    <div id="content-home-tab" class="content-tab">
-                        <div class="content-loading">
-                            <i class="fa fa-fw fa-spinner fa-spin"></i>
-                            <em>Loading ...</em>
-                        </div>
-                        <div class="content-data">
-                            <h2>
-                                <i class="fa fa-fw fa-info-circle"></i>
-                                Introduction
-                            </h2>
-                            <p>
-                                <em>HITCOMP: An Interactive Tool for Discovering “Health IT eSkills” in the United States and European Union</em>
-                            </p>
-                            <p>
-                                Both the United States and the European Union are currently working to encourage more effective use of information technology 
-                                and communication (ICT), in delivery of health services, including disease prevention and health promotion. In order to 
-                                accomplish this, as part of the Standards and Interoperability Framework (S&amp;I Framework) of the Office of the National 
-                                Coordinator of Health Information Technology (ONC-HIT) (US), the US and EU have collaborated and formed a Workforce Development 
-                                Workgroup, consisting of a Transatlantic community of educators, public and private sector industry professionals, healthcare 
-                                information technology and informatics professionals, clinicians and subject matter experts in information technology and 
-                                communication.
-                            </p>
-                            <p>
-                                This community is working together to identify approaches to achieving common goals for achieving a robust supply of highly 
-                                proficient eHealth/health IT professionals and assuring health care, public health, and allied professional workforces have 
-                                the eSkills needed to make optimum use of their available eHealth/health information technology. Additionally, we are working 
-                                to identify and address any competency and knowledge deficiencies among all staff in healthcare delivery, management, 
-                                administration and support to ensure universal application of ICT solutions in health services.
-                            </p>
-                            <p>
-                                The EU-US Workforce Development Workgroup’s Health Comp e-mapping tool is a searchable database that workforce developers, 
-                                staffing experts and interested parties in healthcare and the healthcare information technology can use to compile information 
-                                on skills and competencies needed for a variety of healthcare roles, levels and areas of knowledge.  You can sort over 250 
-                                competencies in the Direct Patient Care – Clinical sector by level, quadrant (health data, clinical, communications or patient 
-                                interactions), or 20 areas of competency.
-                            </p>
-                            <p>
-                                Stay tuned: More sectors, roles and searchable areas are coming soon!
-                            </p>
-                            <h2>
-                                <i class="fa fa-fw fa-book"></i>
-                                Glossary
-                            </h2>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="header">
-                                            <i class="fa fa-fw fa-asterisk"></i>
-                                            <span class="content-text">Term</span>
-                                        </th>
-                                        <th class="header">
-                                            <i class="fa fa-fw fa-comments"></i>
-                                            <span class="content-text">Definition &amp; Notes</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr data-field="category">
-                                        <td>
-                                            <span class="content-text">
-                                                <strong>Category</strong>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="content-text">
-                                                One of 20 specialized areas of competency, from access, to care coordination, to documentation, to privacy and 
-                                                security, to quality and safety, and others.
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr data-field="division">
-                                        <td>
-                                            <span class="content-text">
-                                                <strong>Division</strong>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="content-text">
-                                                A subset of one of the five domains, including clinical, non-clinical and others.
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr data-field="domain">
-                                        <td>
-                                            <span class="content-text">
-                                                <strong>Domain</strong>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="content-text">
-                                                One of five areas of health information technology focus areas, including Direct Patient Care, 
-                                                Administration/Finance/Law/ Management, Engineering/Information Systems, Informatics and Research/Biomedical.
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr data-field="level">
-                                        <td>
-                                            <span class="content-text">
-                                                <strong>Level</strong>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="content-text">
-                                                One of five grades of experience and skill for HIT competence and competencies, including:
-                                                <ul>
-                                                    <li>
-                                                        <strong>Baseline</strong>:
-                                                        A foundation level upon which all other skills and competencies are based.
-                                                    </li>
-                                                    <li>
-                                                        <strong>Basic</strong>:
-                                                        An entry-level or beginning skill or competency level, equating to "understanding" and "knowing" in 
-                                                        Bloom’s Taxonomy.
-                                                    </li>
-                                                    <li>
-                                                        <strong>Intermediate</strong>:
-                                                        A mid-level incumbent skill or competency level, equating to "applying" and "analyzing" in Bloom’s 
-                                                        Taxonomy.
-                                                    </li>
-                                                    <li>
-                                                        <strong>Advanced</strong>:
-                                                        A high-level incumbent skill or competency level.
-                                                    </li>
-                                                    <li>
-                                                        <strong>Expert</strong>:
-                                                        The highest level of skill or competency level), both equating to "evaluating" and "synthesizing" in 
-                                                        Bloom’s Taxonomy.
-                                                    </li>
-                                                </ul>
-                                                <i class="fa fa-fw fa-info-circle"></i>
-                                                <strong>Note/Disclaimer</strong>:
-                                                These levels do not correspond one-to-one to job progression or role levels and can vary by role, organization 
-                                                and location.
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr data-field="origin">
-                                        <td>
-                                            <span class="content-text">
-                                                <strong>Silo/Origin</strong>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="content-text">
-                                                <i class="fa fa-fw fa-info-circle"></i>
-                                                <strong>Note/Disclaimer</strong>:
-                                                Our final competencies have their basis in the silo/origin, but in many cases do not reflect the actual or 
-                                                original language due to our community development and consensus process.
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr data-field="quadrant">
-                                        <td>
-                                            <span class="content-text">
-                                                <strong>Quadrant</strong>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="content-text">
-                                                A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
-                                                data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div id="content-comps-tab" class="tab-pane fade content-tab">
+                    <h1>
+                        <i class="fa fa-fw fa-filter"></i>
+                        <strong>Filter</strong>
+                    </h1>
+                    <div class="text-muted well well-sm content-loading">
+                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                        <strong><em>Loading</em></strong>
                     </div>
-                    <div id="content-comps-tab" class="content-tab">
-                        <h2>
-                            <i class="fa fa-fw fa-filter"></i>
-                            Filter
-                        </h2>
-                        <div class="content-loading">
-                            <i class="fa fa-fw fa-spinner fa-spin"></i>
-                            <em>Loading ...</em>
-                        </div>
-                        <div class="content-filter">
-                            <form name="content-comps-filter-form">
-                                <div class="input-group-sm">
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-fw fa-refresh"></i>
-                                            Reset
+                    <div class="content-filter">
+                        <form name="content-comps-filter-form">
+                            <div class="input-group-sm">
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
+                                        <i class="fa fa-fw fa-refresh"></i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="input-group-sm" data-field="domain">
+                                <label for="content-comps-filter-select-domain">
+                                    <i class="fa fa-fw fa-cubes"></i>
+                                    Domain
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-comps-filter-select-domain" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="division">
+                                <label for="content-comps-filter-select-division">
+                                    <i class="fa fa-fw fa-stethoscope"></i>
+                                    Division
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-comps-filter-select-division" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="level">
+                                <label for="content-comps-filter-select-level">
+                                    <i class="fa fa-fw fa-signal"></i>
+                                    Level
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-comps-filter-select-level" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="quadrant">
+                                <label for="content-comps-filter-select-quadrant">
+                                    <i class="fa fa-th-large"></i>
+                                    Quadrant
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-comps-filter-select-quadrant" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="category">
+                                <label for="content-comps-filter-select-category">
+                                    <i class="fa fa-fw fa-tags"></i>
+                                    Category
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-comps-filter-select-category" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="origin">
+                                <label for="content-comps-filter-select-origin">
+                                    <i class="fa fa-fw fa-sitemap"></i>
+                                    Silo/Origin
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-comps-filter-select-origin" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <h1>
+                        <i class="fa fa-fw fa-table"></i>
+                        <strong>Data</strong>
+                    </h1>
+                    <div class="text-muted well well-sm content-loading">
+                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                        <strong><em>Loading</em></strong>
+                    </div>
+                    <div class="content-data">
+                        <form name="content-comps-data-form">
+                            <div class="input-group-sm">
+                                <div class="btn-group btn-group-sm">
+                                    <div class="dropdown content-data-dropdown-export">
+                                        <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown">
+                                            <i class="fa fa-fw fa-download"></i>
+                                            Export
+                                            <span class="fa fa-fw fa-caret-down"></span>
                                         </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="presentation">
+                                                <a class="link" role="menuitem" tabindex="-1" data-export-format="json">
+                                                    <i class="fa fa-fw fa-file-code-o"></i>
+                                                    JSON
+                                                </a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a class="link" role="menuitem" tabindex="-1" data-export-format="xml">
+                                                    <i class="fa fa-fw fa-file-code-o"></i>
+                                                    XML
+                                                </a>
+                                            </li>
+                                            <li class="divider" role="presentation"></li>
+                                            <li role="presentation">
+                                                <a class="link" role="menuitem" tabindex="-1" data-export-format="csv">
+                                                    <i class="fa fa-fw fa-file-excel-o"></i>
+                                                    CSV
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <hr/>
-                                <div class="input-group-sm" data-field="domain">
-                                    <label for="content-comps-filter-select-domain">
+                            </div>
+                        </form>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="header" data-field="domain">
                                         <i class="fa fa-fw fa-cubes"></i>
-                                        Domain
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-domain" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="division">
-                                    <label for="content-comps-filter-select-division">
+                                        <span class="content-text">Domain</span>
+                                    </th>
+                                    <th class="header" data-field="division">
                                         <i class="fa fa-fw fa-stethoscope"></i>
-                                        Division
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-division" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="level">
-                                    <label for="content-comps-filter-select-level">
+                                        <span class="content-text">Division</span>
+                                    </th>
+                                    <th class="header" data-field="level">
                                         <i class="fa fa-fw fa-signal"></i>
-                                        Level
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-level" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="quadrant">
-                                    <label for="content-comps-filter-select-quadrant">
+                                        <span class="content-text">Level</span>
+                                    </th>
+                                    <th class="header" data-field="quadrant">
                                         <i class="fa fa-th-large"></i>
-                                        Quadrant
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-quadrant" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="category">
-                                    <label for="content-comps-filter-select-category">
+                                        <span class="content-text">Quadrant</span>
+                                    </th>
+                                    <th class="header" data-field="category">
                                         <i class="fa fa-fw fa-tags"></i>
-                                        Category
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-category" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="origin">
-                                    <label for="content-comps-filter-select-origin">
+                                        <span class="content-text">Category</span>
+                                    </th>
+                                    <th class="header" data-field="origin">
                                         <i class="fa fa-fw fa-sitemap"></i>
-                                        Silo/Origin
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-comps-filter-select-origin" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <h2>
-                            <i class="fa fa-fw fa-table"></i>
-                            Data
-                        </h2>
-                        <div class="content-loading">
-                            <i class="fa fa-fw fa-spinner fa-spin"></i>
-                            <em>Loading ...</em>
-                        </div>
-                        <div class="content-data">
-                            <form name="content-comps-data-form">
-                                <div class="input-group-sm">
-                                    <div class="btn-group btn-group-sm">
-                                        <div class="dropdown content-data-dropdown-export">
-                                            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown">
-                                                <i class="fa fa-fw fa-download"></i>
-                                                Export
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" data-export-format="json" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-code-o"></i>
-                                                        JSON
-                                                    </a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" data-export-format="xml" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-code-o"></i>
-                                                        XML
-                                                    </a>
-                                                </li>
-                                                <li class="divider" role="presentation"></li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" data-export-format="csv" href="javascript:void(0);">
-                                                        <span class="fa-stack">
-                                                            <i class="fa fa-fw fa-stack-2x fa-file-o"></i>
-                                                            <i class="fa fa-fw fa-stack-1x fa-stack-1x-inner fa-table"></i>
-                                                        </span>
-                                                        CSV
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="header" data-field="domain">
-                                            <i class="fa fa-fw fa-cubes"></i>
-                                            <span class="content-text">Domain</span>
-                                        </th>
-                                        <th class="header" data-field="division">
-                                            <i class="fa fa-fw fa-stethoscope"></i>
-                                            <span class="content-text">Division</span>
-                                        </th>
-                                        <th class="header" data-field="level">
-                                            <i class="fa fa-fw fa-signal"></i>
-                                            <span class="content-text">Level</span>
-                                        </th>
-                                        <th class="header" data-field="quadrant">
-                                            <i class="fa fa-th-large"></i>
-                                            <span class="content-text">Quadrant</span>
-                                        </th>
-                                        <th class="header" data-field="category">
-                                            <i class="fa fa-fw fa-tags"></i>
-                                            <span class="content-text">Category</span>
-                                        </th>
-                                        <th class="header" data-field="origin">
-                                            <i class="fa fa-fw fa-sitemap"></i>
-                                            <span class="content-text">Silo/Origin</span>
-                                        </th>
-                                        <th class="header" colspan="2" data-field="desc">
-                                            <i class="fa fa-fw fa-comments"></i>
-                                            <span class="content-text">Description</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                                        <span class="content-text">Silo/Origin</span>
+                                    </th>
+                                    <th class="header" colspan="2" data-field="desc">
+                                        <i class="fa fa-fw fa-comments"></i>
+                                        <span class="content-text">Description</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
-                    <div id="content-roles-tab" class="content-tab">
-                        <h2>
-                            <i class="fa fa-globe"></i>
-                            Localization
-                        </h2>
-                        <div class="content-loading">
-                            <i class="fa fa-fw fa-spinner fa-spin"></i>
-                            <em>Loading ...</em>
-                        </div>
-                        <div class="content-localize">
-                            <form name="content-roles-localize-form">
-                                <div class="input-group-sm">
-                                    <label for="content-roles-localize-dropdown-lang">
-                                        <i class="fa fa-fw fa-language"></i>
-                                        Language (Roles)
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-localize-dropdown-lang" class="selectpicker input-sm form-control" data-field="lang">
-                                            <option value="en-US" data-icon="flag flag-us">English (US)</option>
-                                            <option value="en-GB" data-icon="flag flag-gb">English (UK)</option>
-                                            <option value="fr" data-icon="flag flag-fr">French</option>
-                                            <option value="de" data-icon="flag flag-de">German</option>
-                                            <option value="it" data-icon="flag flag-it">Italian</option>
-                                            <option value="es" data-icon="flag flag-es">Spanish</option>
-                                        </select>
-                                    </div>
+                </div>
+                <div id="content-roles-tab" class="tab-pane fade content-tab">
+                    <h1>
+                        <i class="fa fa-globe"></i>
+                        <strong>Localization</strong>
+                    </h1>
+                    <div class="text-muted well well-sm content-loading">
+                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                        <strong><em>Loading</em></strong>
+                    </div>
+                    <div class="content-localize">
+                        <form name="content-roles-localize-form">
+                            <div class="input-group-sm">
+                                <label for="content-roles-localize-dropdown-lang">
+                                    <i class="fa fa-fw fa-language"></i>
+                                    Language (Roles)
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-roles-localize-dropdown-lang" class="selectpicker input-sm form-control" data-field="lang">
+                                        <option value="en-US" data-icon="icon icon-flag icon-flag-us">English (US)</option>
+                                        <option value="en-GB" data-icon="icon icon-flag icon-flag-gb">English (UK)</option>
+                                        <option value="fr" data-icon="icon icon-flag icon-flag-fr">French</option>
+                                        <option value="de" data-icon="icon icon-flag icon-flag-de">German</option>
+                                        <option value="it" data-icon="icon icon-flag icon-flag-it">Italian</option>
+                                        <option value="es" data-icon="icon icon-flag icon-flag-es">Spanish</option>
+                                    </select>
                                 </div>
-                            </form>
-                        </div>
-                        <h2>
-                            <i class="fa fa-fw fa-filter"></i>
-                            Filter
-                        </h2>
-                        <div class="content-loading">
-                            <i class="fa fa-fw fa-spinner fa-spin"></i>
-                            <em>Loading ...</em>
-                        </div>
-                        <div class="content-filter">
-                            <form name="content-roles-filter-form">
-                                <div class="input-group-sm">
-                                    <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
-                                            <i class="fa fa-fw fa-refresh"></i>
-                                            Reset
+                            </div>
+                        </form>
+                    </div>
+                    <h1>
+                        <i class="fa fa-fw fa-filter"></i>
+                        <strong>Filter</strong>
+                    </h1>
+                    <div class="text-muted well well-sm content-loading">
+                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                        <strong><em>Loading</em></strong>
+                    </div>
+                    <div class="content-filter">
+                        <form name="content-roles-filter-form">
+                            <div class="input-group-sm">
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
+                                        <i class="fa fa-fw fa-refresh"></i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="input-group-sm" data-field="division">
+                                <label for="content-roles-filter-select-division">
+                                    <i class="fa fa-fw fa-stethoscope"></i>
+                                    Division
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-roles-filter-select-division" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="type">
+                                <label for="content-roles-filter-select-type">
+                                    <i class="fa fa-fw fa-tags"></i>
+                                    Type
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-roles-filter-select-type" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="level">
+                                <label for="content-roles-filter-select-level">
+                                    <i class="fa fa-fw fa-signal"></i>
+                                    Level
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-roles-filter-select-level" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="serviceCategory">
+                                <label for="content-roles-filter-select-service-category">
+                                    <i class="fa fa-fw fa-medkit"></i>
+                                    Service Category
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-roles-filter-select-service-category" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                            <div class="input-group-sm" data-field="roles">
+                                <label for="content-roles-filter-select-roles">
+                                    <i class="icon icon-flag icon-flag-us"></i>
+                                    Roles
+                                </label>
+                                <div class="btn-group btn-group-sm">
+                                    <select id="content-roles-filter-select-roles" class="multiselect" multiple="multiple"></select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <h1>
+                        <i class="fa fa-fw fa-table"></i>
+                        <strong>Data</strong>
+                    </h1>
+                    <div class="text-muted well well-sm content-loading">
+                        <i class="fa fa-fw fa-spinner fa-spin"></i>
+                        <strong><em>Loading</em></strong>
+                    </div>
+                    <div class="content-data">
+                        <form name="content-roles-data-form">
+                            <div class="input-group-sm">
+                                <div class="btn-group btn-group-sm">
+                                    <div class="dropdown content-data-dropdown-export">
+                                        <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown">
+                                            <i class="fa fa-fw fa-download"></i>
+                                            Export
+                                            <span class="fa fa-fw fa-caret-down"></span>
                                         </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li role="presentation">
+                                                <a class="link" role="menuitem" tabindex="-1" data-export-format="json">
+                                                    <i class="fa fa-fw fa-file-code-o"></i>
+                                                    JSON
+                                                </a>
+                                            </li>
+                                            <li role="presentation">
+                                                <a class="link" role="menuitem" tabindex="-1" data-export-format="xml">
+                                                    <i class="fa fa-fw fa-file-code-o"></i>
+                                                    XML
+                                                </a>
+                                            </li>
+                                            <li class="divider" role="presentation"></li>
+                                            <li role="presentation">
+                                                <a class="link" role="menuitem" tabindex="-1" data-export-format="csv">
+                                                    <i class="fa fa-fw fa-file-excel-o"></i>
+                                                    CSV
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
-                                <hr/>
-                                <div class="input-group-sm" data-field="division">
-                                    <label for="content-roles-filter-select-division">
+                            </div>
+                        </form>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="header" data-field="division">
                                         <i class="fa fa-fw fa-stethoscope"></i>
-                                        Division
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-division" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="type">
-                                    <label for="content-roles-filter-select-type">
+                                        <span class="content-text">Division</span>
+                                    </th>
+                                    <th class="header" data-field="type">
                                         <i class="fa fa-fw fa-tags"></i>
-                                        Type
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-type" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="level">
-                                    <label for="content-roles-filter-select-level">
+                                        <span class="content-text">Type</span>
+                                    </th>
+                                    <th class="header" data-field="level">
                                         <i class="fa fa-fw fa-signal"></i>
-                                        Level
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-level" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="serviceCategory">
-                                    <label for="content-roles-filter-select-service-category">
+                                        <span class="content-text">Level</span>
+                                    </th>
+                                    <th class="header" data-field="serviceCategory">
                                         <i class="fa fa-fw fa-medkit"></i>
-                                        Service Category
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-service-category" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                                <div class="input-group-sm" data-field="roles">
-                                    <label for="content-roles-filter-select-roles">
-                                        <i class="flag flag-us"></i>
-                                        Roles
-                                    </label>
-                                    <div class="btn-group btn-group-sm">
-                                        <select id="content-roles-filter-select-roles" class="multiselect" multiple="multiple"></select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <h2>
-                            <i class="fa fa-fw fa-table"></i>
-                            Data
-                        </h2>
-                        <div class="content-loading">
-                            <i class="fa fa-fw fa-spinner fa-spin"></i>
-                            <em>Loading ...</em>
-                        </div>
-                        <div class="content-data">
-                            <form name="content-roles-data-form">
-                                <div class="input-group-sm">
-                                    <div class="btn-group btn-group-sm">
-                                        <div class="dropdown content-data-dropdown-export">
-                                            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown">
-                                                <i class="fa fa-fw fa-download"></i>
-                                                Export
-                                                <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" data-export-format="json" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-code-o"></i>
-                                                        JSON
-                                                    </a>
-                                                </li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" data-export-format="xml" href="javascript:void(0);">
-                                                        <i class="fa fa-fw fa-file-code-o"></i>
-                                                        XML
-                                                    </a>
-                                                </li>
-                                                <li class="divider" role="presentation"></li>
-                                                <li role="presentation">
-                                                    <a role="menuitem" tabindex="-1" data-export-format="csv" href="javascript:void(0);">
-                                                        <span class="fa-stack">
-                                                            <i class="fa fa-fw fa-stack-2x fa-file-o"></i>
-                                                            <i class="fa fa-fw fa-stack-1x fa-stack-1x-inner fa-table"></i>
-                                                        </span>
-                                                        CSV
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="header" data-field="division">
-                                            <i class="fa fa-fw fa-stethoscope"></i>
-                                            <span class="content-text">Division</span>
-                                        </th>
-                                        <th class="header" data-field="type">
-                                            <i class="fa fa-fw fa-tags"></i>
-                                            <span class="content-text">Type</span>
-                                        </th>
-                                        <th class="header" data-field="level">
-                                            <i class="fa fa-fw fa-signal"></i>
-                                            <span class="content-text">Level</span>
-                                        </th>
-                                        <th class="header" data-field="serviceCategory">
-                                            <i class="fa fa-fw fa-medkit"></i>
-                                            <span class="content-text">Service Category</span>
-                                        </th>
-                                        <th class="header" data-field="roles">
-                                            <i class="flag flag-us"></i>
-                                            <span class="content-text">Roles</span>
-                                        </th>
-                                        <th class="header" colspan="2" data-field="desc">
-                                            <i class="fa fa-fw fa-comments"></i>
-                                            <span class="content-text">Description</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                                        <span class="content-text">Service Category</span>
+                                    </th>
+                                    <th class="header" data-field="roles">
+                                        <i class="icon icon-flag icon-flag-us"></i>
+                                        <span class="content-text">Roles</span>
+                                    </th>
+                                    <th class="header" colspan="2" data-field="desc">
+                                        <i class="fa fa-fw fa-comments"></i>
+                                        <span class="content-text">Description</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>

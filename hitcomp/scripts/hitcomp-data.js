@@ -3,10 +3,11 @@
     // CLASS: DATA SET
     //====================================================================================================
     $.extend($.hitcomp, {
-        "DataSet": function (name, feedKey, sheetName) {
+        "DataSet": function (name, feedKey, sheetName, onLoad) {
             this.name = name;
             this.feedKey = feedKey;
             this.sheetName = sheetName;
+            this.onLoad = onLoad;
             
             this.cacheKey = $.hitcomp.DataSet.CACHE_KEY_PREFIX + this.name;
         }
@@ -18,7 +19,6 @@
         "CACHE_VALUE_DELIM": "|"
     });
     
-    // TODO: implement error handling
     $.extend($.hitcomp.DataSet.prototype, {
         "cacheActive": true,
         "cacheDuration": $.hitcomp.DataSet.CACHE_DURATION_DEFAULT,
@@ -31,6 +31,7 @@
         "load": function () {
             var data, dataParts, dataTime;
             
+            // noinspection JSLint
             if (this.cacheActive && localStorage && (data = localStorage.getItem(this.cacheKey)) && 
                 (dataParts = data.split($.hitcomp.DataSet.CACHE_VALUE_DELIM, 2)) && (((dataTime = (Number(dataParts[0]))) + this.cacheDuration) > $.now()) && 
                 (data = JSON.parse(dataParts[1]))) {
@@ -40,7 +41,7 @@
                 this.onLoad(this, data);
             } else {
                 Tabletop.init({
-                    "callback": function (data) {
+                    "callback": $.proxy(function (data) {
                         data = data[this.sheetName].elements;
                         
                         if (this.cacheActive && localStorage) {
@@ -51,7 +52,7 @@
                         }
                         
                         this.onLoad(this, data);
-                    },
+                    }, this),
                     "callbackContext": this,
                     "key": this.feedKey,
                     "wanted": [ this.sheetName ]
@@ -65,8 +66,8 @@
     //====================================================================================================
     $.extend($.hitcomp, {
         "DataItem": function (dataObj) {
-            this.id = (dataObj["rowNumber"] - 1);
-            this.level = $.hitcomp.CompetencyLevel.valueOf({ "displayName": dataObj["level"] });
+            this.id = (dataObj.rowNumber - 1);
+            this.level = $.hitcomp.CompetencyLevel.valueOf({ "displayName": dataObj.level });
         }
     });
     
@@ -197,29 +198,6 @@
         "dataTableElem": undefined,
         "dataFilterSelectElem": undefined,
         
-        "deselectAll": function () {
-            this.changeAll(false);
-        },
-        
-        "selectAll": function () {
-            this.changeAll(true);
-        },
-        
-        "changeAll": function (dataFilterSelectOptState) {
-            $("option", this.dataFilterSelectElem).each($.proxy(function (dataFilterSelectOptIndex, dataFilterSelectOptElem) {
-                this.dataFilterSelectElem.multiselect((dataFilterSelectOptState ? "select" : "deselect"), $(dataFilterSelectOptElem).val(), true);
-            }, this));
-        },
-        
-        "buildSelectDataProvider": function (dataFilterSelectOptValues) {
-            return $.map(dataFilterSelectOptValues, function (dataFilterSelectOptValue) {
-                return {
-                    "label": dataFilterSelectOptValue,
-                    "value": dataFilterSelectOptValue
-                };
-            });
-        },
-        
         "buildSelect": function () {
             return {
                 "onChange": $.proxy(function () {
@@ -252,15 +230,15 @@
         
         "buildSelectControlElements": function () {
             return [
-                this.buildButtonElement("All", "btn btn-default form-control", "fa fa-fw fa-check-square-o").bind("click", { "dataFilter": this }, 
+                this.buildButtonElement("All", "btn btn-default form-control", "fa fa-fw fa-plus-square-o").bind("click", { "dataFilter": this }, 
                     function (event) {
-                        event.data.dataFilter.selectAll.call(event.data.dataFilter);
+                        event.data.dataFilter.dataFilterSelectElem.multiselect("selectAllOptions");
                     }).tooltip({
                         "title": "Select All"
                     }),
                 this.buildButtonElement("None", "btn btn-default form-control", "fa fa-fw fa-minus-square-o").bind("click", { "dataFilter": this }, 
                     function (event) {
-                        event.data.dataFilter.deselectAll.call(event.data.dataFilter);
+                        event.data.dataFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
                     }).tooltip({
                         "title": "Select None"
                     })
@@ -326,8 +304,12 @@
     $.extend($.hitcomp.DataExporter.prototype, {
         "dataTableElem": undefined,
 
-        "export": function (dataExportLinkElem, dataExportFileBaseName) {
-            var dataExportFormat = $.hitcomp.DataExportFormat.valueOf({
+        "export": function (dataExportEvent, dataExportFileBaseName) {
+            if (dataExportEvent.which > 2) {
+                return;
+            }
+            
+            var dataExportLinkElem = $(dataExportEvent.target), dataExportFormat = $.hitcomp.DataExportFormat.valueOf({
                     "format": (dataExportLinkElem = (dataExportLinkElem.is("a") ? dataExportLinkElem : dataExportLinkElem.parent())).attr("data-export-format")
                 }), dataExportContent = this.buildDataExportContent(), dataExportStr, dataExportFileName;
             
@@ -365,11 +347,21 @@
                 if (dataExportBlob.size && (dataExportBlobPrevSize == dataExportBlob.size)) {
                     clearInterval(dataExportInterval);
                     
-                    saveAs(dataExportBlob, (dataExportFileName = sprintf("%s_%s%s", dataExportFileBaseName, moment().formatTimestamp(true), 
-                        dataExportFormat.value.fileNameExt)));
-                    
-                    console.info(sprintf("Exported data file (name=%s, mimeType=%s, size=%d).", dataExportFileName, dataExportFormat.value.fileMimeType, 
-                        dataExportBlob.size));
+                    if (dataExportEvent.which == 1) {
+                        saveAs(dataExportBlob, (dataExportFileName = sprintf("%s_%s%s", dataExportFileBaseName, moment().formatTimestamp(true), 
+                            dataExportFormat.value.fileNameExt)));
+                        
+                        console.info(sprintf("Saved exported data blob file (name=%s, mimeType=%s, size=%d).", dataExportFileName, 
+                            dataExportFormat.value.fileMimeType, dataExportBlob.size));
+                    } else {
+                        var dataExportBlobUrl = URL.createObjectURL(dataExportBlob);
+                        
+                        // noinspection JSLint
+                        open(dataExportBlobUrl);
+                        
+                        console.info(sprintf("Opened exported data blob (url=%s, mimeType=%s, size=%d).", dataExportBlobUrl, 
+                            dataExportFormat.value.fileMimeType, dataExportBlob.size));
+                    }
                 } else {
                     dataExportBlobPrevSize = dataExportBlob.size;
                 }
@@ -393,4 +385,4 @@
             return dataExportContent;
         }
     });
-})(jQuery);
+}(jQuery));

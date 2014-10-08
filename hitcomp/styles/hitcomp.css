@@ -1,176 +1,111 @@
-body,
-*.ui-widget,
-*.dropdown-menu,
-*.input-group-addon,
-div.tooltip-inner,
-input.form-control {
-    font-family: "Tahoma", sans-serif;
+body {
+    position: relative;
+    padding-top: 50px;
+    font-family: "Noto Sans", sans-serif;
     font-size: 11px;
 }
 
-div#wrap {
-    height: auto;
-    min-height: 100%;
-    margin: 0 auto -52px;
-    padding: 0 0 52px;
-}
-
-div.container {
-    width: 100%;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 i.fa,
-i.flag,
-i.glyphicon,
+i.icon,
 th.tablesorter-header i.fa,
-th.tablesorter-header i.flag,
-th.tablesorter-header i.glyphicon {
+th.tablesorter-header i.icon {
     margin-right: 2px;
     font-size: 14px;
 }
 
-span.fa-stack i.fa.fa-stack-1x.fa-stack-1x-inner {
-    font-size: 8px;
-}
-
-i.flag,
-th.tablesorter-header i.flag {
-    display: inline-block;
-    width: 16px;
-    height: 11px;
-    margin-top: 3px;
-    background-image: url("../images/flag-icons-16x11.png");
-    background-repeat: no-repeat;
-}
-
-i.flag.flag-de {
-    background-position: -80px -33px;
-}
-
-i.flag.flag-es {
-    background-position: -16px -44px;
-}
-
-i.flag.flag-fr {
-    background-position: -144px -44px;
-}
-
-i.flag.flag-gb {
-    background-position: -176px -44px;
-}
-
-i.flag.flag-it {
-    background-position: -208px -66px;
-}
-
-i.flag.flag-us {
-    background-position: -144px -154px;
-}
-
-div#nav {
-    background-color: white;
-    border-color: black;
-}
-
-div#nav a.navbar-brand {
-    padding: 10px;
-    font-size: 18px;
-}
-
-div#nav ul.navbar-nav {
-    height: 52px;
-    padding: 10px;
-    line-height: 32px;
-}
-
-div#nav ul.navbar-nav.navbar-right:last-of-type {
-    margin-right: 0;
-}
-
-div#nav ul.navbar-nav li a {
-    padding: 0 5px;
-    line-height: inherit;
-    font-size: 12px;
-}
-
-div#nav ul.navbar-nav li.dropdown a i.fa,
-div#nav ul.navbar-nav li.dropdown a i.glyphicon {
+i.fa.fa-spin {
     font-size: 16px;
 }
 
-div#nav ul.navbar-nav li.dropdown ul.dropdown-menu,
-div#nav ul.navbar-nav li.dropdown ul.dropdown-menu li.dropdown-header {
-    font-size: 11px;
+i.icon,
+th.tablesorter-header i.icon {
+    display: inline-block;
+    width: 16px;
+    background-repeat: no-repeat;
 }
 
-div#nav ul.navbar-nav li.dropdown ul.dropdown-menu li a i.fa,
-div#nav ul.navbar-nav li.dropdown ul.dropdown-menu li a i.glyphicon {
-    font-size: 14px;
+i.icon:not(.icon-flag),
+th.tablesorter-header i.icon:not(.icon-flag) {
+    height: 16px;
+    margin-bottom: -2px;
 }
 
-div#nav ul.navbar-nav li.dropdown ul.dropdown-menu span.caret {
-    margin-left: 5px;
+i.icon.icon-google-code-project {
+    background-image: url("http://www.gstatic.com/codesite/ph/images/phosting.ico");
 }
 
-div#nav ul.navbar-nav li.dropdown ul.list-unstyled {
-    text-indent: 10px;
+i.icon.icon-flag,
+th.tablesorter-header i.icon.icon-flag {
+    height: 11px;
+    background-image: url("../images/flag-icons-16x11.png");
 }
 
-div#nav ul.list-unstyled li {
-    display: block;
-    line-height: 32px;
+i.icon.icon-flag.icon-flag-de {
+    background-position: -80px -33px;
 }
 
-div#content {
-    margin-top: 10px;
-    padding: 52px 20px 0 0;
+i.icon.icon-flag.icon-flag-es {
+    background-position: -16px -44px;
 }
 
-div#content > div {
-    margin-bottom: 10px;
+i.icon.icon-flag.icon-flag-fr {
+    background-position: -144px -44px;
 }
 
-h1, h2, h3 {
-    font-weight: bold;
+i.icon.icon-flag.icon-flag-gb {
+    background-position: -176px -44px;
+}
+
+i.icon.icon-flag.icon-flag-it {
+    background-position: -208px -66px;
+}
+
+i.icon.icon-flag.icon-flag-us {
+    background-position: -144px -154px;
 }
 
 h1,
-h1 i.fa,
-h1 i.glyphicon {
+h1 i.fa {
     font-size: 18px;
 }
 
-li > h1 {
-    display: inline-block;
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
 h2,
-h2 i.fa,
-h2 i.glyphicon {
+h2 i.fa {
     font-size: 16px;
 }
 
 h3,
-h3 i.fa,
-h3 i.glyphicon {
+h3 i.fa {
     font-size: 14px;
+}
+
+h1 i.fa,
+h2 i.fa,
+h3 i.fa {
+    font-size: inherit;
 }
 
 a:focus {
     outline-style: none;
 }
 
+a[role] i.fa,
+a[data-toggle] i.fa {
+    font-size: inherit;
+}
+
+a.link:hover {
+    cursor: pointer;
+}
+
+div.well.content-loading {
+    margin: 10px;
+    font-size: 14px;
+}
+
 div.tooltip-inner {
     max-width: 300px;
     text-align: left;
-}
-
-div.content-loading {
-    font-style: italic;
 }
 
 span.input-group-addon {
@@ -181,11 +116,11 @@ button.btn.form-control,
 input.form-control {
     width: inherit;
     height: inherit;
+    font-size: 13px;
 }
 
 button.btn.form-control {
     height: 30px;
-    font-size: 12px;
 }
 
 input.form-control {
@@ -196,9 +131,41 @@ ul.dropdown-menu {
     padding: 5px;
 }
 
+ul.dropdown-menu li a {
+    font-size: 13px;
+}
+
 label.checkbox {
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+nav.navbar {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.176);
+}
+
+nav.navbar div.container-fluid ul.navbar-nav {
+    font-size: 18px;
+}
+
+nav.navbar div.container-fluid ul.navbar-nav.nav-tabs {
+    border-bottom: none;
+}
+
+nav.navbar div.container-fluid ul.navbar-nav.nav-tabs li a {
+    border-radius: 0;
+}
+
+nav.navbar div.container-fluid ul.navbar-nav.nav-tabs li a:hover {
+    cursor: pointer;
+}
+
+nav.navbar div.container-fluid ul.navbar-nav li.dropdown {
+    font-size: 14px;
+}
+
+nav.navbar div.container-fluid ul.navbar-nav li.dropdown ul.dropdown-menu li a {
+    font-size: 11px;
 }
 
 div.tooltip-content,
@@ -232,11 +199,6 @@ div#content-tabs div.content-tab div.content-filter div.input-group-sm:first-of-
 div#content-tabs div.content-tab div.content-filter div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu,
 div#content-tabs div.content-tab div.content-data div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu {
     padding: 10px 5px;
-}
-
-div#content-tabs div.content-tab div.content-data div.input-group-sm div.btn-group div.dropdown.content-data-dropdown-export ul.dropdown-menu li a > i.fa,
-div#content-tabs div.content-tab div.content-data div.input-group-sm div.btn-group div.dropdown.content-data-dropdown-export ul.dropdown-menu li a > i.glyphicon {
-    font-size: 16px;
 }
 
 div#content-tabs div.content-tab div.content-localize div.input-group-sm label[for],
@@ -320,8 +282,7 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td button
 div#content-tabs div.content-tab div.content-data table.table tbody tr td:not(:last-of-type) button.btn.form-control {
     margin-left: 5px;
 }
-div#content-tabs div.content-tab div.content-data table.table tbody tr td button.btn.form-control i.fa,
-div#content-tabs div.content-tab div.content-data table.table tbody tr td button.btn.form-control i.glyphicon {
+div#content-tabs div.content-tab div.content-data table.table tbody tr td button.btn.form-control i.fa {
     margin-right: 0;
     padding: 2px;
 }

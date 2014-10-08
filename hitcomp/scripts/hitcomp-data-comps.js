@@ -41,13 +41,13 @@
         "Competency": function (dataObj) {
             $.hitcomp.DataItem.call(this, dataObj);
             
-            this.domain = dataObj["domain"];
-            this.division = dataObj["subdomain"];
-            this.desc = dataObj["competency"];
-            this.category = dataObj["area"];
-            this.quadrant = dataObj["competencyquadrant"];
-            this.origin = dataObj["siloorigin"];
-            this.code = dataObj["code"];
+            this.domain = dataObj.domain;
+            this.division = dataObj.subdomain;
+            this.desc = dataObj.competency;
+            this.category = dataObj.area;
+            this.quadrant = dataObj.competencyquadrant;
+            this.origin = dataObj.siloorigin;
+            this.code = dataObj.code;
         }
     });
     
@@ -113,4 +113,4 @@
     $.extend($.hitcomp.CompetencyFilter, $.hitcomp.DataFilter);
     
     $.extend($.hitcomp.CompetencyFilter.prototype, $.hitcomp.DataFilter.prototype);
-})(jQuery);
+}(jQuery));

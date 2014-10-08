@@ -2,8 +2,13 @@
     $(window).load(function () {
         $.hitcomp.analytics.configureAnalytics();
         
-        var contentTabsElem = $("div#content-tabs").tabs(), homeTabElem = $("div#content-home-tab", contentTabsElem), 
+        var bodyElem = $("body"), navBarElem = $("nav.navbar", bodyElem), navBarHeaderElem = $("div.navbar-header", navBarElem),
+            navBarBrandElem = $("a.navbar-brand", navBarHeaderElem), contentNavTabsElem = $("ul.navbar-nav.nav-tabs", navBarElem),
+            contentNavTabLinkElems = $("li a", contentNavTabsElem), contentElem = $("div#content", bodyElem),
+            contentTabsElem = $("div#content-tabs", contentElem), homeTabElem = $("div#content-home-tab", contentTabsElem),
             homeDataElem = $("div.content-data", homeTabElem), glossaryTableElem = $("table", homeDataElem);
+        
+        navBarBrandElem.attr("href", document.location.href.split("#", 2)[0]);
         
         $("div.content-tab:not(#content-home-tab) div.content-data table thead tr th", contentTabsElem).each(
             function (dataTableHeaderIndex, dataTableHeaderElem) {
@@ -31,27 +36,30 @@
             }
         }));
         
-        if (localStorage) {
-            var contentTabActive;
-            
-            if ((contentTabActive = localStorage.getItem($.hitcomp.ACTIVE_TAB_KEY))) {
-                contentTabsElem.tabs("option", "active", (contentTabActive = (Number(contentTabActive))));
+        contentNavTabLinkElems.on("shown.bs.tab", function (event) {
+            if (localStorage) {
+                localStorage.setItem($.hitcomp.ui.CONTENT_TAB_ACTIVE_KEY, contentNavTabLinkElems.index(event.target));
             }
+        });
+        
+        var contentNavTabActiveValue = 0;
+        
+        if (localStorage) {
+            var contentNavTabActiveStrValue = localStorage.getItem($.hitcomp.ui.CONTENT_TAB_ACTIVE_KEY);
             
-            contentTabsElem.tabs("option", "activate", function (event, ui) {
-                localStorage.setItem($.hitcomp.ACTIVE_TAB_KEY, contentTabsElem.tabs("option", "active"));
-            });
+            contentNavTabActiveValue = (contentNavTabActiveStrValue ? (Number(contentNavTabActiveStrValue)) : contentNavTabActiveValue);
         }
+        
+        contentNavTabLinkElems.eq(contentNavTabActiveValue).tab("show");
         
         contentTabsElem.prev("div.content-loading").hide();
         contentTabsElem.show();
         
-        var compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined"), 
-            compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
+        var compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
             compsDataElem = $("div.content-data", compsTabElem), compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), 
-            comps = [], compsExporter, compsFilters = [];
+            compsDataSet, comps = [], compsExporter, compsFilters = [];
         
-        compsDataSet.onLoad = function (compsDataSet, compsData) {
+        compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined", function (compsDataSet, compsData) {
             var comp;
             
             $.each(compsData, function (compDataObjIndex, compDataObj) {
@@ -60,16 +68,14 @@
                 compsTableBodyElem.append(comp.buildRowElement());
             });
             
-            $("div.input-group-sm div.btn-group button.btn", compsDataElem).tooltip({
-                "title": "Export Data"
-            });
+            $("div.input-group-sm div.btn-group button.btn", compsDataElem).tooltip({ "title": "Export Data" });
             
             compsExporter = new $.hitcomp.DataExporter(compsTableElem);
             
-            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", compsDataElem).bind("click", {
+            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", compsDataElem).bind("mouseup", {
                 "compsExporter": compsExporter
             }, function (event) {
-                event.data.compsExporter.export.call(event.data.compsExporter, $(event.target), "hitcomp-comps");
+                event.data.compsExporter.export(event, "hitcomp-comps");
             });
             
             compsTableElem.tablesorter($.hitcomp.Competency.buildTableSorter(compsTableElem));
@@ -82,7 +88,7 @@
                     compFilterSelectElem)));
                 
                 compFilterSelectElem.multiselect(compFilter.buildSelect());
-                compFilterSelectElem.multiselect("dataprovider", compFilter.buildSelectDataProvider($.map(((compFilterType == "level") ? 
+                compFilterSelectElem.multiselect("dataprovider", $.fn.multiselect.buildDataProvider($.map(((compFilterType == "level") ? 
                     $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
                         return (compLevel.value.order >= 0);
                     }) : $.map(comps, function (comp) {
@@ -100,25 +106,22 @@
             $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", compsFilterElem).bind("click", { "dataFilters": compsFilters }, 
                 function (event) {
                 $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
-                    dataFilter.deselectAll.call(dataFilter);
+                    dataFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
                 });
-            }).tooltip({
-                "title": "Reset Filters"
-            });
+            }).tooltip({ "title": "Reset Filters" });
             
             compsFilterElem.prev("div.content-loading").hide();
             compsFilterElem.show();
-        };
+        });
         
         compsDataSet.load();
         
-        var rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles"), 
-            rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
+        var rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
             rolesLocalizeSelectElem = $("select", rolesLocalizeElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
             rolesDataElem = $("div.content-data", rolesTabElem), rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), 
-            roles = [], rolesExporter, rolesFilters = [], rolesLocalize;
+            rolesDataSet, roles = [], rolesExporter, rolesFilters = [], rolesLocalize;
         
-        rolesDataSet.onLoad = function (rolesDataSet, rolesData) {
+        rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles", function (rolesDataSet, rolesData) {
             var role;
             
             $.each(rolesData, function (roleDataObjIndex, roleDataObj) {
@@ -127,16 +130,14 @@
                 rolesTableBodyElem.append(role.buildRowElement());
             });
             
-            $("div.input-group-sm div.btn-group button.btn", rolesDataElem).tooltip({
-                "title": "Export Data"
-            });
+            $("div.input-group-sm div.btn-group button.btn", rolesDataElem).tooltip({ "title": "Export Data" });
             
             rolesExporter = new $.hitcomp.DataExporter(rolesTableElem);
             
-            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", rolesDataElem).bind("click", {
+            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", rolesDataElem).bind("mouseup", {
                 "rolesExporter": rolesExporter
             }, function (event) {
-                event.data.rolesExporter.export.call(event.data.rolesExporter, $(event.target), "hitcomp-roles");
+                event.data.rolesExporter.export(event, "hitcomp-roles");
             });
             
             rolesTableElem.tablesorter($.hitcomp.Role.buildTableSorter(rolesTableElem));
@@ -149,7 +150,7 @@
                     roleFilterSelectElem)));
                 
                 roleFilterSelectElem.multiselect(roleFilter.buildSelect());
-                roleFilterSelectElem.multiselect("dataprovider", roleFilter.buildSelectDataProvider($.map(((roleFilterType == "level") ? 
+                roleFilterSelectElem.multiselect("dataprovider", $.fn.multiselect.buildDataProvider($.map(((roleFilterType == "level") ? 
                     $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
                         return (compLevel.value.order >= 0);
                     }) : $.map(roles, function (role) {
@@ -157,7 +158,9 @@
                     })).sort(function (roleItemValue1, roleItemValue2) {
                         if (roleFilterType == "level") {
                             return roleItemValue1.value.compareTo(roleItemValue2.value);
-                        } else if (roleFilterType == "roles") {
+                        }
+                        
+                        if (roleFilterType == "roles") {
                             var rolesLocalizeSelectValue = rolesLocalizeSelectElem.val();
                             
                             roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
@@ -184,11 +187,9 @@
             $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", rolesFilterElem).bind("click", { "dataFilters": rolesFilters }, 
                 function (event) {
                 $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
-                    dataFilter.deselectAll.call(dataFilter);
+                    dataFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
                 });
-            }).tooltip({
-                "title": "Reset Filters"
-            });
+            }).tooltip({ "title": "Reset Filters" });
             
             (rolesLocalize = new $.hitcomp.RoleLocalization($("div.input-group-sm[data-field=\"roles\"] select", rolesFilterElem), rolesTableElem, 
                 rolesLocalizeSelectElem)).determineDefault();
@@ -196,39 +197,39 @@
             rolesLocalizeSelectElem.selectpicker();
             
             rolesLocalizeSelectElem.bind("change", { "rolesLocalize": rolesLocalize }, function (event) {
-                event.data.rolesLocalize.localize.call(event.data.rolesLocalize, rolesLocalizeSelectElem.val());
+                event.data.rolesLocalize.localize(rolesLocalizeSelectElem.val());
             });
             
             $("tr td[data-field=\"level\"] button", compsTableBodyElem).bind("click", {
-                "contentTabsElem": contentTabsElem,
+                "contentNavTabLinkElems": contentNavTabLinkElems,
                 "rolesFilterElem": rolesFilterElem
             }, function (event) {
-                var roleLevelFilterSelectElem = $($("select", event.data.rolesFilterElem)[2]), 
+                var roleLevelFilterSelectElem = $("select:eq(2)", event.data.rolesFilterElem), 
                     roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), compDataElem = $(event.target).parent();
                 
-                roleLevelFilter.deselectAll.call(roleLevelFilter);
+                roleLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
                 
                 roleLevelFilterSelectElem.multiselect("select", (compDataElem.is("td") ? compDataElem : compDataElem.parent())
                     .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
                 
-                event.data.contentTabsElem.tabs("option", "active", 2);
+                event.data.contentNavTabLinkElems.eq(2).tab("show");
                 
                 $(document).scrollTop(0);
             });
             
             $("tr td[data-field=\"level\"] button", rolesTableBodyElem).bind("click", {
-                "contentTabsElem": contentTabsElem,
+                "contentNavTabLinkElems": contentNavTabLinkElems,
                 "compsFilterElem": compsFilterElem
             }, function (event) {
-                var compLevelFilterSelectElem = $($("select", event.data.compsFilterElem)[2]), 
+                var compLevelFilterSelectElem = $("select:eq(2)", event.data.compsFilterElem), 
                     compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), roleDataElem = $(event.target).parent();
                 
-                compLevelFilter.deselectAll.call(compLevelFilter);
+                compLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
                 
                 compLevelFilterSelectElem.multiselect("select", (roleDataElem.is("td") ? roleDataElem : roleDataElem.parent())
                     .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
                 
-                event.data.contentTabsElem.tabs("option", "active", 1);
+                event.data.contentNavTabLinkElems.eq(1).tab("show");
                 
                 $(document).scrollTop(0);
             });
@@ -238,8 +239,8 @@
             
             rolesLocalizeElem.prev("div.content-loading").hide();
             rolesLocalizeElem.show();
-        };
+        });
         
         rolesDataSet.load();
     });
-})(jQuery);
+}(jQuery));

@@ -12,7 +12,7 @@
         },
         
         "printable": function () {
-            return this.replace(/[^\s\w\-\.\(\)\[\]\\\/"';:,&]/g, String.EMPTY);
+            return this.replace(/[^a-z0-9\ \t\n\r\-\.\(\)\[\]\\\/"';:,&]/gi, String.EMPTY);
         },
         
         "quote": function (escapedQuote) {
@@ -82,9 +82,9 @@
                 }, this));
                 
                 return this;
-            } else {
-                return this._addClass(classes);
             }
+            
+            return this._addClass(classes);
         },
         
         "getClass": function () {
@@ -98,13 +98,14 @@
                 var hasClasses = true;
                 
                 $.each(classes, $.proxy(function (classIndex, clazz) {
+                    // noinspection JSLint
                     return (hasClasses = this._hasClass(clazz));
                 }, this));
                 
                 return hasClasses;
-            } else {
-                return this._hasClass(classes);
             }
+            
+            return this._hasClass(classes);
         },
         
         "removeClass": function (classes) {
@@ -114,9 +115,9 @@
                 }, this));
                 
                 return this;
-            } else {
-                return this._removeClass(classes);
             }
+            
+            return this._removeClass(classes);
         },
         
         "toggleClass": function (classes) {
@@ -126,9 +127,9 @@
                 }, this));
                 
                 return this;
-            } else {
-                return this._toggleClass(classes);
             }
+            
+            return this._toggleClass(classes);
         }
     });
     
@@ -143,6 +144,7 @@
                 enumItemPropsMatch = true;
                 
                 $.each(enumItemProps, function (enumItemPropName, enumItemPropValue) {
+                    // noinspection JSLint
                     return (enumItemPropsMatch = (enumItem.value[enumItemPropName] == enumItemPropValue));
                 });
                 
@@ -171,73 +173,16 @@
     });
     
     //====================================================================================================
-    // EXTENSIONS: BOOTSTRAP TOOLTIP
-    //====================================================================================================
-    $.extend($.fn.tooltip.Constructor.DEFAULTS, {
-        "container": "body",
-        "html": true,
-        "title": function () {
-            return $.trim($("div.tooltip-content", this).html());
-        }
-    });
-    
-    //====================================================================================================
-    // EXTENSIONS: TABLESORTER
-    //====================================================================================================
-    $.extend($.tablesorter.defaults, {
-        "headerTemplate": "{content}{icon}",
-        "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
-            return dataValue1.localeCompare(dataValue2);
-        },
-        "theme": "bootstrap",
-        "widgetOptions": {
-            "uitheme": "bootstrap"
-        },
-        "widgets": [
-            "uitheme"
-        ]
-    });
-    
-    //====================================================================================================
-    // EXTENSIONS: TABLESORTER THEME
-    //====================================================================================================
-    $.extend($.tablesorter.themes.bootstrap, {
-        "sortAsc": "fa fa-fw fa-sort-up",
-        "sortDesc": "fa fa-fw fa-sort-down",
-        "sortNone": "fa fa-fw fa-sort",
-        "table": "table table-bordered table-condensed table-hover"
-    });
-    
-    //====================================================================================================
-    // EXTENSIONS: BOOTSTRAP SELECT
-    //====================================================================================================
-    $.extend($.fn.selectpicker.Constructor.DEFAULTS, {
-        "dropupAuto": false,
-        "iconBase": String.EMPTY
-    });
-    
-    //====================================================================================================
-    // EXTENSIONS: BOOTSTRAP MULTISELECT
-    //====================================================================================================
-    $.extend($.fn.multiselect.Constructor.prototype.defaults, {
-        "buttonClass": "btn btn-default form-control",
-        "buttonContainer": '<div class="btn-group btn-group-sm"/>',
-        "enableCaseInsensitiveFiltering": true,
-        "filterBehavior": "text",
-        "maxHeight": 400
-    });
-    
-    $.extend($.fn.multiselect.Constructor.prototype.defaults.templates, {
-        "filter": ('<div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span>' +
-            '<input class="form-control multiselect-search" type="text"/></div>')
-    });
-    
-    //====================================================================================================
     // NAMESPACE: MAIN
     //====================================================================================================
     $.extend($, {
-        "hitcomp": {
-            "ACTIVE_TAB_KEY": "hitcomp.tab.active"
-        }
+        "hitcomp": {}
     });
-})(jQuery);
+    
+    //====================================================================================================
+    // FUNCTION NAMESPACE: MAIN
+    //====================================================================================================
+    $.extend($.fn, {
+        "hitcomp": {}
+    });
+}(jQuery));
