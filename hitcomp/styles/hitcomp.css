@@ -30,8 +30,8 @@ th.tablesorter-header i.icon:not(.icon-flag) {
     margin-bottom: -2px;
 }
 
-i.icon.icon-google-code-project {
-    background-image: url("http://www.gstatic.com/codesite/ph/images/phosting.ico");
+i.icon.icon-github-repo {
+    background-image: url("https://assets-cdn.github.com/favicon.ico");
 }
 
 i.icon.icon-flag,
