@@ -41,9 +41,7 @@
                 this.onLoad(this, data);
             } else {
                 Tabletop.init({
-                    "callback": $.proxy(function (data) {
-                        data = data[this.sheetName].elements;
-                        
+                    "callback": function (data) {
                         if (this.cacheActive && localStorage) {
                             localStorage.setItem(this.cacheKey, ((dataTime = $.now()) + $.hitcomp.DataSet.CACHE_VALUE_DELIM + JSON.stringify(data)));
                             
@@ -52,9 +50,11 @@
                         }
                         
                         this.onLoad(this, data);
-                    }, this),
+                    },
                     "callbackContext": this,
                     "key": this.feedKey,
+                    "prettyColumnNames": false,
+                    "simpleSheet": true,
                     "wanted": [ this.sheetName ]
                 });
             }

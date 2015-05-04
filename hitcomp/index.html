@@ -7,19 +7,19 @@
         <link type="image/png" rel="icon" href="images/hitcomp-logo-16x16.png"/>
         <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic&subset=latin,latin-ext"/>
         <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
-        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
-        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
         <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/css/theme.bootstrap.css"/>
-        <link type="text/css" rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css"/>
-        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/css/bootstrap-multiselect.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/silviomoreto/bootstrap-select/v1.6.5/dist/css/bootstrap-select.min.css"/>
+        <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.12/dist/css/bootstrap-multiselect.css"/>
         <link type="text/css" rel="stylesheet" href="styles/hitcomp.css"/>
         <script type="text/javascript" src="http://www.google-analytics.com/analytics.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v0.2.6/enum-0.2.6.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v2.0.2/enum-2.0.2.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/alexei/sprintf.js/v0.7/src/sprintf.js"></script>
-        <script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/moment/moment/2.10.2/min/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/globalize.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.de.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.en-GB.js"></script>
@@ -29,9 +29,9 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/jquery/globalize/v0.1.1/lib/cultures/globalize.culture.it.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/js/jquery.tablesorter.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/js/jquery.tablesorter.widgets.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.3.5/src/tabletop.js"></script>
-        <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js"></script>
-        <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.9/js/bootstrap-multiselect.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/jsoma/tabletop/v1.4.0/src/tabletop.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/silviomoreto/bootstrap-select/v1.6.5/dist/js/bootstrap-select.min.js"></script>
+        <script type="text/javascript" src="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.12/dist/js/bootstrap-multiselect.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/zachofalltrades/jquery.format/0.1.2/jquery.format.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js"></script>
@@ -83,7 +83,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" target="_blank" href="https://github.com/esacinc/hitcomp">
-                                    <i class="icon icon-github-repo"></i>
+                                    <i class="fa fa-fw fa-github"></i>
                                     GitHub Repository
                                 </a>
                             </li>
@@ -109,7 +109,7 @@
                             <strong>Introduction</strong>
                         </h1>
                         <p>
-                            <em>HITCOMP: An Interactive Tool for Discovering “Health IT eSkills” in the United States and European Union</em>
+                            <em>HITCOMP: An Interactive Tool for Discovering "Health IT eSkills" in the United States and European Union</em>
                         </p>
                         <p>
                             Both the United States and the European Union are currently working to encourage more effective use of information technology 

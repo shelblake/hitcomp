@@ -57,16 +57,17 @@
         
         var compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
             compsDataElem = $("div.content-data", compsTabElem), compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), 
-            compsDataSet, comps = [], compsExporter, compsFilters = [];
+            compsDataSet, comps = [], compRowElems = [], compsExporter, compsFilters = [];
         
         compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined", function (compsDataSet, compsData) {
             var comp;
             
             $.each(compsData, function (compDataObjIndex, compDataObj) {
                 comps.push((comp = new $.hitcomp.Competency(compDataObj)));
-                
-                compsTableBodyElem.append(comp.buildRowElement());
+                compRowElems.push(comp.buildRowElement());
             });
+            
+            compsTableBodyElem.append(compRowElems);
             
             $("div.input-group-sm div.btn-group button.btn", compsDataElem).tooltip({ "title": "Export Data" });
             
@@ -119,16 +120,17 @@
         var rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
             rolesLocalizeSelectElem = $("select", rolesLocalizeElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
             rolesDataElem = $("div.content-data", rolesTabElem), rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), 
-            rolesDataSet, roles = [], rolesExporter, rolesFilters = [], rolesLocalize;
+            rolesDataSet, roles = [], roleRowElems = [], rolesExporter, rolesFilters = [], rolesLocalize;
         
         rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles", function (rolesDataSet, rolesData) {
             var role;
             
             $.each(rolesData, function (roleDataObjIndex, roleDataObj) {
                 roles.push((role = new $.hitcomp.Role(roleDataObj)));
-                
-                rolesTableBodyElem.append(role.buildRowElement());
+                roleRowElems.push(role.buildRowElement());
             });
+            
+            rolesTableBodyElem.append(roleRowElems);
             
             $("div.input-group-sm div.btn-group button.btn", rolesDataElem).tooltip({ "title": "Export Data" });
             
