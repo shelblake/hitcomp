@@ -41,13 +41,10 @@
         "Competency": function (dataObj) {
             $.hitcomp.DataItem.call(this, dataObj);
             
-            this.domain = dataObj.domain;
-            this.division = dataObj.subdomain;
+            this.domain = dataObj.domain.tokenize($.hitcomp.DataItem.DATA_VALUE_DELIM);
             this.desc = dataObj.competency;
             this.category = dataObj.area;
-            this.quadrant = dataObj.competencyquadrant;
             this.origin = dataObj.siloorigin;
-            this.code = dataObj.code;
         }
     });
     
@@ -57,10 +54,10 @@
             
             return $.extend(dataTableSorter, {
                 "sortList": [
-                    [ 2, 0 ]
+                    [ 1, 0 ]
                 ],
                 "textSorter": function (dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem) {
-                    return ((dataColIndex == 2) ? $.hitcomp.CompetencyLevel.valueOf({ "name": dataValue1 }).value.compareTo(
+                    return ((dataColIndex == 1) ? $.hitcomp.CompetencyLevel.valueOf({ "name": dataValue1 }).value.compareTo(
                         $.hitcomp.CompetencyLevel.valueOf({ "name": dataValue2 }).value) : 
                         dataTableSorterFunc(dataValue1, dataValue2, dataColDirection, dataColIndex, dataTableElem));
                 }
@@ -69,18 +66,13 @@
     });
     
     $.extend($.hitcomp.Competency.prototype, $.hitcomp.DataItem.prototype, {
-        "domain": undefined,
-        "quadrant": undefined,
         "category": undefined,
         "origin": undefined,
-        "code": undefined,
         
         "buildRowElement": function () {
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
                 "domain": this.domain,
-                "division": this.division,
                 "level": this.level.value.displayName,
-                "quadrant": this.quadrant,
                 "category": this.category,
                 "origin": this.origin
             }, $.proxy(function (dataValue, dataType) {

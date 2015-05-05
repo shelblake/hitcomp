@@ -17,6 +17,12 @@
         
         "quote": function (escapedQuote) {
             return ("\"" + this.replace(/"/g, (escapedQuote || "\\\"")) + "\"");
+        },
+        
+        "tokenize": function (delims) {
+            return $.map(this.split(delims), function (token, tokenIndex) {
+                return $.trim(token);
+            });
         }
     });
     

@@ -75,6 +75,8 @@
         "DATA_EXPORT_KEY": "hitcomp.data.export",
         "DATA_OBJ_KEY": "hitcomp.data.obj",
         "DATA_VALUE_KEY": "hitcomp.data.value",
+        "DATA_VALUE_DELIM": "|",
+        "DATA_VALUE_DISPLAY_DELIM": ", ",
         
         "buildTableSorter": function (dataTableElem) {
             return $.extend({}, $.tablesorter.defaults, {
@@ -119,7 +121,7 @@
     $.extend($.hitcomp.DataItem.prototype, {
         "id": undefined,
         "level": undefined,
-        "division": undefined,
+        "domain": undefined,
         "desc": undefined,
         
         "buildRowElement": function () {
@@ -162,7 +164,7 @@
         "buildDataElement": function (dataType, dataValue) {
             var dataElem = $("<td/>", { "data-field": dataType }).data($.hitcomp.DataItem.DATA_VALUE_KEY, dataValue).append($("<span/>", {
                 "class": "content-text"
-            }).text(dataValue));
+            }).text(($.isArray(dataValue) ? dataValue.join($.hitcomp.DataItem.DATA_VALUE_DISPLAY_DELIM) : dataValue)));
             
             if (dataType == "level") {
                 dataElem.append($("<button/>", {
@@ -216,12 +218,24 @@
                             return;
                         }
                         
+                        var dataElemValues;
+                        
                         $.each($.grep($("tbody tr td", this.dataTableElem), function (dataElem) {
                             return ($(dataElem).attr("data-field") == dataFilter.type);
                         }), function (dataElemIndex, dataElem) {
-                            if (!dataFilterSelectedOpts[$.trim((dataElem = $(dataElem)).text())]) {
-                                dataElem.parent().hide();
+                            dataElemValues = (dataElem = $(dataElem)).data($.hitcomp.DataItem.DATA_VALUE_KEY);
+                            
+                            if (!$.isArray(dataElemValues)) {
+                                dataElemValues = [ dataElemValues ];
                             }
+                            
+                            for (var a = 0; a < dataElemValues.length; a++) {
+                                if (dataFilterSelectedOpts[$.trim(dataElemValues[a])]) {
+                                    return;
+                                }
+                            }
+                            
+                            dataElem.parent().hide();
                         });
                     }, this));
                 }, this)
@@ -376,7 +390,7 @@
             
             $("thead tr th[data-field]", this.dataTableElem).each($.proxy($.hitcomp.DataExporter.buildDataExportContentItem, dataExportContent.headings));
             
-            $("tbody tr:not(.disabled)", this.dataTableElem).each(function (dataExportRowIndex, dataExportRowElem) {
+            $("tbody tr:visible:not(.disabled)", this.dataTableElem).each(function (dataExportRowIndex, dataExportRowElem) {
                 $("td[data-field]", dataExportRowElem).each($.proxy($.hitcomp.DataExporter.buildDataExportContentItem, (dataExportContentItem = {})));
                 
                 dataExportContent.items.push(dataExportContentItem);

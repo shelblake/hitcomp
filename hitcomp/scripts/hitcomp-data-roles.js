@@ -6,7 +6,7 @@
         "Role": function (dataObj) {
             $.hitcomp.DataItem.call(this, dataObj);
             
-            this.division = dataObj["clinicalnon-clinical"];
+            this.domain = dataObj["clinicalnon-clinical"].tokenize($.hitcomp.DataItem.DATA_VALUE_DELIM);
             this.type = dataObj.roletype;
             this.serviceCategory = dataObj.servicecategory;
             this.roles = {
@@ -45,7 +45,7 @@
         
         "buildRowElement": function () {
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
-                "division": this.division,
+                "domain": this.domain,
                 "type": this.type,
                 "level": this.level.value.displayName,
                 "serviceCategory": this.serviceCategory,

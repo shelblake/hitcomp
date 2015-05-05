@@ -171,18 +171,6 @@
                                         </span>
                                     </td>
                                 </tr>
-                                <tr data-field="division">
-                                    <td>
-                                        <span class="content-text">
-                                            <strong>Division</strong>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="content-text">
-                                            A subset of one of the five domains, including clinical, non-clinical and others.
-                                        </span>
-                                    </td>
-                                </tr>
                                 <tr data-field="domain">
                                     <td>
                                         <span class="content-text">
@@ -252,19 +240,6 @@
                                         </span>
                                     </td>
                                 </tr>
-                                <tr data-field="quadrant">
-                                    <td>
-                                        <span class="content-text">
-                                            <strong>Quadrant</strong>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="content-text">
-                                            A grouping for competency categories. A quadrant is one of four areas of interactions in HIT, including health 
-                                            data, clinical, communication and patient interactions. Each quadrant contains five categories of competencies.
-                                        </span>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -291,20 +266,11 @@
                             <hr/>
                             <div class="input-group-sm" data-field="domain">
                                 <label for="content-comps-filter-select-domain">
-                                    <i class="fa fa-fw fa-cubes"></i>
+                                    <i class="fa fa-fw fa-stethoscope"></i>
                                     Domain
                                 </label>
                                 <div class="btn-group btn-group-sm">
                                     <select id="content-comps-filter-select-domain" class="multiselect" multiple="multiple"></select>
-                                </div>
-                            </div>
-                            <div class="input-group-sm" data-field="division">
-                                <label for="content-comps-filter-select-division">
-                                    <i class="fa fa-fw fa-stethoscope"></i>
-                                    Division
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-comps-filter-select-division" class="multiselect" multiple="multiple"></select>
                                 </div>
                             </div>
                             <div class="input-group-sm" data-field="level">
@@ -314,15 +280,6 @@
                                 </label>
                                 <div class="btn-group btn-group-sm">
                                     <select id="content-comps-filter-select-level" class="multiselect" multiple="multiple"></select>
-                                </div>
-                            </div>
-                            <div class="input-group-sm" data-field="quadrant">
-                                <label for="content-comps-filter-select-quadrant">
-                                    <i class="fa fa-th-large"></i>
-                                    Quadrant
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-comps-filter-select-quadrant" class="multiselect" multiple="multiple"></select>
                                 </div>
                             </div>
                             <div class="input-group-sm" data-field="category">
@@ -392,20 +349,12 @@
                             <thead>
                                 <tr>
                                     <th class="header" data-field="domain">
-                                        <i class="fa fa-fw fa-cubes"></i>
-                                        <span class="content-text">Domain</span>
-                                    </th>
-                                    <th class="header" data-field="division">
                                         <i class="fa fa-fw fa-stethoscope"></i>
-                                        <span class="content-text">Division</span>
+                                        <span class="content-text">Domain</span>
                                     </th>
                                     <th class="header" data-field="level">
                                         <i class="fa fa-fw fa-signal"></i>
                                         <span class="content-text">Level</span>
-                                    </th>
-                                    <th class="header" data-field="quadrant">
-                                        <i class="fa fa-th-large"></i>
-                                        <span class="content-text">Quadrant</span>
                                     </th>
                                     <th class="header" data-field="category">
                                         <i class="fa fa-fw fa-tags"></i>
@@ -473,13 +422,13 @@
                                 </div>
                             </div>
                             <hr/>
-                            <div class="input-group-sm" data-field="division">
-                                <label for="content-roles-filter-select-division">
+                            <div class="input-group-sm" data-field="domain">
+                                <label for="content-roles-filter-select-domain">
                                     <i class="fa fa-fw fa-stethoscope"></i>
                                     Division
                                 </label>
                                 <div class="btn-group btn-group-sm">
-                                    <select id="content-roles-filter-select-division" class="multiselect" multiple="multiple"></select>
+                                    <select id="content-roles-filter-select-domain" class="multiselect" multiple="multiple"></select>
                                 </div>
                             </div>
                             <div class="input-group-sm" data-field="type">
@@ -566,9 +515,9 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="header" data-field="division">
+                                    <th class="header" data-field="domain">
                                         <i class="fa fa-fw fa-stethoscope"></i>
-                                        <span class="content-text">Division</span>
+                                        <span class="content-text">Domain</span>
                                     </th>
                                     <th class="header" data-field="type">
                                         <i class="fa fa-fw fa-tags"></i>
