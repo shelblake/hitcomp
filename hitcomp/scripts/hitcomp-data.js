@@ -16,7 +16,7 @@
     $.extend($.hitcomp.DataSet, {
         "CACHE_DURATION_DEFAULT": (60 * 60 * 1000),
         "CACHE_KEY_PREFIX": "hitcomp.data.set.",
-        "CACHE_VALUE_DELIM": "|"
+        "CACHE_VALUE_DELIM": "~"
     });
     
     $.extend($.hitcomp.DataSet.prototype, {

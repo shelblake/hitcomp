@@ -206,7 +206,7 @@
                 "contentNavTabLinkElems": contentNavTabLinkElems,
                 "rolesFilterElem": rolesFilterElem
             }, function (event) {
-                var roleLevelFilterSelectElem = $("select:eq(2)", event.data.rolesFilterElem), 
+                var roleLevelFilterSelectElem = $("select", event.data.rolesFilterElem).eq(2), 
                     roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), compDataElem = $(event.target).parent();
                 
                 roleLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
@@ -223,7 +223,7 @@
                 "contentNavTabLinkElems": contentNavTabLinkElems,
                 "compsFilterElem": compsFilterElem
             }, function (event) {
-                var compLevelFilterSelectElem = $("select:eq(2)", event.data.compsFilterElem), 
+                var compLevelFilterSelectElem = $("select", event.data.compsFilterElem).eq(1), 
                     compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), roleDataElem = $(event.target).parent();
                 
                 compLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
