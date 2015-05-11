@@ -3,11 +3,12 @@
     // CLASS: DATA SET
     //====================================================================================================
     $.extend($.hitcomp, {
-        "DataSet": function (name, feedKey, sheetName, onLoad) {
+        "DataSet": function (name, feedKey, sheetName, onLoad, onUpdate) {
             this.name = name;
             this.feedKey = feedKey;
             this.sheetName = sheetName;
             this.onLoad = onLoad;
+            this.onUpdate = onUpdate;
             
             this.cacheKey = $.hitcomp.DataSet.CACHE_KEY_PREFIX + this.name;
         }
@@ -16,7 +17,8 @@
     $.extend($.hitcomp.DataSet, {
         "CACHE_DURATION_DEFAULT": (60 * 60 * 1000),
         "CACHE_KEY_PREFIX": "hitcomp.data.set.",
-        "CACHE_VALUE_DELIM": "~"
+        "CACHE_VALUE_DELIM": "~",
+        "DATA_OBJ_KEY": "hitcomp.data.obj"
     });
     
     $.extend($.hitcomp.DataSet.prototype, {
@@ -27,6 +29,7 @@
         "sheetName": undefined,
         "name": undefined,
         "onLoad": undefined,
+        "onUpdate": undefined,
         
         "load": function () {
             var data, dataParts, dataTime;
@@ -58,6 +61,8 @@
                     "wanted": [ this.sheetName ]
                 });
             }
+            
+            this.onUpdate(true);
         }
     });
     
@@ -158,6 +163,8 @@
                 }
                 
                 dataRowElem.data($.hitcomp.DataItem.DATA_EXPORT_KEY, !dataExport).toggleClass("disabled");
+                
+                dataRowElem.parent().parent().data($.hitcomp.DataSet.DATA_OBJ_KEY).onUpdate(false);
             })));
         },
         
@@ -238,6 +245,8 @@
                             dataElem.parent().hide();
                         });
                     }, this));
+                    
+                    this.dataTableElem.data($.hitcomp.DataSet.DATA_OBJ_KEY).onUpdate(false);
                 }, this)
             };
         },

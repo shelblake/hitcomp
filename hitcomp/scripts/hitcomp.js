@@ -56,10 +56,14 @@
         contentTabsElem.show();
         
         var compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
-            compsDataElem = $("div.content-data", compsTabElem), compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), 
-            compsDataSet, comps = [], compRowElems = [], compsExporter, compsFilters = [];
+            compsSelectedElem = $("h1 span.content-selected", compsTabElem), compsSelectedNumElem = $("span", compsSelectedElem).eq(0),
+            compsSelectedNumTotalElem = $("span", compsSelectedElem).eq(1), compsDataElem = $("div.content-data", compsTabElem),
+            compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), compsDataSet, comps = [], compRowElems = [],
+            compsExporter, compsFilters = [];
         
         compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined", function (compsDataSet, compsData) {
+            compsTableElem.data($.hitcomp.DataSet.DATA_OBJ_KEY, compsDataSet);
+            
             var comp;
             
             $.each(compsData, function (compDataObjIndex, compDataObj) {
@@ -113,16 +117,35 @@
             
             compsFilterElem.prev("div.content-loading").hide();
             compsFilterElem.show();
+        }, function (initial) {
+            var numCompsSelected = (initial ? compRowElems.length : 0);
+            
+            if (!initial) {
+                $.each(compRowElems, function (compRowIndex, compRowElem) {
+                    if ($(compRowElem).is(":visible:not(.disabled)")) {
+                        numCompsSelected++;
+                    }
+                });
+            }
+            
+            compsSelectedNumElem.text(numCompsSelected);
+            compsSelectedNumTotalElem.text(compRowElems.length);
+            
+            compsSelectedElem.show();
         });
         
         compsDataSet.load();
         
         var rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
             rolesLocalizeSelectElem = $("select", rolesLocalizeElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
-            rolesDataElem = $("div.content-data", rolesTabElem), rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), 
-            rolesDataSet, roles = [], roleRowElems = [], rolesExporter, rolesFilters = [], rolesLocalize;
+            rolesSelectedElem = $("h1 span.content-selected", rolesTabElem), rolesSelectedNumElem = $("span", rolesSelectedElem).eq(0),
+            rolesSelectedNumTotalElem = $("span", rolesSelectedElem).eq(1), rolesDataElem = $("div.content-data", rolesTabElem),
+            rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), rolesDataSet, roles = [], roleRowElems = [],
+            rolesExporter, rolesFilters = [], rolesLocalize;
         
         rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles", function (rolesDataSet, rolesData) {
+            rolesTableElem.data($.hitcomp.DataSet.DATA_OBJ_KEY, rolesDataSet);
+            
             var role;
             
             $.each(rolesData, function (roleDataObjIndex, roleDataObj) {
@@ -241,6 +264,21 @@
             
             rolesLocalizeElem.prev("div.content-loading").hide();
             rolesLocalizeElem.show();
+        }, function (initial) {
+            var numRolesSelected = (initial ? roleRowElems.length : 0);
+            
+            if (!initial) {
+                $.each(roleRowElems, function (roleRowIndex, roleRowElem) {
+                    if ($(roleRowElem).is(":visible:not(.disabled)")) {
+                        numRolesSelected++;
+                    }
+                });
+            }
+            
+            rolesSelectedNumElem.text(numRolesSelected);
+            rolesSelectedNumTotalElem.text(roleRowElems.length);
+            
+            rolesSelectedElem.show();
         });
         
         rolesDataSet.load();

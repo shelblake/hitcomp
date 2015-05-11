@@ -176,6 +176,10 @@ div#content-tabs div.content-tab hr {
     margin: 10px 50px;
 }
 
+div#content-tabs div.content-tab h1 span.content-selected {
+    display: none;
+}
+
 div#content-tabs div.content-tab div.content-localize div.input-group-sm,
 div#content-tabs div.content-tab div.content-filter div.input-group-sm,
 div#content-tabs div.content-tab div.content-data div.input-group-sm {

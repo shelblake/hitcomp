@@ -44,7 +44,6 @@
             this.domain = dataObj.domain.tokenize($.hitcomp.DataItem.DATA_VALUE_DELIM);
             this.desc = dataObj.competency;
             this.category = dataObj.area;
-            this.origin = dataObj.siloorigin;
         }
     });
     
@@ -67,14 +66,12 @@
     
     $.extend($.hitcomp.Competency.prototype, $.hitcomp.DataItem.prototype, {
         "category": undefined,
-        "origin": undefined,
         
         "buildRowElement": function () {
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
                 "domain": this.domain,
                 "level": this.level.value.displayName,
-                "category": this.category,
-                "origin": this.origin
+                "category": this.category
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
             }, this)));
