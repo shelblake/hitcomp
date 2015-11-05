@@ -180,6 +180,12 @@ div#content-tabs div.content-tab h1 span.content-selected {
     display: none;
 }
 
+div#content-tabs div.content-tab div.content-data div.alert {
+    width: 30%;
+    text-align: center;
+    font-size: 13px;
+}
+
 div#content-tabs div.content-tab div.content-localize div.input-group-sm,
 div#content-tabs div.content-tab div.content-filter div.input-group-sm,
 div#content-tabs div.content-tab div.content-data div.input-group-sm {
