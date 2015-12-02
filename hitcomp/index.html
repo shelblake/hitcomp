@@ -7,8 +7,8 @@
         <link type="image/png" rel="icon" href="images/hitcomp-logo-16x16.png"/>
         <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Noto+Sans:400,400italic,700,700italic&subset=latin,latin-ext"/>
         <link type="text/css" rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css"/>
-        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
-        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
         <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/Mottie/tablesorter/v2.17.8/css/theme.bootstrap.css"/>
         <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/silviomoreto/bootstrap-select/v1.6.5/dist/css/bootstrap-select.min.css"/>
         <link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/davidstutz/bootstrap-multiselect/v0.9.12/dist/css/bootstrap-multiselect.css"/>
@@ -16,7 +16,7 @@
         <script type="text/javascript" src="http://www.google-analytics.com/analytics.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
         <script type="text/javascript" src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/adrai/enum/v2.0.2/enum-2.0.2.min.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/alexei/sprintf.js/v0.7/src/sprintf.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/moment/moment/2.10.2/min/moment.min.js"></script>
@@ -36,8 +36,9 @@
         <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/Blob.js/master/Blob.js"></script>
         <script type="text/javascript" src="https://cdn.rawgit.com/eligrey/FileSaver.js/master/FileSaver.min.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-core.js"></script>
-        <script type="text/javascript" src="scripts/hitcomp-ui.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-analytics.js"></script>
+        <script type="text/javascript" src="scripts/hitcomp-settings.js"></script>
+        <script type="text/javascript" src="scripts/hitcomp-ui.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data-comps.js"></script>
         <script type="text/javascript" src="scripts/hitcomp-data-roles.js"></script>
@@ -74,9 +75,18 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="btn-group btn-group-sm">
+                            <button id="btn-settings" class="btn btn-default form-control navbar-btn" data-toggle="modal" data-target="#modal-settings"
+                                disabled="disabled" type="button">
+                                <i class="fa fa-fw fa-gears"></i>
+                                Settings
+                            </button>
+                        </div>
+                    </li>
                     <li class="dropdown">
                         <a class="link" data-toggle="dropdown">
-                            <i class="fa fa-fw fa-gears"></i>
+                            <i class="fa fa-fw fa-info-circle"></i>
                             <strong>About</strong>
                             <span class="fa fa-fw fa-caret-down"></span>
                         </a>
@@ -148,8 +158,8 @@
                             the equivalent role in five European languages (English UK, French, German, Italian and Spanish). A description of each role is
                             given. Finally, you can export your search results from either tab to a file for your own use.
                         </p>
-                        <div class="center-block alert alert-info" role="alert">
-                            <a class="alert-link" href="https://drive.google.com/file/d/0B7D-03qb6b8Id1h4c0lRTHNQeE5Kb3hpeTZvWnBzamlyUzBj/view?usp=sharing">
+                        <div id="alert-instructions-doc" class="alert alert-info center-block" role="alert">
+                            <a class="alert-link">
                                 Detailed instructions are located here.
                             </a>
                         </div>
@@ -266,40 +276,48 @@
                     </div>
                     <div class="content-filter">
                         <form name="content-comps-filter-form">
-                            <div class="input-group-sm">
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
-                                        <i class="fa fa-fw fa-refresh"></i>
-                                        Reset
-                                    </button>
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
+                                            <i class="fa fa-fw fa-refresh"></i>
+                                            Reset
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <hr/>
-                            <div class="input-group-sm" data-field="domain">
-                                <label for="content-comps-filter-select-domain">
-                                    <i class="fa fa-fw fa-stethoscope"></i>
-                                    Domain
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-comps-filter-select-domain" class="multiselect" multiple="multiple"></select>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="domain">
+                                    <label for="content-comps-filter-select-domain">
+                                        <i class="fa fa-fw fa-stethoscope"></i>
+                                        Domain
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-domain" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-group-sm" data-field="level">
-                                <label for="content-comps-filter-select-level">
-                                    <i class="fa fa-fw fa-signal"></i>
-                                    Level
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-comps-filter-select-level" class="multiselect" multiple="multiple"></select>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="level">
+                                    <label for="content-comps-filter-select-level">
+                                        <i class="fa fa-fw fa-signal"></i>
+                                        Level
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-level" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-group-sm" data-field="category">
-                                <label for="content-comps-filter-select-category">
-                                    <i class="fa fa-fw fa-tags"></i>
-                                    Category
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-comps-filter-select-category" class="multiselect" multiple="multiple"></select>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="category">
+                                    <label for="content-comps-filter-select-category">
+                                        <i class="fa fa-fw fa-tags"></i>
+                                        Category
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-comps-filter-select-category" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -414,15 +432,18 @@
                     </div>
                     <div class="content-filter">
                         <form name="content-roles-filter-form">
-                            <div class="input-group-sm">
-                                <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
-                                        <i class="fa fa-fw fa-refresh"></i>
-                                        Reset
-                                    </button>
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
+                                            <i class="fa fa-fw fa-refresh"></i>
+                                            Reset
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <hr/>
+                            <div class="form-group">
                             <div class="input-group-sm" data-field="domain">
                                 <label for="content-roles-filter-select-domain">
                                     <i class="fa fa-fw fa-stethoscope"></i>
@@ -432,40 +453,49 @@
                                     <select id="content-roles-filter-select-domain" class="multiselect" multiple="multiple"></select>
                                 </div>
                             </div>
-                            <div class="input-group-sm" data-field="type">
-                                <label for="content-roles-filter-select-type">
-                                    <i class="fa fa-fw fa-tags"></i>
-                                    Type
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-roles-filter-select-type" class="multiselect" multiple="multiple"></select>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="type">
+                                    <label for="content-roles-filter-select-type">
+                                        <i class="fa fa-fw fa-tags"></i>
+                                        Type
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-type" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-group-sm" data-field="level">
-                                <label for="content-roles-filter-select-level">
-                                    <i class="fa fa-fw fa-signal"></i>
-                                    Level
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-roles-filter-select-level" class="multiselect" multiple="multiple"></select>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="level">
+                                    <label for="content-roles-filter-select-level">
+                                        <i class="fa fa-fw fa-signal"></i>
+                                        Level
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-level" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-group-sm" data-field="serviceCategory">
-                                <label for="content-roles-filter-select-service-category">
-                                    <i class="fa fa-fw fa-medkit"></i>
-                                    Service Category
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-roles-filter-select-service-category" class="multiselect" multiple="multiple"></select>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="serviceCategory">
+                                    <label for="content-roles-filter-select-service-category">
+                                        <i class="fa fa-fw fa-medkit"></i>
+                                        Service Category
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-service-category" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="input-group-sm" data-field="roles">
-                                <label for="content-roles-filter-select-roles">
-                                    <i class="icon icon-flag icon-flag-us"></i>
-                                    Roles
-                                </label>
-                                <div class="btn-group btn-group-sm">
-                                    <select id="content-roles-filter-select-roles" class="multiselect" multiple="multiple"></select>
+                            <div class="form-group">
+                                <div class="input-group-sm" data-field="roles">
+                                    <label for="content-roles-filter-select-roles">
+                                        <i class="icon icon-flag icon-flag-us"></i>
+                                        Roles
+                                    </label>
+                                    <div class="btn-group btn-group-sm">
+                                        <select id="content-roles-filter-select-roles" class="multiselect" multiple="multiple"></select>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -548,6 +578,103 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div id="modal-settings" class="fade modal" aria-labelledby="model-title-settings" role="dialog" tabindex="-1">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form class="form-inline" name="settings-form">
+                        <div class="modal-header">
+                            <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modal-title-settings">
+                                <i class="fa fa-fw fa-gears"></i>
+                                <strong>Settings</strong>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <h1>
+                                <i class="fa fa-fw fa-tasks"></i>
+                                <strong>Competencies Data</strong>
+                            </h1>
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label for="settings-data-comps-sheet-id">
+                                        <i class="fa fa-fw fa-book"></i>
+                                        Sheet ID
+                                    </label>
+                                    <input id="settings-data-comps-sheet-id" class="form-control form-control-settings-data-sheet-id"
+                                        aria-describedby="help-block-settings-data-comps-sheet-id-invalid" type="text"/>
+                                    <div id="help-block-settings-data-comps-sheet-id-invalid" class="help-block">
+                                        <i class="fa fa-fw fa-times"></i>
+                                        Invalid Google Docs spreadsheet ID.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label for="settings-data-comps-sheet-name">
+                                        <i class="fa fa-fw fa-hashtag"></i>
+                                        Sheet Name
+                                    </label>
+                                    <input id="settings-data-comps-sheet-name" class="form-control"
+                                        aria-describedby="help-block-settings-data-comps-sheet-name-invalid" type="text"/>
+                                    <div id="help-block-settings-data-comps-sheet-name-invalid" class="help-block">
+                                        <i class="fa fa-fw fa-times"></i>
+                                        Invalid Google Docs spreadsheet sheet name.
+                                    </div>
+                                </div>
+                            </div>
+                            <h1>
+                                <i class="fa fa-fw fa-user-md"></i>
+                                <strong>Roles Data</strong>
+                            </h1>
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label for="settings-data-roles-sheet-id">
+                                        <i class="fa fa-fw fa-book"></i>
+                                        Sheet ID
+                                    </label>
+                                    <input id="settings-data-roles-sheet-id" class="form-control form-control-settings-data-sheet-id"
+                                        aria-describedby="help-block-settings-data-roles-sheet-id-invalid" type="text"/>
+                                    <div id="help-block-settings-data-roles-sheet-id-invalid" class="help-block">
+                                        <i class="fa fa-fw fa-times"></i>
+                                        Invalid Google Docs spreadsheet ID.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <label for="settings-data-roles-sheet-name">
+                                        <i class="fa fa-fw fa-hashtag"></i>
+                                        Sheet Name
+                                    </label>
+                                    <input id="settings-data-roles-sheet-name" class="form-control"
+                                        aria-describedby="help-block-settings-data-roles-sheet-name-invalid"type="text"/>
+                                    <div id="help-block-settings-data-roles-sheet-name-invalid" class="help-block">
+                                        <i class="fa fa-fw fa-times"></i>
+                                        Invalid Google Docs spreadsheet sheet name.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <div class="input-group-sm">
+                                    <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-default form-control" type="reset" data-toggle="tooltip" data-placement="top">
+                                            <i class="fa fa-fw fa-refresh"></i>
+                                            Reset
+                                        </button>
+                                        <button class="btn btn-default form-control" type="submit" data-toggle="tooltip" data-placement="top">
+                                            <i class="fa fa-fw fa-paper-plane-o"></i>
+                                            Submit &amp; Reload
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

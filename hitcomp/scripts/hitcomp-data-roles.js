@@ -94,7 +94,7 @@
     
     $.extend($.hitcomp.RoleLocalization, {
         "HTTP_HEADER_ACCEPT_LANG_NAME": "Accept-Language",
-        "HTTP_HEADERS_API_URL": "http://ajaxhttpheaders.appspot.com"
+        "HTTP_HEADERS_API_URL": "wsgi/http-headers.wsgi"
     });
     
     $.extend($.hitcomp.RoleLocalization.prototype, {
@@ -105,7 +105,7 @@
         
         "determineDefault": function () {
             $.ajax({
-                "dataType": "jsonp",
+                "dataType": "json",
                 "success": $.proxy(function (httpHeaders) {
                     var acceptLangHttpHeaderValue = httpHeaders[$.hitcomp.RoleLocalization.HTTP_HEADER_ACCEPT_LANG_NAME];
                     
@@ -169,6 +169,172 @@
                     ]);
                 }, this)
             ]);
+        }
+    });
+    
+    //====================================================================================================
+    // CLASS: ROLE CONTROLLER
+    //====================================================================================================
+    $.extend($.hitcomp, {
+        "RoleController": function (contentNavTabLinkElems, compsController, tabElem) {
+            $.hitcomp.DataController.call(this, tabElem);
+            
+            this.contentNavTabLinkElems = contentNavTabLinkElems;
+            this.compsController = compsController;
+            this.localizeElem = this.tabElem.find("div.content-localize");
+            this.localizeSelectElem = this.localizeElem.find("select");
+        }
+    });
+    
+    $.extend($.hitcomp.RoleController, $.hitcomp.DataController);
+    
+    $.extend($.hitcomp.RoleController.prototype, $.hitcomp.DataController.prototype, {
+        "contentNavTabLinkElems": undefined,
+        "compsController": undefined,
+        "localizeElem": undefined,
+        "localizeSelectElem": undefined,
+        "localization": undefined,
+        
+        "load": function (settings) {
+            var controller = this, dataSet = new $.hitcomp.DataSet("role", settings.rolesSheetId, settings.rolesSheetName, function (rolesDataSet, rolesData) {
+                controller.tableElem.data($.hitcomp.DataSet.DATA_OBJ_KEY, (controller.dataSet = rolesDataSet));
+                
+                var role;
+                
+                $.each(rolesData, function (roleDataObjIndex, roleDataObj) {
+                    controller.items.push((role = new $.hitcomp.Role(roleDataObj)));
+                    controller.rowElems.push(role.buildRowElement());
+                });
+                
+                controller.tableBodyElem.append(controller.rowElems);
+                
+                $("div.input-group-sm div.btn-group button.btn", controller.dataElem).tooltip({ "title": "Export Data" });
+                
+                controller.exporter = new $.hitcomp.DataExporter(controller.tableElem);
+                
+                $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", controller.dataElem).bind("mouseup", {
+                    "rolesExporter": controller.exporter
+                }, function (event) {
+                    event.data.rolesExporter.export(event, "hitcomp-roles");
+                });
+                
+                controller.tableElem.tablesorter($.hitcomp.Role.buildTableSorter(controller.tableElem));
+                
+                var roleFilterType, roleFilter;
+                
+                $("select", controller.filterElem).each(function (roleFilterSelectIndex, roleFilterSelectElem) {
+                    controller.filters.push((roleFilter = new $.hitcomp.RoleFilter(
+                        (roleFilterType = (roleFilterSelectElem = $(roleFilterSelectElem)).parent().parent().attr("data-field")), controller.tableElem, 
+                        roleFilterSelectElem)));
+                    
+                    roleFilterSelectElem.multiselect(roleFilter.buildSelect());
+                    roleFilterSelectElem.multiselect("dataprovider", $.fn.multiselect.buildDataProvider($.map(((roleFilterType == "level") ? 
+                        $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
+                            return (compLevel.value.order >= 0);
+                        }) : $.map(controller.items, function (role) {
+                            return role[roleFilterType];
+                        })).sort(function (roleItemValue1, roleItemValue2) {
+                            if (roleFilterType == "level") {
+                                return roleItemValue1.value.compareTo(roleItemValue2.value);
+                            }
+                            
+                            if (roleFilterType == "roles") {
+                                var rolesLocalizeSelectValue = controller.localizeSelectElem.val();
+                                
+                                roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
+                                roleItemValue2 = roleItemValue2[rolesLocalizeSelectValue];
+                            }
+                            
+                            return $.tablesorter.replaceAccents(roleItemValue1).localeCompare($.tablesorter.replaceAccents(roleItemValue2));
+                        }), function (roleItemValue) {
+                            switch (roleFilterType) {
+                                case "level":
+                                    return roleItemValue.value.displayName;
+                                
+                                case "roles":
+                                    return roleItemValue[controller.localizeSelectElem.val()];
+                                
+                                default:
+                                    return roleItemValue;
+                            }
+                        }).unique()));
+                    
+                    roleFilterSelectElem.parent().append(roleFilter.buildSelectControlElements());
+                });
+                
+                $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", controller.filterElem).bind("click",
+                    { "dataFilters": controller.filters }, function (event) {
+                    $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
+                        dataFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
+                    });
+                }).tooltip({ "title": "Reset Filters" });
+                
+                (controller.localization = new $.hitcomp.RoleLocalization($("div.input-group-sm[data-field=\"roles\"] select", controller.filterElem),
+                    controller.tableElem, controller.localizeSelectElem)).determineDefault();
+                
+                controller.localizeSelectElem.selectpicker();
+                
+                controller.localizeSelectElem.bind("change", { "localization": controller.localization }, function (event) {
+                    event.data.localization.localize(controller.localizeSelectElem.val());
+                });
+                
+                $("tr td[data-field=\"level\"] button", controller.compsController.tableBodyElem).bind("click", {
+                    "contentNavTabLinkElems": controller.contentNavTabLinkElems,
+                    "rolesFilterElem": controller.filterElem
+                }, function (event) {
+                    var roleLevelFilterSelectElem = $("select", event.data.rolesFilterElem).eq(2), 
+                        roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), compDataElem = $(event.target).parent();
+                    
+                    roleLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
+                    
+                    roleLevelFilterSelectElem.multiselect("select", (compDataElem.is("td") ? compDataElem : compDataElem.parent())
+                        .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
+                    
+                    event.data.contentNavTabLinkElems.eq(2).tab("show");
+                    
+                    $(document).scrollTop(0);
+                });
+                
+                $("tr td[data-field=\"level\"] button", controller.tableBodyElem).bind("click", {
+                    "contentNavTabLinkElems": controller.contentNavTabLinkElems,
+                    "compsFilterElem": controller.compsController.filterElem
+                }, function (event) {
+                    var compLevelFilterSelectElem = $("select", event.data.compsFilterElem).eq(1), 
+                        compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), roleDataElem = $(event.target).parent();
+                    
+                    compLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
+                    
+                    compLevelFilterSelectElem.multiselect("select", (roleDataElem.is("td") ? roleDataElem : roleDataElem.parent())
+                        .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
+                    
+                    event.data.contentNavTabLinkElems.eq(1).tab("show");
+                    
+                    $(document).scrollTop(0);
+                });
+                
+                controller.filterElem.prev("div.content-loading").hide();
+                controller.filterElem.show();
+                
+                controller.localizeElem.prev("div.content-loading").hide();
+                controller.localizeElem.show();
+            }, function (initial) {
+                var numRolesSelected = (initial ? controller.rowElems.length : 0);
+                
+                if (!initial) {
+                    $.each(controller.rowElems, function (roleRowIndex, roleRowElem) {
+                        if ((roleRowElem = $(roleRowElem)).is(":not(.disabled)") && (roleRowElem.css("display") != "none")) {
+                            numRolesSelected++;
+                        }
+                    });
+                }
+                
+                controller.selectedNumElem.text(numRolesSelected);
+                controller.selectedNumTotalElem.text(controller.rowElems.length);
+                
+                controller.selectedElem.show();
+            });
+            
+            dataSet.load();
         }
     });
 }(jQuery));

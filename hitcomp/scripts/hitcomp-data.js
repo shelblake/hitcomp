@@ -408,4 +408,43 @@
             return dataExportContent;
         }
     });
+    
+    //====================================================================================================
+    // CLASS: DATA CONTROLLER
+    //====================================================================================================
+    $.extend($.hitcomp, {
+        "DataController": function (tabElem) {
+            this.tabElem = tabElem;
+            this.filterElem = this.tabElem.find("div.content-filter");
+            this.selectedElem = this.tabElem.find("h1 span.content-selected");
+            
+            var selectedNumElems = this.selectedElem.find("span");
+            this.selectedNumElem = selectedNumElems.eq(0);
+            this.selectedNumTotalElem = selectedNumElems.eq(1);
+            
+            this.dataElem = this.tabElem.find("div.content-data");
+            this.tableElem = this.dataElem.find("table");
+            this.tableBodyElem = this.tableElem.find("tbody");
+            
+            this.items = [];
+            this.rowElems = [];
+            this.filters = [];
+        }
+    });
+    
+    $.extend($.hitcomp.DataController.prototype, {
+        "tabElem": undefined,
+        "filterElem": undefined,
+        "selectedElem": undefined,
+        "selectedNumElem": undefined,
+        "selectedNumTotalElem": undefined,
+        "dataElem": undefined,
+        "tableElem": undefined,
+        "tableBodyElem": undefined,
+        "dataSet": undefined,
+        "items": undefined,
+        "rowElems": undefined,
+        "exporter": undefined,
+        "filters": undefined
+    });
 }(jQuery));

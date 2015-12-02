@@ -1,7 +1,5 @@
 (function ($) {
     $(window).load(function () {
-        $.hitcomp.analytics.configureAnalytics();
-        
         var bodyElem = $("body"), navBarElem = $("nav.navbar", bodyElem), navBarHeaderElem = $("div.navbar-header", navBarElem),
             navBarBrandElem = $("a.navbar-brand", navBarHeaderElem), contentNavTabsElem = $("ul.navbar-nav.nav-tabs", navBarElem),
             contentNavTabLinkElems = $("li a", contentNavTabsElem), contentElem = $("div#content", bodyElem),
@@ -55,232 +53,101 @@
         contentTabsElem.prev("div.content-loading").hide();
         contentTabsElem.show();
         
-        var compsTabElem = $("div#content-comps-tab", contentTabsElem), compsFilterElem = $("div.content-filter", compsTabElem), 
-            compsSelectedElem = $("h1 span.content-selected", compsTabElem), compsSelectedNumElem = $("span", compsSelectedElem).eq(0),
-            compsSelectedNumTotalElem = $("span", compsSelectedElem).eq(1), compsDataElem = $("div.content-data", compsTabElem),
-            compsTableElem = $("table", compsDataElem), compsTableBodyElem = $("tbody", compsTableElem), compsDataSet, comps = [], compRowElems = [],
-            compsExporter, compsFilters = [];
+        var settingsModalElem = bodyElem.find("div#modal-settings"), settingsFormElem = settingsModalElem.find("form[name=\"settings-form\"]"),
+            settingInputElems = settingsModalElem.find("input[type=\"text\"]"),
+            compsSheetIdSettingInputElem = settingsModalElem.find("input#settings-data-comps-sheet-id"),
+            compsSheetNameSettingInputElem = settingsModalElem.find("input#settings-data-comps-sheet-name"),
+            rolesSheetIdSettingInputElem = settingsModalElem.find("input#settings-data-roles-sheet-id"),
+            rolesSheetNameSettingInputElem = settingsModalElem.find("input#settings-data-roles-sheet-name"),
+            settingSubmitButtonElem = settingsModalElem.find("button[type=\"submit\"]"),
+            compsController = new $.hitcomp.CompetencyController(contentTabsElem.find("div#content-comps-tab")),
+            rolesController = new $.hitcomp.RoleController(contentNavTabLinkElems, compsController, contentTabsElem.find("div#content-roles-tab"));
         
-        compsDataSet = new $.hitcomp.DataSet("comp", "1267F0p2IXcLz_G1ImRngAmcWEaYS1SXP7wtx0J1sh6c", "All Levels Combined", function (compsDataSet, compsData) {
-            compsTableElem.data($.hitcomp.DataSet.DATA_OBJ_KEY, compsDataSet);
-            
-            var comp;
-            
-            $.each(compsData, function (compDataObjIndex, compDataObj) {
-                comps.push((comp = new $.hitcomp.Competency(compDataObj)));
-                compRowElems.push(comp.buildRowElement());
-            });
-            
-            compsTableBodyElem.append(compRowElems);
-            
-            $("div.input-group-sm div.btn-group button.btn", compsDataElem).tooltip({ "title": "Export Data" });
-            
-            compsExporter = new $.hitcomp.DataExporter(compsTableElem);
-            
-            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", compsDataElem).bind("mouseup", {
-                "compsExporter": compsExporter
-            }, function (event) {
-                event.data.compsExporter.export(event, "hitcomp-comps");
-            });
-            
-            compsTableElem.tablesorter($.hitcomp.Competency.buildTableSorter(compsTableElem));
-            
-            var compFilterType, compFilter;
-            
-            $("select", compsFilterElem).each(function (compFilterSelectIndex, compFilterSelectElem) {
-                compsFilters.push((compFilter = new $.hitcomp.CompetencyFilter(
-                    (compFilterType = (compFilterSelectElem = $(compFilterSelectElem)).parent().parent().attr("data-field")), compsTableElem, 
-                    compFilterSelectElem)));
-                
-                compFilterSelectElem.multiselect(compFilter.buildSelect());
-                compFilterSelectElem.multiselect("dataprovider", $.fn.multiselect.buildDataProvider($.map(((compFilterType == "level") ? 
-                    $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
-                        return (compLevel.value.order >= 0);
-                    }) : $.map(comps, function (comp) {
-                        return comp[compFilterType];
-                    })).sort(function (compItemValue1, compItemValue2) {
-                        return ((compFilterType == "level") ? compItemValue1.value.compareTo(compItemValue2.value) : 
-                            compItemValue1.localeCompare(compItemValue2));
-                    }), function (compItemValue) {
-                        return ((compFilterType == "level") ? compItemValue.value.displayName : compItemValue);
-                    }).unique()));
-                
-                compFilterSelectElem.parent().append(compFilter.buildSelectControlElements());
-            });
-            
-            $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", compsFilterElem).bind("click", { "dataFilters": compsFilters }, 
-                function (event) {
-                $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
-                    dataFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
-                });
-            }).tooltip({ "title": "Reset Filters" });
-            
-            compsFilterElem.prev("div.content-loading").hide();
-            compsFilterElem.show();
-        }, function (initial) {
-            var numCompsSelected = (initial ? compRowElems.length : 0);
-            
-            if (!initial) {
-                $.each(compRowElems, function (compRowIndex, compRowElem) {
-                    if ($(compRowElem).is(":visible:not(.disabled)")) {
-                        numCompsSelected++;
-                    }
-                });
-            }
-            
-            compsSelectedNumElem.text(numCompsSelected);
-            compsSelectedNumTotalElem.text(compRowElems.length);
-            
-            compsSelectedElem.show();
+        settingsModalElem.on("show.bs.modal", function (event) {
+            $.hitcomp.Settings.validate(compsSheetIdSettingInputElem, compsSheetNameSettingInputElem, rolesSheetIdSettingInputElem,
+                rolesSheetNameSettingInputElem, settingSubmitButtonElem);
         });
         
-        compsDataSet.load();
-        
-        var rolesTabElem = $("div#content-roles-tab", contentTabsElem), rolesLocalizeElem = $("div.content-localize", rolesTabElem), 
-            rolesLocalizeSelectElem = $("select", rolesLocalizeElem), rolesFilterElem = $("div.content-filter", rolesTabElem), 
-            rolesSelectedElem = $("h1 span.content-selected", rolesTabElem), rolesSelectedNumElem = $("span", rolesSelectedElem).eq(0),
-            rolesSelectedNumTotalElem = $("span", rolesSelectedElem).eq(1), rolesDataElem = $("div.content-data", rolesTabElem),
-            rolesTableElem = $("table", rolesDataElem), rolesTableBodyElem = $("tbody", rolesTableElem), rolesDataSet, roles = [], roleRowElems = [],
-            rolesExporter, rolesFilters = [], rolesLocalize;
-        
-        rolesDataSet = new $.hitcomp.DataSet("role", "1c-UAVzi-BRfXmunI7DpyM1lp8CG8qsX-IpyvLU1OdH4", "DPC-Clinical Roles", function (rolesDataSet, rolesData) {
-            rolesTableElem.data($.hitcomp.DataSet.DATA_OBJ_KEY, rolesDataSet);
+        settingInputElems.focusin(function (event) {
+            $(event.target).select();
+        }).change(function (event) {
+            var settingInputElem = $(event.target);
             
-            var role;
-            
-            $.each(rolesData, function (roleDataObjIndex, roleDataObj) {
-                roles.push((role = new $.hitcomp.Role(roleDataObj)));
-                roleRowElems.push(role.buildRowElement());
-            });
-            
-            rolesTableBodyElem.append(roleRowElems);
-            
-            $("div.input-group-sm div.btn-group button.btn", rolesDataElem).tooltip({ "title": "Export Data" });
-            
-            rolesExporter = new $.hitcomp.DataExporter(rolesTableElem);
-            
-            $("div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu li a", rolesDataElem).bind("mouseup", {
-                "rolesExporter": rolesExporter
-            }, function (event) {
-                event.data.rolesExporter.export(event, "hitcomp-roles");
-            });
-            
-            rolesTableElem.tablesorter($.hitcomp.Role.buildTableSorter(rolesTableElem));
-            
-            var roleFilterType, roleFilter;
-            
-            $("select", rolesFilterElem).each(function (roleFilterSelectIndex, roleFilterSelectElem) {
-                rolesFilters.push((roleFilter = new $.hitcomp.RoleFilter(
-                    (roleFilterType = (roleFilterSelectElem = $(roleFilterSelectElem)).parent().parent().attr("data-field")), rolesTableElem, 
-                    roleFilterSelectElem)));
+            if (settingInputElem.hasClass("form-control-settings-data-sheet-id")) {
+                var sheetUrlSettingValueMatches = $.hitcomp.Settings.SHEET_URL_PATTERN.exec(settingInputElem.val());
                 
-                roleFilterSelectElem.multiselect(roleFilter.buildSelect());
-                roleFilterSelectElem.multiselect("dataprovider", $.fn.multiselect.buildDataProvider($.map(((roleFilterType == "level") ? 
-                    $.grep($.hitcomp.CompetencyLevel.enums, function (compLevel) {
-                        return (compLevel.value.order >= 0);
-                    }) : $.map(roles, function (role) {
-                        return role[roleFilterType];
-                    })).sort(function (roleItemValue1, roleItemValue2) {
-                        if (roleFilterType == "level") {
-                            return roleItemValue1.value.compareTo(roleItemValue2.value);
-                        }
-                        
-                        if (roleFilterType == "roles") {
-                            var rolesLocalizeSelectValue = rolesLocalizeSelectElem.val();
-                            
-                            roleItemValue1 = roleItemValue1[rolesLocalizeSelectValue];
-                            roleItemValue2 = roleItemValue2[rolesLocalizeSelectValue];
-                        }
-                        
-                        return $.tablesorter.replaceAccents(roleItemValue1).localeCompare($.tablesorter.replaceAccents(roleItemValue2));
-                    }), function (roleItemValue) {
-                        switch (roleFilterType) {
-                            case "level":
-                                return roleItemValue.value.displayName;
-                            
-                            case "roles":
-                                return roleItemValue[rolesLocalizeSelectElem.val()];
-                            
-                            default:
-                                return roleItemValue;
-                        }
-                    }).unique()));
-                
-                roleFilterSelectElem.parent().append(roleFilter.buildSelectControlElements());
-            });
-            
-            $("div.input-group-sm:first-of-type div.btn-group button[type=\"reset\"]", rolesFilterElem).bind("click", { "dataFilters": rolesFilters }, 
-                function (event) {
-                $.each(event.data.dataFilters, function (dataFilterIndex, dataFilter) {
-                    dataFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
-                });
-            }).tooltip({ "title": "Reset Filters" });
-            
-            (rolesLocalize = new $.hitcomp.RoleLocalization($("div.input-group-sm[data-field=\"roles\"] select", rolesFilterElem), rolesTableElem, 
-                rolesLocalizeSelectElem)).determineDefault();
-            
-            rolesLocalizeSelectElem.selectpicker();
-            
-            rolesLocalizeSelectElem.bind("change", { "rolesLocalize": rolesLocalize }, function (event) {
-                event.data.rolesLocalize.localize(rolesLocalizeSelectElem.val());
-            });
-            
-            $("tr td[data-field=\"level\"] button", compsTableBodyElem).bind("click", {
-                "contentNavTabLinkElems": contentNavTabLinkElems,
-                "rolesFilterElem": rolesFilterElem
-            }, function (event) {
-                var roleLevelFilterSelectElem = $("select", event.data.rolesFilterElem).eq(2), 
-                    roleLevelFilter = roleLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), compDataElem = $(event.target).parent();
-                
-                roleLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
-                
-                roleLevelFilterSelectElem.multiselect("select", (compDataElem.is("td") ? compDataElem : compDataElem.parent())
-                    .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
-                
-                event.data.contentNavTabLinkElems.eq(2).tab("show");
-                
-                $(document).scrollTop(0);
-            });
-            
-            $("tr td[data-field=\"level\"] button", rolesTableBodyElem).bind("click", {
-                "contentNavTabLinkElems": contentNavTabLinkElems,
-                "compsFilterElem": compsFilterElem
-            }, function (event) {
-                var compLevelFilterSelectElem = $("select", event.data.compsFilterElem).eq(1), 
-                    compLevelFilter = compLevelFilterSelectElem.data($.hitcomp.DataFilter.DATA_OBJ_KEY), roleDataElem = $(event.target).parent();
-                
-                compLevelFilter.dataFilterSelectElem.multiselect("deselectAllOptions");
-                
-                compLevelFilterSelectElem.multiselect("select", (roleDataElem.is("td") ? roleDataElem : roleDataElem.parent())
-                    .data($.hitcomp.DataItem.DATA_VALUE_KEY), true);
-                
-                event.data.contentNavTabLinkElems.eq(1).tab("show");
-                
-                $(document).scrollTop(0);
-            });
-            
-            rolesFilterElem.prev("div.content-loading").hide();
-            rolesFilterElem.show();
-            
-            rolesLocalizeElem.prev("div.content-loading").hide();
-            rolesLocalizeElem.show();
-        }, function (initial) {
-            var numRolesSelected = (initial ? roleRowElems.length : 0);
-            
-            if (!initial) {
-                $.each(roleRowElems, function (roleRowIndex, roleRowElem) {
-                    if ($(roleRowElem).is(":visible:not(.disabled)")) {
-                        numRolesSelected++;
-                    }
-                });
+                if (sheetUrlSettingValueMatches) {
+                    settingInputElem.val(sheetUrlSettingValueMatches[1]);
+                }
             }
             
-            rolesSelectedNumElem.text(numRolesSelected);
-            rolesSelectedNumTotalElem.text(roleRowElems.length);
-            
-            rolesSelectedElem.show();
+            $.hitcomp.Settings.validate(compsSheetIdSettingInputElem, compsSheetNameSettingInputElem, rolesSheetIdSettingInputElem,
+                rolesSheetNameSettingInputElem, settingSubmitButtonElem);
         });
         
-        rolesDataSet.load();
+        settingsFormElem.on("reset", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            var settings = settingsModalElem.data($.hitcomp.Settings.DATA_KEY);
+            settings.reset();
+            settings.save();
+            
+            compsSheetIdSettingInputElem.val(settings.compsSheetId);
+            compsSheetNameSettingInputElem.val(settings.compsSheetName);
+            rolesSheetIdSettingInputElem.val(settings.rolesSheetId);
+            rolesSheetNameSettingInputElem.val(settings.rolesSheetName);
+            
+            $.hitcomp.Settings.validate(compsSheetIdSettingInputElem, compsSheetNameSettingInputElem, rolesSheetIdSettingInputElem,
+                rolesSheetNameSettingInputElem, settingSubmitButtonElem);
+        });
+        
+        settingsFormElem.submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            if (!$.hitcomp.Settings.validate(compsSheetIdSettingInputElem, compsSheetNameSettingInputElem, rolesSheetIdSettingInputElem,
+                rolesSheetNameSettingInputElem, settingSubmitButtonElem)) {
+                return;
+            }
+            
+            var settings = settingsModalElem.data($.hitcomp.Settings.DATA_KEY);
+            settings.compsSheetId = compsSheetIdSettingInputElem.val();
+            settings.compsSheetName = compsSheetNameSettingInputElem.val();
+            settings.rolesSheetId = rolesSheetIdSettingInputElem.val();
+            settings.rolesSheetName = rolesSheetNameSettingInputElem.val();
+            settings.save();
+            
+            if (localStorage) {
+                localStorage.clear();
+                
+                settings.save();
+            }
+            
+            document.location.reload(true);
+        });
+        
+        $(document).on($.hitcomp.SETTINGS_LOADED_EVENT_NAME, $.proxy(function (event, settings) {
+            settingsModalElem.data($.hitcomp.Settings.DATA_KEY, settings);
+            
+            compsSheetIdSettingInputElem.val(settings.compsSheetId);
+            compsSheetNameSettingInputElem.val(settings.compsSheetName);
+            rolesSheetIdSettingInputElem.val(settings.rolesSheetId);
+            rolesSheetNameSettingInputElem.val(settings.rolesSheetName);
+            
+            navBarElem.find("button#btn-settings").removeAttr("disabled");
+            
+            $.hitcomp.Analytics.configure(settings.analyticsSiteId);
+            
+            var instructionsDocAlertElem = homeDataElem.find("div.alert#alert-instructions-doc");
+            instructionsDocAlertElem.find("a").attr("href", settings.instructionsDocUrl);
+            instructionsDocAlertElem.show();
+            
+            compsController.load(settings);
+            
+            rolesController.load(settings);
+        }, this));
+        
+        $.hitcomp.Settings.load();
     });
 }(jQuery));

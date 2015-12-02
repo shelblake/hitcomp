@@ -94,6 +94,10 @@ a.link:hover {
     cursor: pointer;
 }
 
+hr {
+    margin: 10px 50px;
+}
+
 div.well.content-loading {
     margin: 10px;
     font-size: 14px;
@@ -123,11 +127,36 @@ input.form-control {
     padding: 5px 10px;
 }
 
+input.form-control[type="text"] {
+    width: 350px;
+}
+
+div.help-block {
+    text-align: right;
+}
+
 ul.dropdown-menu {
     padding: 5px;
 }
 
 ul.dropdown-menu li a {
+    font-size: 13px;
+}
+
+div.form-group,
+form.form-inline div.form-group {
+    margin-bottom: 10px;
+}
+
+div.form-group:last-of-type,
+form.form-inline div.form-group:last-of-type {
+    margin-bottom: inherit;
+}
+
+div.input-group-sm label[for] {
+    width: 175px;
+    margin-right: 10px;
+    text-align: right;
     font-size: 13px;
 }
 
@@ -172,10 +201,6 @@ div#content-tabs div.content-tab div.content-data {
     display: none;
 }
 
-div#content-tabs div.content-tab hr {
-    margin: 10px 50px;
-}
-
 div#content-tabs div.content-tab h1 span.content-selected {
     display: none;
 }
@@ -186,33 +211,17 @@ div#content-tabs div.content-tab div.content-data div.alert {
     font-size: 13px;
 }
 
-div#content-tabs div.content-tab div.content-localize div.input-group-sm,
-div#content-tabs div.content-tab div.content-filter div.input-group-sm,
-div#content-tabs div.content-tab div.content-data div.input-group-sm {
-    margin-bottom: 10px;
+div#content-tabs div#content-home-tab.content-tab div.content-data div.alert#alert-instructions-doc {
+    display: none;
 }
 
-div#content-tabs div.content-tab div.content-localize div.input-group-sm:last-of-type,
-div#content-tabs div.content-tab div.content-filter div.input-group-sm:last-of-type,
-div#content-tabs div.content-tab div.content-data div.input-group-sm:last-of-type {
-    margin-bottom: inherit;
-}
-
-div#content-tabs div.content-tab div.content-filter div.input-group-sm:first-of-type div.btn-group {
+div#content-tabs div.content-tab div.content-filter div.form-group:first-of-type div.btn-group {
     margin-left: 190px;
 }
 
 div#content-tabs div.content-tab div.content-filter div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu,
 div#content-tabs div.content-tab div.content-data div.input-group-sm div.btn-group div.dropdown ul.dropdown-menu {
     padding: 10px 5px;
-}
-
-div#content-tabs div.content-tab div.content-localize div.input-group-sm label[for],
-div#content-tabs div.content-tab div.content-filter div.input-group-sm label[for] {
-    width: 175px;
-    margin-right: 10px;
-    text-align: right;
-    font-size: 13px;
 }
 
 div#content-tabs div.content-tab div.content-data table.table {
