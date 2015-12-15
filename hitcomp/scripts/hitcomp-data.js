@@ -212,7 +212,8 @@
                 "onChange": $.proxy(function () {
                     $("tbody tr", this.dataTableElem).show();
                     
-                    $("select", this.dataFilterSelectElem.parent().parent().parent()).each($.proxy(function (dataFilterSelectIndex, dataFilterSelectElem) {
+                    $("select", this.dataFilterSelectElem.parent().parent().parent().parent()).each($.proxy(
+                        function (dataFilterSelectIndex, dataFilterSelectElem) {
                         var dataFilter = (dataFilterSelectElem = $(dataFilterSelectElem)).data($.hitcomp.DataFilter.DATA_OBJ_KEY), dataFilterSelectedOpts = {};
                         
                         $("option", dataFilterSelectElem).each(function (dataFilterSelectOptIndex, dataFilterSelectOptElem) {
