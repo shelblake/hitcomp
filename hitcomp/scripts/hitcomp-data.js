@@ -115,7 +115,7 @@
                     
                     dataElem.show();
                 },
-                "selectorHeaders": "> thead tr th:not(:last-of-type)",
+                "selectorHeaders": "> thead tr th[data-field]:not([data-field=\"desc\"])",
                 "textExtraction": function (dataElem, dataTableElem, dataElemIndex) {
                     return $(dataElem).data($.hitcomp.DataItem.DATA_VALUE_KEY);
                 }
@@ -131,7 +131,7 @@
         
         "buildRowElement": function () {
             return $("<tr/>").data($.hitcomp.DataItem.DATA_OBJ_KEY, this).data($.hitcomp.DataItem.DATA_EXPORT_KEY, true)
-                .append(this.buildDataElement("desc", this.desc)).append($("<td/>").append($("<button/>", {
+                .append($("<td/>").append($("<button/>", {
                 "class": "btn btn-default form-control",
                 "data-placement": "top",
                 "data-toggle": "tooltip",

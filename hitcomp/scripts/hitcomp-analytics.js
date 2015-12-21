@@ -11,6 +11,12 @@
                     return;
                 }
                 
+                if (!ga) {
+                    console.warn(sprintf("Google Analytics API unavailable - skipping configuration for site (id=%s) ...", siteId));
+                    
+                    return;
+                }
+                
                 ga("create", siteId, "auto");
                 ga("send", "pageview");
                 

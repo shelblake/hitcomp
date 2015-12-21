@@ -49,7 +49,8 @@
                 "type": this.type,
                 "level": this.level.value.displayName,
                 "serviceCategory": this.serviceCategory,
-                "roles": this.roles["en-US"]
+                "roles": this.roles["en-US"],
+                "desc": this.desc
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
             }, this)));

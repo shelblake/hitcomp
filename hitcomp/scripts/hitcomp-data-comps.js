@@ -44,6 +44,7 @@
             this.domain = dataObj.domain.tokenize($.hitcomp.DataItem.DATA_VALUE_DELIM);
             this.desc = dataObj.competencyintegratedwithtaxonomy;
             this.category = dataObj.areaofcompetency;
+            this.code = dataObj.code;
         }
     });
     
@@ -71,7 +72,9 @@
             return $.hitcomp.DataItem.prototype.buildRowElement.call(this).prepend($.map({
                 "domain": this.domain,
                 "level": this.level.value.displayName,
-                "category": this.category
+                "category": this.category,
+                "desc": this.desc,
+                "code": this.code
             }, $.proxy(function (dataValue, dataType) {
                 return this.buildDataElement(dataType, dataValue);
             }, this)));

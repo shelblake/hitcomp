@@ -248,11 +248,11 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td:last-o
     min-width: inherit;
 }
 
-div#content-tabs div.content-tab div.content-data table.table thead tr th:not(:nth-last-of-type(2)) {
+div#content-tabs div.content-tab div.content-data table.table thead tr th[data-field]:not([data-field="desc"]) {
     cursor: pointer;
 }
 
-div#content-tabs div#content-roles-tab.content-tab div.content-data table.table thead tr th:nth-of-type(4) {
+div#content-tabs div#content-roles-tab.content-tab div.content-data table.table thead tr th[data-field="serviceCategory"] {
     min-width: 175px;
 }
 
@@ -270,7 +270,7 @@ div#content-tabs div.content-tab div.content-data table.table tbody tr td {
 }
 
 div#content-tabs div#content-home-tab.content-tab div.content-data table.table tbody tr td:last-of-type,
-div#content-tabs div.content-tab div.content-data table.table tbody tr td:nth-last-of-type(2):not(:first-of-type) {
+div#content-tabs div.content-tab div.content-data table.table tbody tr td[data-field="desc"] {
     text-align: left;
 }
 
